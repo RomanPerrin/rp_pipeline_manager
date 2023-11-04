@@ -27,7 +27,7 @@ def installShelf():
                 useAlpha = 1,
                 style = "iconOnly",
                 image = f"{path}/icone2.svg",
-                command = "import rp_pipeline_manager\nfrom importlib import reload\nreload(rp_pipeline_manager)",
+                command = "import rp_pipeline_manager\nfrom importlib import reload\nreload(rp_pipeline_manager)\nrp_pipeline_manager.main_window.UI()",
                 sourceType = "python",
                 commandRepeatable = 1,
                 flat = 1)
