@@ -82,5 +82,5 @@ def installShelf():
     from importlib import reload
     import setup
     reload(setup)
-    # setup.installer()
+    setup.installer()
     
