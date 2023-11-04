@@ -6,7 +6,6 @@ import maya.cmds as cmds
 import os
 import maya.mel as mel
 import rp_pipeline_manager
-exit()
 
 path = rp_pipeline_manager.__path__[0]
 
