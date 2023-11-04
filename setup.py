@@ -40,7 +40,7 @@ def installOnStartup():
 import maya.cmds as cmds
 cmds.evalDeferred('''if cmds.optionVar(q='rp_pipeline_manager_autoUpdate') == 1:
     import rp_pipeline_manager
-    rp_pipeline_manager.autoUpdate.updater()''')"""
+    rp_pipeline_manager.install.updater()''')"""
     file = ''
     
     dir = os.path.join(os.path.dirname(cmds.internalVar(usd=1)), 'userSetup.py').replace(os.sep, '/')
