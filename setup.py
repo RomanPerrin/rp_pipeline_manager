@@ -38,7 +38,7 @@ def installOnStartup():
     global path
     user_setup = """
 import maya.cmds as cmds
-cmds.evalDeffered('''
+cmds.evalDeferred('''
 import rp_pipeline_manager
 rp_pipeline_manager.install.updater()''')"""
     file = ''
