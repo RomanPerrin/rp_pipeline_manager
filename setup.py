@@ -5,7 +5,7 @@ __author__ = 'Roman PERRIN'
 import maya.cmds as cmds
 import os
 import maya.mel as mel
-import install
+return
 import rp_pipeline_manager
 
 path = rp_pipeline_manager.__path__[0]

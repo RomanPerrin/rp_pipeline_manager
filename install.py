@@ -68,7 +68,7 @@ def updater(*args):
         except:
             raise Exception(f"Error during update : {code}")
     
-    # installShelf()
+    installShelf()
     
     cmds.waitCursor(state=0)
     return   
@@ -82,5 +82,5 @@ def installShelf():
     from importlib import reload
     import setup
     reload(setup)
-    setup.installer()
+    # setup.installer()
     
