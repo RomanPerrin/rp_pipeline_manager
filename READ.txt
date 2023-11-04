@@ -1,0 +1,8 @@
+how to install
+
+put the entire folder 'rp_pipeline_manager' itself in maya/prefs/scripts/
+
+put 'icone2.svg' in maya/prefs/icons/
+
+open maya and drag'n'drop the 'install.py' file on the viewport.
+it will create a new shelf icon in the shelf currently in view.
