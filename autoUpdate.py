@@ -5,6 +5,7 @@ __author__ = 'Roman PERRIN'
 from maya import cmds
 from maya import mel
 import os
+import sys
 import shutil
 import platform
 
@@ -28,7 +29,7 @@ def installGit():
     if not 'C:/Program Files/Git/cmd' in os.environ['PATH']:
         os.environ['PATH'] += ';C:/Program Files/Git/cmd'
     
-    if code == 0:
+    if code == 1:
         raise Exception(f"Error during git install : {code}")
     
     print('Git installed successfully')
@@ -60,13 +61,14 @@ def updater(*args):
         install(path)
     
     else:
+        print(f'Updating {repo_name}')
         try:
             code = os.popen(f'git -C {path} reset --hard main').read()
             code += ' ' + os.popen(f'git -C {path} pull').read()
         except:
             raise Exception(f"Error during update : {code}")
     
-    install()
+    installShelf()
     
     cmds.waitCursor(state=0)
     return   
@@ -74,17 +76,12 @@ def updater(*args):
 def onMayaDroppedPythonFile(*args):
     updater()
 
-def install():
-    currentShelf = mel.eval("global string $gShelfTopLevel;\rstring $shelves = `tabLayout -q -selectTab $gShelfTopLevel`;")
-    button = cmds.shelfButton(parent = currentShelf,
-                visible = 1,
-                flexibleWidthType = 1,
-                annotation = "Pipeline Manager",
-                label = "Pipeline Manager",
-                useAlpha = 1,
-                style = "iconOnly",
-                image = f"{dir}/{repo_name}/icone2.svg",
-                command = "import rp_pipeline_manager\nfrom importlib import reload\nreload(rp_pipeline_manager)",
-                sourceType = "python",
-                commandRepeatable = 1,
-                flat = 1)
+def installShelf():
+    import rp_pipeline_manager
+    path = rp_pipeline_manager.__path__[0]
+    sys.path.append( path )
+    import rp_pipeline_manager
+    from importlib import reload
+    reload(rp_pipeline_manager)
+    rp_pipeline_manager.setup.installer()
+    
