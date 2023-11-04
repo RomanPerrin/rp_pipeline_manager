@@ -11,5 +11,3 @@ reload(setup)
 
 import rp_pipeline_manager.main_window as pipe
 reload(pipe)
-
-pipe.UI()

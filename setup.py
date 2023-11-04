@@ -6,8 +6,9 @@ import maya.cmds as cmds
 import os
 import maya.mel as mel
 import install
+import rp_pipeline_manager
 
-path = os.path.join(install.dir, install.repo_name).replace(os.sep, '/')
+path = rp_pipeline_manager.__path__[0]
 
 def installShelf():
     currentShelfLayout = mel.eval('$tmpVar=$gShelfTopLevel')
