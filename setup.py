@@ -4,15 +4,10 @@ __author__ = 'Roman PERRIN'
 
 import maya.cmds as cmds
 import os
-import sys
 import maya.mel as mel
-import autoUpdate
-from importlib import reload
-reload(autoUpdate)
-
-path = os.path.join(autoUpdate.dir, autoUpdate.repo_name).replace(os.sep, '/')
 import rp_pipeline_manager
-print(rp_pipeline_manager.__path__[0])
+
+path = rp_pipeline_manager.__path__[0]
 
 def installShelf():
     currentShelfLayout = mel.eval('$tmpVar=$gShelfTopLevel')
@@ -48,7 +43,7 @@ cmds.evalDeferred('''if cmds.optionVar(q='rp_pipeline_manager_autoUpdate') == 1:
     rp_pipeline_manager.autoUpdate.updater()''')"""
     file = ''
     
-    dir = os.path.join(os.path.dirname(cmds.internalVar(usd=1)), 'scripts', 'userSetup.py').replace(os.sep, '/')
+    dir = os.path.join(os.path.dirname(cmds.internalVar(usd=1)), 'userSetup.py').replace(os.sep, '/')
     
     try:
         with open(dir, 'r') as f:
