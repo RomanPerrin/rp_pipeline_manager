@@ -78,11 +78,9 @@ def onMayaDroppedPythonFile(*args):
 
 def installShelf():
     path = os.path.join(dir, repo_name).replace(os.sep, '/')
-    sys.path.append(dir)
+    sys.path.append(path)
     from importlib import reload
-    import rp_pipeline_manager.setup
-    rp_pipeline_manager.setup.installer()
-    # import setup
-    # reload(setup)
-    # setup.installer()
+    import setup
+    reload(setup)
+    setup.installer()
     

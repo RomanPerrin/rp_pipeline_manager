@@ -11,6 +11,8 @@ from importlib import reload
 reload(autoUpdate)
 
 path = os.path.join(autoUpdate.dir, autoUpdate.repo_name).replace(os.sep, '/')
+import rp_pipeline_manager
+print(rp_pipeline_manager.__path__[0])
 
 def installShelf():
     currentShelfLayout = mel.eval('$tmpVar=$gShelfTopLevel')
