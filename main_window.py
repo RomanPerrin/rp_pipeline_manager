@@ -102,7 +102,9 @@ class UI():
         print('Reloaded UI')
 
     def openDirectory(self, *args):
+        print(self.pipe_dir)
         dir = self.pipe_dir.replace(os.sep, r'\\')
+        print(dir)
         print(fr'explorer "{dir}"')
         os.popen(fr'explorer "{dir}"')
 
