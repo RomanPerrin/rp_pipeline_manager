@@ -13,8 +13,8 @@ import rfm2
 from . import install
 
 #files
-import rp_pipeline_manager.cache_manager_v1_20 as cache_manager_v1_20
-import rp_pipeline_manager.Ind_RenderMan_Utilities as RenderMan_Utilities
+from . import cache_manager_v1_20
+from . import Ind_RenderMan_Utilities
 
 icon_size = 35
 row_size = 35

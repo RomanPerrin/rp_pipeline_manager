@@ -9,7 +9,7 @@ import rp_pipeline_manager
 
 path = rp_pipeline_manager.__path__[0]
 
-def installShelf():
+def installShelf() -> None:
     currentShelfLayout = mel.eval('$tmpVar=$gShelfTopLevel')
     currentShelf = cmds.shelfTabLayout(currentShelfLayout, q=1, selectTab=1)
     
@@ -34,7 +34,7 @@ def installShelf():
     
     return
 
-def installOnStartup():
+def installOnStartup() -> None:
     global path
     user_setup = """
 import maya.cmds as cmds
@@ -55,7 +55,7 @@ rp_pipeline_manager.install.updater()''')"""
         with open(dir, 'w') as f:
             f.write(file + user_setup)
 
-def installer():
+def installer() -> None:
     installShelf()
     installOnStartup()
     
