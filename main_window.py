@@ -36,7 +36,7 @@ class UI():
         cmds.optionVar(iv=('rfmExtensionsInChannelBox', 0))
     
     def UI(self, *args):
-        size = (200, 300)
+        size = (230, 300)
         
         window = f"rp_pipeline_manager"
         if cmds.window(window, q=True,exists=True):
@@ -250,6 +250,8 @@ class UI():
             for i in sel:
                 cmds.select(i, r=True)
                 cmds.hyperShade(assign='lambert1')
+
+            cmds.sets(sel, n=f'set_geo_cache {self.selectedAssets()}')
         
         print("deleting volume aggregate")
         def deleteVolumAggregate(*arg):
