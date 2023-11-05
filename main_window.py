@@ -94,7 +94,6 @@ class UI():
     
     def update(self, *args):
         install.updater()
-        print('1')
         import rp_pipeline_manager
         from importlib import reload
         reload(rp_pipeline_manager)
