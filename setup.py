@@ -21,7 +21,7 @@ def installShelf():
     for button in buttons:
         if cmds.shelfButton(button, q=1, ex=1):
             if 'Pipeline Manager' in cmds.shelfButton(button, q=1, l=1):
-                return
+                cmds.deleteUI(button)
     
     button = cmds.shelfButton(parent = currentShelf,
                 visible = 1,
