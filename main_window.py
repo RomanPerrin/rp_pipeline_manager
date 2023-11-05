@@ -102,8 +102,9 @@ class UI():
         print('Reloaded UI')
 
     def openDirectory(self, *args):
-        print(fr'explorer "{self.pipe_dir}"')
-        os.popen(fr'explorer "{self.pipe_dir}/"')
+        dir = self.pipe_dir.replace(os.sep, r'\\')
+        print(fr'explorer "{dir}"')
+        os.popen(fr'explorer "{dir}"')
 
     def fileDialog(self, fileMode, caption, *args):
         filename = cmds.fileDialog2(fileMode=fileMode, caption=caption)[0]
