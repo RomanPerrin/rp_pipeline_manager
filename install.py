@@ -84,7 +84,7 @@ def installShelf():
     path = os.path.join(dir, repo_name).replace(os.sep, '/')
     sys.path.append(dir)
     from importlib import reload
-    from . import setup
+    from rp_pipeline_manager import setup
     reload(setup)
     setup.installer()
     

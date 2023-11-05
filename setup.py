@@ -5,13 +5,10 @@ __author__ = 'Roman PERRIN'
 import maya.cmds as cmds
 import os
 import maya.mel as mel
-from rp_pipeline_manager import install
 
 import rp_pipeline_manager
 
 path = rp_pipeline_manager.__path__[0]
-print(path)
-install.updater()
 
 def installShelf():
     currentShelfLayout = mel.eval('$tmpVar=$gShelfTopLevel')
