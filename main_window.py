@@ -251,7 +251,8 @@ class UI():
                 cmds.select(i, r=True)
                 cmds.hyperShade(assign='lambert1')
 
-            cmds.sets(sel, n=f'set_geo_cache {self.selectedAssets()}')
+            transform = cmds.listRelatives(sel, p=1)
+            cmds.sets(transform, n=f'set_geo_cache {self.selectedAssets()}')
         
         print("deleting volume aggregate")
         def deleteVolumAggregate(*arg):
