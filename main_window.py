@@ -295,7 +295,6 @@ class UI():
         print("remove unused plugins")
         self.deleteUnusedPlugins()
         
-        
         print("deleting namespaces")
         self.deleteNamespaces()
         
@@ -417,7 +416,6 @@ class UI():
 
     def importAsReference(self, *args):
         cmds.file( save=True, type='mayaAscii' )
-        print(self.getWorkingDirectory())
         cmds.file(os.path.join(self.getWorkingDirectory(), 'scenes', 'publish', self.selectedStep(), f"{self.selectedAssets()}_publish_{self.selectedStep()}.ma"), reference=True, ns=f"{self.selectedAssets()}_{self.selectedStep()}")
         self.addRmanUserToken()
     
