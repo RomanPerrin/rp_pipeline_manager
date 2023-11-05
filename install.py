@@ -22,7 +22,7 @@ def installGit():
     
     if current_os == 'Windows':
         print(os.popen('git -v').read())
-        if not os.system('git -v'):
+        if os.popen('git -v').read():
             return
     
     print(os.system('git -v'))
