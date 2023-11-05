@@ -102,7 +102,7 @@ class UI():
         print('Reloaded UI')
 
     def openDirectory(self, *args):
-        print(self.pipe_dir)
+        print(fr'explorer "{self.pipe_dir}/"')
         os.popen(fr'explorer "{self.pipe_dir}/"')
 
     def fileDialog(self, fileMode, caption, *args):
