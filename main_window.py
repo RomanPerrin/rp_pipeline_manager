@@ -96,6 +96,7 @@ class UI():
         install.updater()
         import rp_pipeline_manager
         rp_pipeline_manager.main_window.UI()
+        print('Reloaded UI')
 
     def openDirectory(self, *args):
         os.popen(fr'explorer "{self.pipe_dir}"')
