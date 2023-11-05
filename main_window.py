@@ -93,7 +93,6 @@ class UI():
         cmds.showWindow(window)
     
     def openDirectory(self, *args):
-        print(fr'explorer "{self.pipe_dir}"')
         os.popen(fr'explorer "{self.pipe_dir}"')
 
     def fileDialog(self, fileMode, caption, *args):
