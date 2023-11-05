@@ -22,10 +22,10 @@ def installGit():
     
     if current_os == 'Darwin':
         print(os.popen('git -v').read())
-        if 'git' in os.popen('git -v').read():
+        if os.system('git -v'):
             return
     
-    print(os.popen('git -v').read())
+    print(os.system('git -v'))
     try:
         code = os.system('winget install git.git')
     finally:
