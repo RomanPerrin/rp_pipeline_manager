@@ -26,8 +26,8 @@ def saveScene(*args):
         cmds.file(f=True, type='mayaAscii', save=True)
 
 def createRmanUserToken(indexToken, userTokenKeys, userTokenValues, type, *args):
-    cmds.setAttr(f'rmanGlobals.UserTokens[{indexToken}].userTokenKeys', 'userTokenKeys', type='string')
-    cmds.setAttr(f'rmanGlobals.UserTokens[{indexToken}].userTokenValues', 'userTokenValues', type=type)
+    cmds.setAttr(f'rmanGlobals.UserTokens[{indexToken}].userTokenKeys', userTokenKeys, type='string')
+    cmds.setAttr(f'rmanGlobals.UserTokens[{indexToken}].userTokenValues', userTokenValues, type=type)
 
 class UI():
     def __init__(self, *args):
@@ -45,7 +45,7 @@ class UI():
         
         menuBarLayout = cmds.menuBarLayout()
         menu = cmds.menu(l='About', p=menuBarLayout)
-        cmds.menuItem(l='Update', p=menu, c=partial(install.updater()))
+        cmds.menuItem(l='Update', p=menu, c=partial(install.updater))
 
         master_lay = cmds.columnLayout(p=window, adjustableColumn=True)
         
