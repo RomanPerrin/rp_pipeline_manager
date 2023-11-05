@@ -10,6 +10,7 @@ from functools import partial
 import shutil
 import json
 import rfm2
+from . import install
 
 #files
 import rp_pipeline_manager.cache_manager_v1_20 as cache_manager_v1_20
@@ -44,7 +45,7 @@ class UI():
         
         menuBarLayout = cmds.menuBarLayout()
         menu = cmds.menu(l='About', p=menuBarLayout)
-        cmds.menuItem(l='Update', p=menu)
+        cmds.menuItem(l='Update', p=menu, c=partial(install.updater()))
 
         master_lay = cmds.columnLayout(p=window, adjustableColumn=True)
         
