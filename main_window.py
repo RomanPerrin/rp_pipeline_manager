@@ -102,8 +102,8 @@ class UI():
         print('Reloaded UI')
 
     def openDirectory(self, *args):
-        print(fr'explorer "{self.pipe_dir}/"')
-        os.popen(fr'explorer "{self.pipe_dir}/"')
+        print(fr'explorer "{self.pipe_dir}"')
+        os.popen(fr'explorer "{self.pipe_dir}"')
 
     def fileDialog(self, fileMode, caption, *args):
         filename = cmds.fileDialog2(fileMode=fileMode, caption=caption)[0]
@@ -129,7 +129,6 @@ class UI():
         if not os.path.isdir(self.asset_dir):
             raise Exception('Assets folder name not found')
         
-        print('1', self.asset_dir)
         return self.asset_dir
     
     def getAssetTypeDirectory(self, *args):
