@@ -105,6 +105,7 @@ class UI():
         print(self.pipe_dir)
         dir = self.pipe_dir.replace('/', r'\\')
         print(dir)
+        print(os.path.dirname(self.pipe_dir))
         print(fr'explorer "{dir}"')
         os.popen(fr'explorer "{dir}\\"')
         os.popen(fr'explorer "{os.path.dirname(self.pipe_dir)}"')
