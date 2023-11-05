@@ -86,8 +86,7 @@ class UI():
             self.pipe_dir = self.loadPipelineDirectory()
             cmds.textField(self.pipeline_dir, e=True, text=self.pipe_dir)
             self.getPipelineDirectory()
-            self.getAssetDirectory()
-            print(self.asset_dir)
+            self.getAssetsDirectory()
             self.updateAssetTypeScrollList()
         except:
             pass
@@ -141,7 +140,7 @@ class UI():
     
     def updateAssetTypeScrollList(self, *args):
         if not self.pipe_dir.split('/')[-1] in ['character', 'dress', 'module', 'prop', 'set']:
-            assetType = self.getAssetType(self.getAssetsDirectory())
+            assetType = self.getAssetType(self.asset_dir)
             cmds.textScrollList('assetType', e=True, removeAll=True)
             cmds.textScrollList('assetType', e=True, append=assetType)
         
