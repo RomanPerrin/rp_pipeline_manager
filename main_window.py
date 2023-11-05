@@ -244,90 +244,177 @@ class UI():
     def publish(self, *args):
         cmds.file( save=True, type='mayaAscii' )
         
+        print("importing object from reference")
+        self.importObjFromRef()
+
         if self.selectedStep() == 'modeling':
             cmds.unloadPlugin('RenderMan_for_Maya.py', force=True)
+            print('assigning Lambert')
             sel = cmds.ls(geometry=True)
             for i in sel:
                 cmds.select(i, r=True)
                 cmds.hyperShade(assign='lambert1')
 
-            transform = cmds.listRelatives(sel, p=1)
-            cmds.sets(transform, n=f'set_geo_cache {self.selectedAssets()}')
-        
-        print("deleting volume aggregate")
-        def deleteVolumAggregate(*arg):
-            thoseDamnRMNodes = cmds.ls(type="rmanVolumeAggregateSet",l=True, ap=True)
-            nbShit=len(thoseDamnRMNodes)
-            print(thoseDamnRMNodes)
-        
-            if nbShit>0:
-                for each_damnRMNode in thoseDamnRMNodes:
-                    cmds.lockNode(each_damnRMNode, lock=False)
-                    cmds.delete(each_damnRMNode)
-        deleteVolumAggregate()
-        
-        print("deleting unsused nodes")
-        cmds.delete(cmds.ls(type="unknown"))
-        cmds.delete(cmds.ls(type="unknownDag"))
-        
-        print("remove unused plugins")
-        def deleteUnusedPlugins(*args):
-            # Find and remove unknown plugins
-            unknown_plugins = cmds.unknownPlugin(query=True, list=True)
-            if unknown_plugins:
-                for plugin in unknown_plugins:
-                    try:
-                        cmds.unknownPlugin(plugin, remove=True)
-                    except Exception as error:
-                        # Oddly enough, even if a plugin is unknown, it can still have a dependency in the scene.
-                        # So in this case, we log the error to look at after.
-                        cmds.warning("Unknown plugin cannot be removed due to ERROR: {}".format(error))
-        deleteUnusedPlugins()
-        
-        print("importing object from reference")
-        #import obj from ref
-        def importObjFromRef(*args):
-            refs = cmds.ls(rf = True)
-            for ref in refs:
-                rFile = cmds.referenceQuery(ref, f=True)
-                cmds.file(rFile, importReference=True)
-        importObjFromRef()
-        
-        print("deleting namespaces")
-        #delete namespace
-        def deleteNamespaces(*args):
-            # Set root namespace
-            cmds.namespace(setNamespace=':')
-            # Collect all namespaces except for the Maya built ins.
-            all_namespaces = [x for x in cmds.namespaceInfo(listOnlyNamespaces=True, recurse=True) if x != "UI" and x != "shared"]
-            
-            if all_namespaces:
-                # Sort by hierarchy, deepest first.
-                all_namespaces.sort(key=len, reverse=True)
-                for namespace in all_namespaces:
-                    # When a deep namespace is removed, it also removes the root. So check here to see if these still exist.
-                    if cmds.namespace(exists=namespace) is True:
-                        cmds.namespace(removeNamespace=namespace, mergeNamespaceWithRoot=True)
-        deleteNamespaces()
+            print('creating set geo cache')
+            cmds.sets(cmds.listRelatives(sel, p=1), n=f'set_geo_cache {self.selectedAssets()}')
         
         if self.selectedStep() != 'rig':
-            print("cleaning ghosts")
-            # Delete GhostMeshes
+            cmds.polyClean()
+            print('fixing non-manifold')
+            cmds.delete(cmds.polyInfo(nmv=1, nuv=1, nue=1, nme=1))
+            print('fixing lamina faces')
+            cmds.delete(cmds.polyInfo(lf=1))
+            cmds.makeIdentity(a=1)
+            cmds.DeleteHistory(cmds.ls())
+            cmds.makeIdentity(t=1, r=1, s=1)
+
+        print("deleting volume aggregate")
+        self.deleteVolumAggregate()
+        
+        print("deleting unsused nodes")
+        unknownNodes = cmds.ls(typ=('unknown','unknownDag'))
+        for node in unknownNodes:
+            try:
+                cmds.lockNode(node,l=False)
+                cmds.delete(node)
+            except:
+                print('Problem deleting unknown node "'+node+'"!')
+        
+        print('deleting unused shading nodes')
+        self.deleteUnusedShadingNodes()
+        
+        print('deleting display layers')
+        self.deleteDisplayLayers()
+        
+        print('deleting empty sets')
+        self.deleteRenderLayers()
+        
+        print('deleting render layer')
+        self.deleteEmptySets()
+
+        print("remove unused plugins")
+        self.deleteUnusedPlugins()
+        
+        
+        print("deleting namespaces")
+        self.deleteNamespaces()
+        
+        if self.selectedStep() != 'rig':
+            print("deleting intermediate shapes")
             all_meshes = cmds.ls( type="mesh", ap=True )
             no_intermediate_meshes = cmds.ls( type="mesh", ap=True, noIntermediate=True )
             cmds.delete( list(set(all_meshes)-set(no_intermediate_meshes) ) )
         
         print("renaming shapes")
-        #renaming shapes
         cache_manager_v1_20.rename_meshes(force=True, message=False)
         
         print("deactivating smooth preview")
-        #deactivate preview smooth
         cmds.displaySmoothness(polygonObject=0)
         
         cmds.file(rename=os.path.join(self.getWorkingDirectory(), "scenes", "publish", self.selectedStep(), f"{self.selectedAssets()}_publish_{self.selectedStep()}"))
         cmds.file( save=True, type='mayaAscii' )
     
+    def deleteUnusedShadingNodes(self):
+        '''
+        Delete all unused shading nodes in the scene
+        '''
+        #texList = mc.ls(tex=True)
+        #if texList: mc.delete(texList)
+        mel.eval('MLdeleteUnused')
+
+    def deleteDisplayLayers(self):
+        '''
+        Delete all display layers
+        '''
+        # Get display layer list
+        displayLayers = cmds.ls(type='displayLayer')
+        displayLayers.remove('defaultLayer')
+
+        # Delete display layers
+        if displayLayers: cmds.delete(displayLayers)
+
+        # Return result
+        return displayLayers
+
+    def deleteRenderLayers(self):
+        '''
+        Delete all render layers
+        '''
+        # Get render layer list
+        renderLayers = cmds.ls(typ='renderLayer')
+        renderLayers.remove('defaultRenderLayer')
+    
+	    # Delete render layers
+        if renderLayers: cmds.delete(renderLayers)
+    
+	    # Return result
+        return renderLayers
+
+    def deleteVolumAggregate(*arg):
+        thoseDamnRMNodes = cmds.ls(type="rmanVolumeAggregateSet",l=True, ap=True)
+        nbShit=len(thoseDamnRMNodes)
+        print(thoseDamnRMNodes)
+    
+        if nbShit>0:
+            for each_damnRMNode in thoseDamnRMNodes:
+                cmds.lockNode(each_damnRMNode, lock=False)
+                cmds.delete(each_damnRMNode)
+
+    def deleteEmptySets(self, setList=[]):
+        '''
+        Delete empty object sets
+        @param setList: A list of sets to check. If empty, chack all sets in current scene.
+        @type setList: list
+        '''
+        # Check setList
+        if not setList: setList = cmds.ls(sets=True)
+    
+        # Check empty sets
+        emptySetList = []
+        for set in setList:
+            if not cmds.sets(set,q=True):
+                emptySetList.append(set)
+    
+        # Delete empty sets
+        for emptySet in emptySetList:
+            try: cmds.delete(emptySet)
+            except: pass
+    
+        # Return result
+        return emptySetList
+
+    def deleteUnusedPlugins(*args):
+        # Find and remove unknown plugins
+        unknown_plugins = cmds.unknownPlugin(query=True, list=True)
+        if unknown_plugins:
+            for plugin in unknown_plugins:
+                try:
+                    cmds.unknownPlugin(plugin, remove=True)
+                except Exception as error:
+                    # Oddly enough, even if a plugin is unknown, it can still have a dependency in the scene.
+                    # So in this case, we log the error to look at after.
+                    cmds.warning("Unknown plugin cannot be removed due to ERROR: {}".format(error))
+
+    def importObjFromRef(*args):
+        refs = cmds.ls(rf = True)
+        for ref in refs:
+            rFile = cmds.referenceQuery(ref, f=True)
+            cmds.file(rFile, importReference=True)
+
+    def deleteNamespaces(*args):
+        # Set root namespace
+        cmds.namespace(setNamespace=':')
+        # Collect all namespaces except for the Maya built ins.
+        all_namespaces = [x for x in cmds.namespaceInfo(listOnlyNamespaces=True, recurse=True) if x != "UI" and x != "shared"]
+        
+        if all_namespaces:
+            # Sort by hierarchy, deepest first.
+            all_namespaces.sort(key=len, reverse=True)
+            for namespace in all_namespaces:
+                # When a deep namespace is removed, it also removes the root. So check here to see if these still exist.
+                if cmds.namespace(exists=namespace) is True:
+                    cmds.namespace(removeNamespace=namespace, mergeNamespaceWithRoot=True)
+
     def importAsReference(self, *args):
         cmds.file( save=True, type='mayaAscii' )
         print(self.getWorkingDirectory())
