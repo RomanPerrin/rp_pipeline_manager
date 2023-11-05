@@ -106,7 +106,7 @@ class UI():
         dir = self.pipe_dir.replace('/', r'\\')
         print(dir)
         print(fr'explorer "{dir}"')
-        os.popen(fr'explorer "{dir}"')
+        os.popen(fr'explorer "{dir}\\"')
 
     def fileDialog(self, fileMode, caption, *args):
         filename = cmds.fileDialog2(fileMode=fileMode, caption=caption)[0]
