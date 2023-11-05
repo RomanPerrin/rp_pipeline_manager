@@ -7,8 +7,8 @@ import os
 import maya.mel as mel
 
 import rp_pipeline_manager
-from importlib import reload
-reload(rp_pipeline_manager)
+# from importlib import reload
+# reload(rp_pipeline_manager)
 
 path = rp_pipeline_manager.__path__[0]
 rp_pipeline_manager.install.updater()
