@@ -20,11 +20,11 @@ def installGit():
         os.system("sudo apt install git-all")
         return
     
-    if current_os == 'Darwin':
+    if current_os == 'Windows':
         print(os.popen('git -v').read())
         if os.system('git -v'):
             return
-    print(current_os)
+    
     print(os.system('git -v'))
     try:
         code = os.system('winget install git.git')
