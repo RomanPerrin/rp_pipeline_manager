@@ -43,8 +43,8 @@ class UI():
         window = cmds.window(window, wh=size, minimizeButton=False, maximizeButton=False)
         
         menuBarLayout = cmds.menuBarLayout()
-        cmds.menuItem(l='Update', p=menuBarLayout)
-        # cmds.menu(l='About', p=menuBarLayout)
+        menu = cmds.menu(l='About', p=menuBarLayout)
+        cmds.menuItem(l='Update', p=menu)
 
         master_lay = cmds.columnLayout(p=window, adjustableColumn=True)
         
