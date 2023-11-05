@@ -7,8 +7,7 @@ import os
 import maya.mel as mel
 from rp_pipeline_manager import install
 
-print(__package__)
-path = __package__.__path__[0]
+path = __path__
 print(path)
 install.updater()
 
