@@ -2,13 +2,15 @@
 __author__ = 'Roman PERRIN'
 #Author: Roman PERRIN
 
+from gettext import install
 import maya.cmds as cmds
 import os
 import maya.mel as mel
 import rp_pipeline_manager
 
 path = rp_pipeline_manager.__path__[0]
-rp_pipeline_manager.
+rp_pipeline_manager.install.updater()
+
 def installShelf():
     currentShelfLayout = mel.eval('$tmpVar=$gShelfTopLevel')
     currentShelf = cmds.shelfTabLayout(currentShelfLayout, q=1, selectTab=1)
