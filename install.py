@@ -71,10 +71,9 @@ def updater(*args):
             code += ' ' + os.popen(f'git -C {path} pull').read()
         except:
             raise Exception(f"Error during update : {code}")
-        finally:
-            print(f'{repo_name} updated successfully')
     
     installShelf()
+    print(f'{repo_name} updated successfully')
     
     cmds.waitCursor(st=0)
     return   
