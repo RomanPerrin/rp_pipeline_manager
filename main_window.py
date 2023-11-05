@@ -142,7 +142,7 @@ class UI():
     def updateAssetTypeScrollList(self, *args):
         if not self.pipe_dir.split('/')[-1] in ['character', 'dress', 'module', 'prop', 'set']:
             print('2', self.asset_dir)
-            assetType = self.getAssetType(self.asset_dir)
+            assetType = self.getAssetType(self.getAssetsDirectory())
             cmds.textScrollList('assetType', e=True, removeAll=True)
             cmds.textScrollList('assetType', e=True, append=assetType)
         
