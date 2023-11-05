@@ -83,8 +83,8 @@ class UI():
         cmds.button(p=master_lay, label="import as reference", command=self.importAsReference)
         
         try:
-            pipe_dir = self.loadPipelineDirectory()
-            cmds.textField(self.pipeline_dir, e=True, text=pipe_dir)
+            self.pipe_dir = self.loadPipelineDirectory()
+            cmds.textField(self.pipeline_dir, e=True, text=self.pipe_dir)
             self.getPipelineDirectory()
             self.updateAssetTypeScrollList()
         except:
@@ -92,6 +92,9 @@ class UI():
         
         cmds.showWindow(window)
     
+    def openDirectory(self):
+        os.popen(fr'explorer "{self.pipe_dir}"')
+
     def fileDialog(self, fileMode, caption, *args):
         filename = cmds.fileDialog2(fileMode=fileMode, caption=caption)[0]
         cmds.textField(self.pipeline_dir, e=True, text=filename)
