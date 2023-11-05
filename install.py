@@ -22,12 +22,14 @@ def installGit():
     
     if current_os == 'Darwin':
         print(os.popen('git --version').read())
-        if os.popen('git --version').read():
+        if 'git' in os.popen('git --version').read():
             return
     
-    code = os.system('winget install git.git')
-    if not 'C:/Program Files/Git/cmd' in os.environ['PATH']:
-        os.environ['PATH'] += ';C:/Program Files/Git/cmd'
+    try:
+        code = os.system('winget install git.git')
+    finally:
+        if not 'C:/Program Files/Git/cmd' in os.environ['PATH']:
+            os.environ['PATH'] += ';C:/Program Files/Git/cmd'
     
     if code == 1:
         raise Exception(f"Error during git install : {code}")
