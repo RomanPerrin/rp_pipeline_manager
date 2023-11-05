@@ -45,7 +45,7 @@ class UI():
         
         menuBarLayout = cmds.menuBarLayout()
         menu = cmds.menu(l='File', p=menuBarLayout)
-        cmds.menuItem(l='Open pieline directory', p=menu, c=partial(os.popen r'explorer "C:\Users\roman\Documents\maya"'))
+        cmds.menuItem(l='Open pieline directory', p=menu, c=partial(os.popen, r'explorer "C:\Users\roman\Documents\maya"'))
         menu = cmds.menu(l='About', p=menuBarLayout)
         cmds.menuItem(l='Update', p=menu, c=partial(install.updater))
 
