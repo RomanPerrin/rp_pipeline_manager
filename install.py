@@ -24,7 +24,7 @@ def installGit():
         print(os.popen('git -v').read())
         if os.system('git -v'):
             return
-    
+    print(current_os)
     print(os.system('git -v'))
     try:
         code = os.system('winget install git.git')
