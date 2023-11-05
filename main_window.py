@@ -47,7 +47,7 @@ class UI():
         menu = cmds.menu(l='File', p=menuBarLayout)
         cmds.menuItem(l='Open pipeline directory', p=menu, c=self.openDirectory)
         menu = cmds.menu(l='About', p=menuBarLayout)
-        cmds.menuItem(l='Update', p=menu, c=partial(install.updater))
+        cmds.menuItem(l='Update', p=menu, c=self.update)
 
         master_lay = cmds.columnLayout(p=window, adjustableColumn=True)
         
