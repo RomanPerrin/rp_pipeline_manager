@@ -87,6 +87,7 @@ class UI():
             cmds.textField(self.pipeline_dir, e=True, text=self.pipe_dir)
             self.getPipelineDirectory()
             self.getAssetDirectory()
+            print(self.asset_dir)
             self.updateAssetTypeScrollList()
         except:
             pass
