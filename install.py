@@ -21,22 +21,21 @@ def installGit():
         return
     
     if current_os == 'Windows':
-        print(os.popen('git -v').read())
-        if os.popen('git -v').read():
-            print('git already installed')
+        if os.system('git -v') == 0:
+            print('Git already installed')
             return
     
-    print(os.system('git -v'))
     try:
         code = os.system('winget install git.git')
+        if code == -1978335189:
+            print('Git already installed')
+        if code == 1:
+            raise Exception(f"Error during git install : {code}")
     finally:
         if not 'C:/Program Files/Git/cmd' in os.environ['PATH']:
             os.environ['PATH'] += ';C:/Program Files/Git/cmd'
     
-    if code == 1:
-        raise Exception(f"Error during git install : {code}")
-    
-    print('Git installed successfully')
+        print('Git installed successfully')
     
     return code
 
@@ -48,7 +47,7 @@ def install(path):
     
     installGit()
     
-    os.makedirs(path, exist_ok=1)
+    os.makedirs(path, exist_ok=True)
     
     code = os.system(f"git clone --recursive https://github.com/{account}/{repo_name}.git {path}")
     
@@ -56,10 +55,11 @@ def install(path):
         shutil.rmtree(path, ignore_errors=True)
         raise Exception(f"Error during download : {code}")
     
+    print('Installation successful')
     cmds.inViewMessage( amg='installation successful', pos='midCenter', fade=True )
 
 def updater(*args):
-    cmds.waitCursor(state=1)
+    cmds.waitCursor(st=1)
     path = os.path.join(dir, repo_name).replace(os.sep, '/') #inside dir
     if not os.path.exists(path): #first download
         install(path)
@@ -74,7 +74,7 @@ def updater(*args):
     
     installShelf()
     
-    cmds.waitCursor(state=0)
+    cmds.waitCursor(st=0)
     return   
 
 def onMayaDroppedPythonFile(*args):
