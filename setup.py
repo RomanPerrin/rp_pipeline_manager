@@ -8,7 +8,7 @@ import maya.mel as mel
 import rp_pipeline_manager
 
 path = rp_pipeline_manager.__path__[0]
-
+rp_pipeline_manager.
 def installShelf():
     currentShelfLayout = mel.eval('$tmpVar=$gShelfTopLevel')
     currentShelf = cmds.shelfTabLayout(currentShelfLayout, q=1, selectTab=1)

@@ -6,8 +6,11 @@ __author__ = 'Roman PERRIN'
 from importlib import reload
 
 #files
-import rp_pipeline_manager.setup as setup
+from rp_pipeline_manager import setup
 reload(setup)
 
-import rp_pipeline_manager.main_window as pipe
-reload(pipe)
+from rp_pipeline_manager import install
+reload(install)
+
+from rp_pipeline_manager import main_window
+reload(main_window)
