@@ -138,14 +138,14 @@ class UI():
         return (os.path.join(self.getAssetTypeDirectory(), self.selectedAssets())).replace(os.sep, '/')
     
     def updateAssetTypeScrollList(self, *args):
-        if not self.getPipelineDirectory().split('/')[-1] in ['character', 'dress', 'module', 'prop', 'set']:
+        if not self.pipe_dir.split('/')[-1] in ['character', 'dress', 'module', 'prop', 'set']:
             assetType = self.getAssetType(self.getAssetsDirectory())
             cmds.textScrollList('assetType', e=True, removeAll=True)
             cmds.textScrollList('assetType', e=True, append=assetType)
         
         for i in ['character', 'dress', 'module', 'prop', 'set']:
-            if self.getPipelineDirectory().split('/')[-1] in i:
-                self.getPipelineDirectory() = os.path.abspath(os.path.join(self.getAssetsDirectory(), os.pardir))
+            if self.pipe_dir.split('/')[-1] in i:
+                self.pipe_dir = os.path.abspath(os.path.join(self.getAssetsDirectory(), os.pardir))
                 assetType = self.getAssetType(self.getAssetsDirectory())
                 cmds.textScrollList('assetType', e=True, removeAll=True)
                 cmds.textScrollList('assetType', e=True, append=assetType)
