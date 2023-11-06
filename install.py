@@ -15,7 +15,7 @@ dir = f'C:/Users/{os.getlogin()}/Documents/maya/scripts'
 
 current_os = platform.system()
 
-def installGit() -> int | None:
+def installGit():
     if current_os == 'Linux':
         os.system("sudo apt install git-all")
         return
@@ -39,7 +39,7 @@ def installGit() -> int | None:
     
     return code
 
-def install(path) -> None:
+def install(path):
     global token
     global repo_name
     
@@ -58,7 +58,7 @@ def install(path) -> None:
     print('Installation successful')
     cmds.inViewMessage( amg='installation successful', pos='midCenter', fade=True )
 
-def updater(*args) -> None:
+def updater(*args):
     cmds.waitCursor(st=1)
     path = os.path.join(dir, repo_name).replace(os.sep, '/') #inside dir
     if not os.path.exists(path): #first download
@@ -78,10 +78,10 @@ def updater(*args) -> None:
     cmds.waitCursor(st=0)
     return   
 
-def onMayaDroppedPythonFile(*args) -> None:
+def onMayaDroppedPythonFile(*args):
     updater()
 
-def installShelf() -> None:
+def installShelf():
     path = os.path.join(dir, repo_name).replace(os.sep, '/')
     sys.path.append(dir)
     from importlib import reload
