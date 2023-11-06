@@ -125,7 +125,7 @@ class UI():
         return cmds.textField(self.pipeline_dir, q=True, text=True)
     
     def getAssetsDirectory(self, *args):
-        self.asset_dir = os.path.join(self.pipe_dir, '04_asset').replace(os.sep, '/')
+        self.asset_dir = os.path.join(self.getPipelineDirectory(), '04_asset').replace(os.sep, '/')
         if not os.path.isdir(self.asset_dir):
             raise Exception('Assets folder name not found')
         
@@ -138,7 +138,7 @@ class UI():
         return (os.path.join(self.getAssetTypeDirectory(), self.selectedAssets())).replace(os.sep, '/')
     
     def updateAssetTypeScrollList(self, *args):
-        if not self.pipe_dir.split('/')[-1] in ['character', 'dress', 'module', 'prop', 'set']:
+        if not self.getPipelineDirectory().split('/')[-1] in ['character', 'dress', 'module', 'prop', 'set']:
             assetType = self.getAssetType(self.asset_dir)
             cmds.textScrollList('assetType', e=True, removeAll=True)
             cmds.textScrollList('assetType', e=True, append=assetType)
