@@ -125,11 +125,11 @@ class UI():
         return cmds.textField(self.pipeline_dir, q=True, text=True)
     
     def getAssetsDirectory(self, *args):
-        self.asset_dir = os.path.join(self.getPipelineDirectory(), '04_asset').replace(os.sep, '/')
-        if not os.path.isdir(self.asset_dir):
+        asset_dir = os.path.join(self.getPipelineDirectory(), '04_asset').replace(os.sep, '/')
+        if not os.path.isdir(asset_dir):
             raise Exception('Assets folder name not found')
         
-        return self.asset_dir
+        return asset_dir
     
     def getAssetTypeDirectory(self, *args):
         return (os.path.join(self.getAssetsDirectory(), self.selectedAssetType())).replace(os.sep, '/')
@@ -144,8 +144,8 @@ class UI():
             cmds.textScrollList('assetType', e=True, append=assetType)
         
         for i in ['character', 'dress', 'module', 'prop', 'set']:
-            if self.pipe_dir.split('/')[-1] in i:
-                self.pipe_dir = os.path.abspath(os.path.join(self.getAssetsDirectory(), os.pardir))
+            if self.getPipelineDirectory().split('/')[-1] in i:
+                self.getPipelineDirectory() = os.path.abspath(os.path.join(self.getAssetsDirectory(), os.pardir))
                 assetType = self.getAssetType(self.getAssetsDirectory())
                 cmds.textScrollList('assetType', e=True, removeAll=True)
                 cmds.textScrollList('assetType', e=True, append=assetType)
@@ -428,7 +428,7 @@ class UI():
         if not self.selectedAssetType():
             return
         
-        addAssetUI(self.pipe_dir, self.selectedAssetType(), self)
+        addAssetUI(self.getAssetsDirectory(), self.selectedAssetType(), self)
         return
     
     def rendermanAssign(self, shaderName, selection_list, texture_dir):
