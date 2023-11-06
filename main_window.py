@@ -132,7 +132,7 @@ class UI():
         return self.asset_dir
     
     def getAssetTypeDirectory(self, *args):
-        return (os.path.join(self.asset_dir, self.selectedAssetType())).replace(os.sep, '/')
+        return (os.path.join(self.getAssetsDirectory(), self.selectedAssetType())).replace(os.sep, '/')
     
     def getAssetDirectory(self, *args):
         return (os.path.join(self.getAssetTypeDirectory(), self.selectedAssets())).replace(os.sep, '/')
@@ -145,8 +145,8 @@ class UI():
         
         for i in ['character', 'dress', 'module', 'prop', 'set']:
             if self.pipe_dir.split('/')[-1] in i:
-                self.pipe_dir = os.path.abspath(os.path.join(self.asset_dir, os.pardir))
-                assetType = self.getAssetType(self.asset_dir)
+                self.pipe_dir = os.path.abspath(os.path.join(self.getAssetsDirectory(), os.pardir))
+                assetType = self.getAssetType(self.getAssetsDirectory())
                 cmds.textScrollList('assetType', e=True, removeAll=True)
                 cmds.textScrollList('assetType', e=True, append=assetType)
                 cmds.textScrollList('assetType', e=True, selectItem=i)
