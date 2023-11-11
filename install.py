@@ -20,6 +20,7 @@ current_os = platform.system()
 branch = 'dev'
 
 def getBranch():
+    global branch
     if branch:
         pass
     else:
