@@ -16,11 +16,15 @@ dir = f'C:/Users/{os.getlogin()}/Documents/maya/scripts'
 current_os = platform.system()
 
 try:
-    from rp_pipeline_manager import main_window
+    import main_window
     branch = main_window.branch
 except:
-    pass
+    branch = 'main'
 
+def installWinget():
+    code = os.popen("Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe").read()
+    print(code)
+    return code
 
 def installGit():
     if current_os == 'Linux':
@@ -52,11 +56,13 @@ def install(path):
     
     print(f'Installing {repo_name} in {os.path.dirname(path)}')
     
+    installWinget()
+
     installGit()
     
     os.makedirs(path, exist_ok=True)
-    
-    code = os.system(f"git clone --recursive https://github.com/{account}/{repo_name}.git {path}")
+    print(branch)
+    code = os.system(f"git clone --recursive https://github.com/{account}/{repo_name}/tree/{branch}.git {path}")
     
     if code != 0:
         shutil.rmtree(path, ignore_errors=True)
@@ -74,7 +80,7 @@ def updater(*args):
     else:
         print(f'Updating {repo_name}')
         try:
-            code = os.popen(f'git -C {path} reset --hard main').read()
+            code = os.popen(f'git -C {path} reset --hard {branch}').read()
             code += ' ' + os.popen(f'git -C {path} pull').read()
         except:
             raise Exception(f"Error during update : {code}")
