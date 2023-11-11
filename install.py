@@ -72,11 +72,11 @@ def install(path):
     
     os.makedirs(path, exist_ok=True)
     
-    code = os.system(f"git clone --recursive https://github.com/{account}/{repo_name}.git -b {getBranch()} {path}")
+    process = subprocess.run([f'git', 'clone', '--recursive', f'https://github.com/{account}/{repo_name}.git', '-b', getBranch(), path], text=True, capture_output=subprocess.PIPE, shell=1)
     
-    if code != 0:
+    if process.returncode != 0:
         shutil.rmtree(path, ignore_errors=True)
-        raise Exception(f"Error during download : {code}")
+        raise Exception('Error during download :', process.stderr)
     
     print('Installation successful')
     cmds.inViewMessage( amg='installation successful', pos='midCenter', fade=True )
