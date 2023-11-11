@@ -53,7 +53,12 @@ class UI():
         cmds.menuItem(l='Open pipeline directory', p=menu, c=self.openDirectory)
         menu = cmds.menu(l='About', p=menuBarLayout)
         cmds.menuItem(l='Update', p=menu, c=self.update)
-        self.mode = cmds.menuItem(l='Dev mode', cb=0, p=menu, c=self.changeMode)
+
+        state = 0
+        if install.getInstalledBranch() == 'dev':
+            state = 1
+        
+        self.mode = cmds.menuItem(l='Dev mode', cb=state, p=menu, c=self.changeMode)
 
         master_lay = cmds.columnLayout(p=self.window, adjustableColumn=True)
         
