@@ -24,7 +24,10 @@ def getInstalledBranch():
     return process.stdout.replace('\n', '')
 
 global mode
-mode = getInstalledBranch()
+try:
+    mode = getInstalledBranch()
+except:
+    mode = ''
 
 def getBranch():
     try:
