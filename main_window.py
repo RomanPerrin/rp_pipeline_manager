@@ -115,6 +115,7 @@ class UI():
             install.mode = 'dev'
         else:
             install.mode = ''
+        print(install.mode)
         return
 
     def openDirectory(self, *args):
