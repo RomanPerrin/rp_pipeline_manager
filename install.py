@@ -65,11 +65,13 @@ def getInstalledBranch():
     return process.stdout.replace('\n', '')
 
 def install(path):
-    global token
-    global repo_name
     
-    print(f'Installing {repo_name} in {os.path.dirname(path)}')
-    
+    if getBranch() != getInstalledBranch():
+        shutil.rmtree(path, ignore_errors=True)
+        print(f'Reinstalling {repo_name} in {os.path.dirname(path)}')
+    else:
+        print(f'Installing {repo_name} in {os.path.dirname(path)}')
+
     os.makedirs(path, exist_ok=True)
     
     process = subprocess.run([f'git', 'clone', '--recursive', f'https://github.com/{account}/{repo_name}.git', '-b', getBranch(), path], text=True, capture_output=subprocess.PIPE, shell=1)
@@ -87,9 +89,8 @@ def updater(*args):
     installWinget()
 
     installGit()
-    print(getBranch(), getInstalledBranch(), getBranch() != getInstalledBranch())
+    
     if not os.path.exists(path) or getBranch() != getInstalledBranch(): #first download
-        print(getBranch(), getInstalledBranch())
         install(path)
     
     else:
