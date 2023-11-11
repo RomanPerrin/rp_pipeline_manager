@@ -2,6 +2,7 @@
 __author__ = 'Roman PERRIN'
 #Author: Roman PERRIN
 
+import main_window
 from maya import cmds
 from maya import mel
 import os
@@ -17,7 +18,10 @@ path = os.path.join(dir, repo_name).replace(os.sep, '/')
 
 current_os = platform.system()
 
-branch = 'dev'
+try:
+    branch = main_window.mode
+except:
+    branch = ''
 
 def getBranch():
     global branch
