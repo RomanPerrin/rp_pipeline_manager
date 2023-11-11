@@ -64,7 +64,7 @@ def install(path):
     
     os.makedirs(path, exist_ok=True)
     print(branch)
-    code = os.system(f"git clone --recursive https://github.com/{account}/{repo_name}/tree/{branch}.git {path}")
+    code = os.system(f"git clone --recursive https://github.com/{account}/{repo_name}.git -b {branch} {path}")
     
     if code != 0:
         shutil.rmtree(path, ignore_errors=True)
