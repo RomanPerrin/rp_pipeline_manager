@@ -20,6 +20,8 @@ from . import Ind_RenderMan_Utilities
 icon_size = 35
 row_size = 35
 
+mode = install.getInstalledBranch()
+
 #self.pipe_dir/self.selectedAssetType()/self.selectedAssets()/maya/scenes/edit/self.selectedStep()
 
 def saveScene(*args):
@@ -52,6 +54,11 @@ class UI():
         menu = cmds.menu(l='About', p=menuBarLayout)
         cmds.menuItem(l='Update', p=menu, c=self.update)
 
+        state = 0
+        if mode == 'dev':
+            state = 1
+        self.mode = cmds.menuItem(l='Dev mode', cb=state, p=menu, c=self.changeMode)
+
         master_lay = cmds.columnLayout(p=self.window, adjustableColumn=True)
         
         
@@ -81,7 +88,6 @@ class UI():
         
         
         cmds.button(p=master_lay, label="open", command=self.openLastEdit)
-        #cmds.button(p=master_lay, label="save new edit version", command=self.publish)
         cmds.button(p=master_lay, label="publish", command=self.publish)
         cmds.button(p=master_lay, label="import as reference", command=self.importAsReference)
         
@@ -104,6 +110,15 @@ class UI():
         reload(rp_pipeline_manager)
         rp_pipeline_manager.main_window.UI()
         print('Reloaded UI')
+
+    def changeMode(self, *args):
+        global mode
+        state = cmds.menuItem(self.mode, q=1, cb=1)
+        if state:
+            mode = 'dev'
+        else:
+            mode = ''
+        return
 
     def openDirectory(self, *args):
         dir = os.path.normpath(self.pipe_dir)
