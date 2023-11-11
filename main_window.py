@@ -39,12 +39,12 @@ class UI():
     def UI(self, *args):
         size = (230, 300)
         
-        window = f"rp_pipeline_manager"
+        self.window = f"rp_pipeline_manager"
         if install.getInstalledBranch() != 'main':
-            window = f"{install.getInstalledBranch()} rp_pipeline_manager"
-        if cmds.window(window, q=True,exists=True):
-            cmds.deleteUI(window)
-        window = cmds.window(window, wh=size, minimizeButton=False, maximizeButton=False)
+            self.window = f"{install.getInstalledBranch()}_rp_pipeline_manager"
+        if cmds.window(self.window, q=True,exists=True):
+            cmds.deleteUI(self.window)
+        self.window = cmds.window(self.window, wh=size, minimizeButton=False, maximizeButton=False)
         
         menuBarLayout = cmds.menuBarLayout()
         menu = cmds.menu(l='File', p=menuBarLayout)
@@ -52,7 +52,7 @@ class UI():
         menu = cmds.menu(l='About', p=menuBarLayout)
         cmds.menuItem(l='Update', p=menu, c=self.update)
 
-        master_lay = cmds.columnLayout(p=window, adjustableColumn=True)
+        master_lay = cmds.columnLayout(p=self.window, adjustableColumn=True)
         
         
         #file dialog
@@ -94,11 +94,12 @@ class UI():
         except:
             pass
         
-        cmds.showWindow(window)
+        cmds.showWindow(self.window)
     
     def update(self, *args):
         reload(install)
         install.updater()
+        cmds.deleteUI(self.window)
         import rp_pipeline_manager
         reload(rp_pipeline_manager)
         rp_pipeline_manager.main_window.UI()
