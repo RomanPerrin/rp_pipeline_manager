@@ -41,7 +41,7 @@ class UI():
         
         self.window = f"rp_pipeline_manager"
         if install.getInstalledBranch() != 'main':
-            self.window = f"{install.getInstalledBranch()} rp_pipeline_manager"
+            self.window = f"{install.getInstalledBranch()}_rp_pipeline_manager"
         if cmds.window(self.window, q=True,exists=True):
             cmds.deleteUI(self.window)
         self.window = cmds.window(self.window, wh=size, minimizeButton=False, maximizeButton=False)
