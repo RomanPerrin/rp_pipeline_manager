@@ -15,6 +15,13 @@ dir = f'C:/Users/{os.getlogin()}/Documents/maya/scripts'
 
 current_os = platform.system()
 
+try:
+    from rp_pipeline_manager import main_window
+    branch = main_window.branch
+except:
+    pass
+
+
 def installGit():
     if current_os == 'Linux':
         os.system("sudo apt install git-all")
