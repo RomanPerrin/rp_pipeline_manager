@@ -62,7 +62,7 @@ def getInstalledBranch():
     process = subprocess.run(['git', 'for-each-ref', '--format=%(refname:short)', 'refs/heads/'], cwd=path, text=True, capture_output=subprocess.PIPE, shell=1)
     if process.returncode != 0:
         raise Exception(process.stderr)
-    return process.stdout
+    return process.stdout.replace('\n', '')
 
 def install(path):
     global token
