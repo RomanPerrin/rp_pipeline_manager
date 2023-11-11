@@ -71,7 +71,7 @@ def install(path):
     
     os.makedirs(path, exist_ok=True)
     
-    code = os.system(f"git clone --recursive https://github.com/{account}/{repo_name}.git -b {getInstalledBranch()} {path}")
+    code = os.system(f"git clone --recursive https://github.com/{account}/{repo_name}.git -b {getBranch()} {path}")
     
     if code != 0:
         shutil.rmtree(path, ignore_errors=True)
@@ -87,7 +87,8 @@ def updater(*args):
 
     installGit()
 
-    if not os.path.exists(path): #first download
+    if not os.path.exists(path) or getBranch() != getInstalledBranch(): #first download
+        print(getBranch(), getInstalledBranch())
         install(path)
     
     else:
