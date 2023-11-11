@@ -64,11 +64,29 @@ def getInstalledBranch():
         raise Exception(process.stderr)
     return process.stdout.replace('\n', '')
 
+def onerror(func, path, exc_info):
+    """
+    Error handler for ``shutil.rmtree``.
+
+    If the error is due to an access error (read only file)
+    it attempts to add write permission and then retries.
+
+    If the error is for another reason it re-raises the error.
+    
+    Usage : ``shutil.rmtree(path, onerror=onerror)``
+    """
+    import stat
+    # Is the error an access error?
+    if not os.access(path, os.W_OK):
+        os.chmod(path, stat.S_IWUSR)
+        func(path)
+    else:
+        raise
+
 def install():
     print(path)
     if getBranch() != getInstalledBranch():
-        shutil.rmtree(path, ignore_errors=True)
-        return
+        shutil.rmtree(path, onerror=onerror)
         print(f'Reinstalling {repo_name} in {os.path.dirname(path)}')
     else:
         print(f'Installing {repo_name} in {os.path.dirname(path)}')
@@ -78,7 +96,7 @@ def install():
     process = subprocess.run([f'git', 'clone', '--recursive', f'https://github.com/{account}/{repo_name}.git', '-b', getBranch(), path], text=True, capture_output=subprocess.PIPE, shell=1)
     
     if process.returncode != 0:
-        shutil.rmtree(path, ignore_errors=True)
+        shutil.rmtree(path, onerror=onerror)
         raise Exception('Error during download :', process.stderr)
     
     print('Installation successful')
