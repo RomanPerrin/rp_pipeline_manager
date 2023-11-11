@@ -18,9 +18,18 @@ path = os.path.join(dir, repo_name).replace(os.sep, '/')
 
 current_os = platform.system()
 
+def getInstalledBranch():
+    process = subprocess.run(['git', 'for-each-ref', '--format=%(refname:short)', 'refs/heads/'], cwd=path, text=True, capture_output=subprocess.PIPE, shell=1)
+    if process.returncode != 0:
+        raise Exception(process.stderr)
+    return process.stdout.replace('\n', '')
+
+global mode
+mode = getInstalledBranch()
+
 def getBranch():
     try:
-        branch = main_window.mode
+        branch = mode
     except:
         branch = 'main'
     
@@ -58,12 +67,6 @@ def installGit():
         print('Git installed successfully')
     
     return code
-
-def getInstalledBranch():
-    process = subprocess.run(['git', 'for-each-ref', '--format=%(refname:short)', 'refs/heads/'], cwd=path, text=True, capture_output=subprocess.PIPE, shell=1)
-    if process.returncode != 0:
-        raise Exception(process.stderr)
-    return process.stdout.replace('\n', '')
 
 def onerror(func, path, exc_info):
     """

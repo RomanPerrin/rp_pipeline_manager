@@ -20,8 +20,6 @@ from . import Ind_RenderMan_Utilities
 icon_size = 35
 row_size = 35
 
-mode = install.getInstalledBranch()
-
 #self.pipe_dir/self.selectedAssetType()/self.selectedAssets()/maya/scenes/edit/self.selectedStep()
 
 def saveScene(*args):
@@ -55,7 +53,7 @@ class UI():
         cmds.menuItem(l='Update', p=menu, c=self.update)
 
         state = 0
-        if mode == 'dev':
+        if install.mode == 'dev':
             state = 1
         self.mode = cmds.menuItem(l='Dev mode', cb=state, p=menu, c=self.changeMode)
 
@@ -112,12 +110,11 @@ class UI():
         print('Reloaded UI')
 
     def changeMode(self, *args):
-        global mode
         state = cmds.menuItem(self.mode, q=1, cb=1)
         if state:
-            mode = 'dev'
+            install.mode = 'dev'
         else:
-            mode = ''
+            install.mode = ''
         return
 
     def openDirectory(self, *args):
