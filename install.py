@@ -27,7 +27,7 @@ def getBranch():
     return branch
 
 def installWinget():
-    process = subprocess.run(['Add-AppxPackage', '-RegisterByFamilyName', '-MainPackage', 'Microsoft.DesktopAppInstaller_8wekyb3d8bbwe'], text=True, capture_output=subprocess.PIPE, shell=True)
+    process = subprocess.run(['powershell', '-command', 'Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe'], text=True, capture_output=subprocess.PIPE, shell=True)
     print(process.stdout)
     print(process.stderr)
     if process.returncode != 0:
