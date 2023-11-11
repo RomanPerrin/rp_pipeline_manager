@@ -64,8 +64,8 @@ def getInstalledBranch():
         raise Exception(process.stderr)
     return process.stdout.replace('\n', '')
 
-def install(path):
-    
+def install():
+    print(path)
     if getBranch() != getInstalledBranch():
         shutil.rmtree(path, ignore_errors=True)
         return
@@ -92,7 +92,7 @@ def updater(*args):
     installGit()
     
     if not os.path.exists(path) or getBranch() != getInstalledBranch(): #first download
-        install(path)
+        install()
     
     else:
         print(f'Updating {repo_name}')
