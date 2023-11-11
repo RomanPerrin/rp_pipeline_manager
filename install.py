@@ -84,7 +84,6 @@ def onerror(func, path, exc_info):
         raise
 
 def install():
-    print(path)
     if getBranch() != getInstalledBranch():
         shutil.rmtree(path, onerror=onerror)
         print(f'Reinstalling {repo_name} in {os.path.dirname(path)}')
