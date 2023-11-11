@@ -68,6 +68,7 @@ def install(path):
     
     if getBranch() != getInstalledBranch():
         shutil.rmtree(path, ignore_errors=True)
+        return
         print(f'Reinstalling {repo_name} in {os.path.dirname(path)}')
     else:
         print(f'Installing {repo_name} in {os.path.dirname(path)}')
