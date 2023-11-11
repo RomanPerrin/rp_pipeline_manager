@@ -95,11 +95,12 @@ def updater(*args):
         print(f'Updating {repo_name}')
         installed_branch = getInstalledBranch()
         print(installed_branch)
-        try:
-            code = os.popen(f'git -C {path} reset --hard {getBranch()}').read()
-            code += ' ' + os.popen(f'git -C {path} pull').read()
-        except:
-            raise Exception(f"Error during update : {code}")
+        
+        process = subprocess.run([f'git', '-C', path, 'reset', '--hard', getBranch()], text=True, capture_output=subprocess.PIPE, shell=1)
+        os.popen(f'git -C {path} pull').read()
+        
+        if process.returncode != 0:
+            raise Exception('error during update', process.stdout, process.stderr)
     
     installShelf()
     print(f'{repo_name} updated successfully')
