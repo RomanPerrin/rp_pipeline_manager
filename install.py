@@ -2,12 +2,14 @@
 __author__ = 'Roman PERRIN'
 #Author: Roman PERRIN
 
+from ast import main
 from maya import cmds
 from maya import mel
 import os
 import sys
 import shutil
 import platform
+from importlib import reload
 
 account = 'RomanPerrin'
 repo_name = 'rp_pipeline_manager'
@@ -17,6 +19,7 @@ current_os = platform.system()
 
 try:
     import main_window
+    reload(main_window)
     branch = main_window.branch
 except:
     branch = 'main'
