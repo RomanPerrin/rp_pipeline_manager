@@ -37,7 +37,7 @@ class UI():
     
     def UI(self, *args):
         size = (230, 300)
-        
+        print('Dev window')
         window = f"rp_pipeline_manager"
         if cmds.window(window, q=True,exists=True):
             cmds.deleteUI(window)
