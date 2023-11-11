@@ -10,6 +10,7 @@ from functools import partial
 import shutil
 import json
 import rfm2
+from importlib import reload
 from . import install
 
 #files
@@ -37,7 +38,7 @@ class UI():
     
     def UI(self, *args):
         size = (230, 300)
-        print('Dev window')
+        
         window = f"rp_pipeline_manager"
         if install.getInstalledBranch() != 'main':
             window = f"{install.getInstalledBranch()} rp_pipeline_manager"
@@ -96,9 +97,9 @@ class UI():
         cmds.showWindow(window)
     
     def update(self, *args):
+        reload(install)
         install.updater()
         import rp_pipeline_manager
-        from importlib import reload
         reload(rp_pipeline_manager)
         rp_pipeline_manager.main_window.UI()
         print('Reloaded UI')
