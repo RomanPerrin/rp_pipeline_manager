@@ -20,7 +20,7 @@ from . import Ind_RenderMan_Utilities
 icon_size = 35
 row_size = 35
 
-mode = ''
+mode = install.getInstalledBranch()
 
 #self.pipe_dir/self.selectedAssetType()/self.selectedAssets()/maya/scenes/edit/self.selectedStep()
 
@@ -55,9 +55,8 @@ class UI():
         cmds.menuItem(l='Update', p=menu, c=self.update)
 
         state = 0
-        if install.getInstalledBranch() == 'dev':
+        if mode == 'dev':
             state = 1
-        
         self.mode = cmds.menuItem(l='Dev mode', cb=state, p=menu, c=self.changeMode)
 
         master_lay = cmds.columnLayout(p=self.window, adjustableColumn=True)
