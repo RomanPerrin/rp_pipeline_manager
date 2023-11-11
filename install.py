@@ -17,7 +17,7 @@ path = os.path.join(dir, repo_name).replace(os.sep, '/')
 
 current_os = platform.system()
 
-branch = 'dev'
+branch = ''
 
 def getBranch():
     global branch
