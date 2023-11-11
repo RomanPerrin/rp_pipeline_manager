@@ -17,11 +17,11 @@ dir = f'C:/Users/{os.getlogin()}/Documents/maya/scripts'
 
 current_os = platform.system()
 
-try:
-    import main_window
-    reload(main_window)
-    branch = main_window.branch
-except:
+branch = ''
+
+if branch:
+    pass
+else:
     branch = 'main'
 
 def installWinget():
