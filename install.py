@@ -18,16 +18,13 @@ path = os.path.join(dir, repo_name).replace(os.sep, '/')
 
 current_os = platform.system()
 
-try:
-    branch = main_window.mode
-except:
-    branch = ''
-
 def getBranch():
-    global branch
-    if branch:
-        pass
-    else:
+    try:
+        branch = main_window.mode
+    except:
+        branch = 'main'
+    
+    if not branch:
         branch = 'main'
     return branch
 
