@@ -2,7 +2,6 @@
 __author__ = 'Roman PERRIN'
 #Author: Roman PERRIN
 
-from ast import main
 from maya import cmds
 from maya import mel
 import os
@@ -18,11 +17,15 @@ path = os.path.join(dir, repo_name).replace(os.sep, '/')
 
 current_os = platform.system()
 
-try:
-    import main_window
-    branch = main_window.branch
-except:
-    branch = 'main'
+branch = 'dev'
+
+def getBranch():
+    global branch
+    if branch:
+        pass
+    else:
+        branch = 'main'
+    return branch
 
 def installWinget():
     process = subprocess.run(['powershell', '-command', 'Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe'], text=True, capture_output=subprocess.PIPE, shell=True)
