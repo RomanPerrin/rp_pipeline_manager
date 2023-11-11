@@ -2,7 +2,7 @@
 __author__ = 'Roman PERRIN'
 #Author: Roman PERRIN
 
-import main_window
+from . import main_window
 from maya import cmds
 from maya import mel
 import os
