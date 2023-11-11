@@ -8,24 +8,31 @@ import os
 import sys
 import shutil
 import platform
+import subprocess
 
 account = 'RomanPerrin'
 repo_name = 'rp_pipeline_manager'
 dir = f'C:/Users/{os.getlogin()}/Documents/maya/scripts'
+path = os.path.join(dir, repo_name).replace(os.sep, '/')
 
 current_os = platform.system()
 
 branch = 'dev'
 
-if branch:
-    pass
-else:
-    branch = 'main'
+def getBranch():
+    if branch:
+        pass
+    else:
+        branch = 'main'
+    return branch
 
 def installWinget():
-    code = os.popen("Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe").read()
-    print(code)
-    return code
+    process = subprocess.run(['Add-AppxPackage', '-RegisterByFamilyName', '-MainPackage', 'Microsoft.DesktopAppInstaller_8wekyb3d8bbwe'], text=True, capture_output=subprocess.PIPE, shell=True)
+    print(process.stdout)
+    print(process.stderr)
+    if process.returncode != 0:
+        raise Exception(process.stderr)
+    return process.stdout
 
 def installGit():
     if current_os == 'Linux':
@@ -51,19 +58,23 @@ def installGit():
     
     return code
 
+def getInstalledBranch():
+    process = subprocess.run(['git', 'for-each-ref', '--format=%(refname:short)', 'refs/heads/'], cwd=path, text=True, capture_output=subprocess.PIPE, shell=1)
+    print('out', process.stdout)
+    print('err', process.stderr)
+    if process.returncode != 0:
+        raise Exception(process.stdout, process.stderr)
+    return process.stdout
+
 def install(path):
     global token
     global repo_name
     
     print(f'Installing {repo_name} in {os.path.dirname(path)}')
     
-    installWinget()
-
-    installGit()
-    
     os.makedirs(path, exist_ok=True)
-    print(branch)
-    code = os.system(f"git clone --recursive https://github.com/{account}/{repo_name}.git -b {branch} {path}")
+    
+    code = os.system(f"git clone --recursive https://github.com/{account}/{repo_name}.git -b {getBranch()} {path}")
     
     if code != 0:
         shutil.rmtree(path, ignore_errors=True)
@@ -74,14 +85,20 @@ def install(path):
 
 def updater(*args):
     cmds.waitCursor(st=1)
-    path = os.path.join(dir, repo_name).replace(os.sep, '/') #inside dir
+
+    installWinget()
+
+    installGit()
+
     if not os.path.exists(path): #first download
         install(path)
     
     else:
         print(f'Updating {repo_name}')
+        installed_branch = getInstalledBranch()
+        print(installed_branch)
         try:
-            code = os.popen(f'git -C {path} reset --hard {branch}').read()
+            code = os.popen(f'git -C {path} reset --hard {getBranch()}').read()
             code += ' ' + os.popen(f'git -C {path} pull').read()
         except:
             raise Exception(f"Error during update : {code}")
@@ -96,7 +113,6 @@ def onMayaDroppedPythonFile(*args):
     updater()
 
 def installShelf():
-    path = os.path.join(dir, repo_name).replace(os.sep, '/')
     sys.path.append(dir)
     from importlib import reload
     from rp_pipeline_manager import setup
