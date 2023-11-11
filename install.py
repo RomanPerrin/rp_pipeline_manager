@@ -60,8 +60,6 @@ def installGit():
 
 def getInstalledBranch():
     process = subprocess.run(['git', 'for-each-ref', '--format=%(refname:short)', 'refs/heads/'], cwd=path, text=True, capture_output=subprocess.PIPE, shell=1)
-    print('out', process.stdout)
-    print('err', process.stderr)
     if process.returncode != 0:
         raise Exception(process.stdout, process.stderr)
     return process.stdout
