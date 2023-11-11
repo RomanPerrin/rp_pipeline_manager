@@ -15,11 +15,13 @@ dir = f'C:/Users/{os.getlogin()}/Documents/maya/scripts'
 
 current_os = platform.system()
 
-try:
-    import main_window
-    branch = main_window.branch
-except:
+branch = 'dev'
+
+if branch:
+    pass
+else:
     branch = 'main'
+print(branch)
 
 def installWinget():
     code = os.popen("Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe").read()
