@@ -101,7 +101,6 @@ class UI():
         cmds.showWindow(self.window)
     
     def update(self, *args):
-        reload(install)
         install.updater()
         cmds.deleteUI(self.window)
         import rp_pipeline_manager
