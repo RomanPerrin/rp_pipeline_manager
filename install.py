@@ -61,7 +61,7 @@ def installGit():
 def getInstalledBranch():
     process = subprocess.run(['git', 'for-each-ref', '--format=%(refname:short)', 'refs/heads/'], cwd=path, text=True, capture_output=subprocess.PIPE, shell=1)
     if process.returncode != 0:
-        raise Exception(process.stdout, process.stderr)
+        raise Exception(process.stderr)
     return process.stdout
 
 def install(path):
@@ -87,7 +87,7 @@ def updater(*args):
     installWinget()
 
     installGit()
-    print(getBranch(), getInstalledBranch())
+    print(getBranch(), getInstalledBranch(), getBranch() != getInstalledBranch())
     if not os.path.exists(path) or getBranch() != getInstalledBranch(): #first download
         print(getBranch(), getInstalledBranch())
         install(path)
