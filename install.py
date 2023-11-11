@@ -84,7 +84,6 @@ def onerror(func, path, exc_info):
         raise
 
 def install():
-    print(path)
     if getBranch() != getInstalledBranch():
         shutil.rmtree(path, onerror=onerror)
         print(f'Reinstalling {repo_name} in {os.path.dirname(path)}')
@@ -92,8 +91,8 @@ def install():
         print(f'Installing {repo_name} in {os.path.dirname(path)}')
 
     os.makedirs(path, exist_ok=True)
-    print(branch)
-    code = os.system(f"git clone --recursive https://github.com/{account}/{repo_name}/tree/{branch}.git {path}")
+    
+    process = subprocess.run([f'git', 'clone', '--recursive', f'https://github.com/{account}/{repo_name}.git', '-b', getBranch(), path], text=True, capture_output=subprocess.PIPE, shell=1)
     
     if process.returncode != 0:
         shutil.rmtree(path, onerror=onerror)
