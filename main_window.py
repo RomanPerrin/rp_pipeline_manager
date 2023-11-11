@@ -19,6 +19,8 @@ from . import Ind_RenderMan_Utilities
 icon_size = 35
 row_size = 35
 
+branch = install.branch
+
 #self.pipe_dir/self.selectedAssetType()/self.selectedAssets()/maya/scenes/edit/self.selectedStep()
 
 def saveScene(*args):

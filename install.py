@@ -28,10 +28,9 @@ def getBranch():
 
 def installWinget():
     process = subprocess.run(['powershell', '-command', 'Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe'], text=True, capture_output=subprocess.PIPE, shell=True)
-    print(process.stdout)
-    print(process.stderr)
     if process.returncode != 0:
         raise Exception(process.stderr)
+    print('AppStore up to date')
     return process.stdout
 
 def installGit():
@@ -72,7 +71,7 @@ def install(path):
     
     os.makedirs(path, exist_ok=True)
     
-    code = os.system(f"git clone --recursive https://github.com/{account}/{repo_name}.git -b {getBranch()} {path}")
+    code = os.system(f"git clone --recursive https://github.com/{account}/{repo_name}.git -b {getInstalledBranch()} {path}")
     
     if code != 0:
         shutil.rmtree(path, ignore_errors=True)
@@ -93,10 +92,8 @@ def updater(*args):
     
     else:
         print(f'Updating {repo_name}')
-        installed_branch = getInstalledBranch()
-        print(installed_branch)
         
-        process = subprocess.run([f'git', '-C', path, 'reset', '--hard', getBranch()], text=True, capture_output=subprocess.PIPE, shell=1)
+        process = subprocess.run([f'git', '-C', path, 'reset', '--hard', getInstalledBranch()], text=True, capture_output=subprocess.PIPE, shell=1)
         os.popen(f'git -C {path} pull').read()
         
         if process.returncode != 0:
