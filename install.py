@@ -21,7 +21,6 @@ if branch:
     pass
 else:
     branch = 'main'
-print(branch)
 
 def installWinget():
     code = os.popen("Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe").read()
