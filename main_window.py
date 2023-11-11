@@ -107,7 +107,7 @@ class UI():
         rp_pipeline_manager.main_window.UI()
         print('Reloaded UI')
 
-    def changeMode(self):
+    def changeMode(self, *args):
         global mode
         state = cmds.menuItem(self.mode, q=1, cb=1)
         if state:
