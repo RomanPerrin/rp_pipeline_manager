@@ -10,7 +10,6 @@ import sys
 import shutil
 import platform
 import subprocess
-from importlib import reload
 
 account = 'RomanPerrin'
 repo_name = 'rp_pipeline_manager'
