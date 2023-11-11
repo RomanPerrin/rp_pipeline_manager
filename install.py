@@ -87,7 +87,7 @@ def updater(*args):
     installWinget()
 
     installGit()
-
+    print(getBranch(), getInstalledBranch())
     if not os.path.exists(path) or getBranch() != getInstalledBranch(): #first download
         print(getBranch(), getInstalledBranch())
         install(path)
