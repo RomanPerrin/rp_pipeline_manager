@@ -119,7 +119,7 @@ class UI():
         print(install.mode)
         return
 
-    def search(self):
+    def search(self, *args):
         search_text = cmds.textField(self.search_field, q=1, t=1)
         print(search_text)
         return
