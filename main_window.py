@@ -120,7 +120,7 @@ class UI():
         return
 
     def search(self, *args):
-        search_text = cmds.textField(self.search_field, q=1, t=1)
+        search_text = cmds.textField(self.search_field, q=1, tx=1)
         print(search_text)
         return
 
