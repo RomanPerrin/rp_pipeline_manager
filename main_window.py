@@ -122,7 +122,13 @@ class UI():
     def search(self, *args):
         search_text = cmds.textField(self.search_field, q=1, tx=1)
         print(search_text)
-        return
+        
+        asset = []
+        assets = self.getAssets()
+        for word in search_text.split(' '):
+            asset.append(asset for asset in assets if word in asset)
+        print(asset)
+        return search_text
 
     def openDirectory(self, *args):
         dir = os.path.normpath(self.pipe_dir)
@@ -207,7 +213,7 @@ class UI():
     
     def updateStepScrollList(self, *args):
         #steps = self.getWorkingStep()
-        steps = ['lookdev', 'modeling', 'rig']
+        steps = ['modeling', 'lookdev', 'rig']
         cmds.textScrollList('steps', e=True, removeAll=True)
         cmds.textScrollList('steps', e=True, append=steps)
     
