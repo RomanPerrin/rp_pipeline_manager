@@ -37,7 +37,7 @@ class UI():
         cmds.optionVar(iv=('rfmExtensionsInChannelBox', 0))
     
     def UI(self, *args):
-        size = (230, 300)
+        size = (250, 300)
         
         self.window = f"rp_pipeline_manager"
         if install.getInstalledBranch() != 'main':
