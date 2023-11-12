@@ -125,8 +125,8 @@ class UI():
         assetList = []
         assets = self.getAssets()
         searchList = search_text.split(' ')
-        if '' in searchList:
-            searchList = searchList.remove('')
+        while ('' in searchList):
+            searchList.remove('')
         print(searchList)
 
         for asset in assets:
