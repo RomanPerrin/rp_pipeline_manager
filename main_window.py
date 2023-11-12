@@ -125,9 +125,9 @@ class UI():
         
         assetList = []
         assets = self.getAssets()
-        for word in search_text.split(' ').lower():
+        for word in search_text.split(' '):
             for asset in assets:
-                if word in asset.lower():
+                if word.lower() in asset.lower():
                     assetList.append(asset)
         print(assetList)
         return search_text
