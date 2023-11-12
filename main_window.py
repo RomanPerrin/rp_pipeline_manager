@@ -129,6 +129,9 @@ class UI():
                 if word.lower() in asset.lower():
                     assetList.append(asset)
         
+        cmds.textScrollList('assets', e=True, removeAll=True)
+        cmds.textScrollList('assets', e=True, append=assets)
+        cmds.symbolButton('assetsAddButton', e=True, ann=f'add {self.selectedAssetType()}')
         return assetList
 
     def openDirectory(self, *args):
@@ -195,7 +198,7 @@ class UI():
     
     def updateAssetsScrollList(self, *args):
         self.updateStepScrollList()
-        assets = self.search()
+        assets = self.getAssets()
         cmds.textScrollList('assets', e=True, removeAll=True)
         cmds.textScrollList('assets', e=True, append=assets)
         cmds.symbolButton('assetsAddButton', e=True, ann=f'add {self.selectedAssetType()}')
