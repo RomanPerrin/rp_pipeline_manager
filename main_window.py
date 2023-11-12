@@ -121,7 +121,6 @@ class UI():
 
     def search(self, *args):
         search_text = cmds.textField(self.search_field, q=1, tx=1)
-        print(search_text)
         
         assetList = []
         assets = self.getAssets()
@@ -129,8 +128,8 @@ class UI():
             for asset in assets:
                 if word.lower() in asset.lower():
                     assetList.append(asset)
-        print(assetList)
-        return search_text
+        
+        return assetList
 
     def openDirectory(self, *args):
         dir = os.path.normpath(self.pipe_dir)
@@ -196,7 +195,7 @@ class UI():
     
     def updateAssetsScrollList(self, *args):
         self.updateStepScrollList()
-        assets = self.getAssets()
+        assets = self.search()
         cmds.textScrollList('assets', e=True, removeAll=True)
         cmds.textScrollList('assets', e=True, append=assets)
         cmds.symbolButton('assetsAddButton', e=True, ann=f'add {self.selectedAssetType()}')
