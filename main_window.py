@@ -69,7 +69,8 @@ class UI():
         #List asset type
         self.assetTypeScrollList = cmds.textScrollList('assetType', p=master_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=self.updateAssetsScrollList)
         
-        self.search_field = cmds.textField(p=master_lay, sf=1, tcc='print("hello")')
+        #search field
+        self.search_field = cmds.textField(p=master_lay, sf=1, tcc=self.search)
         
         #List assets
         assets_lay = cmds.formLayout(p=master_lay)
@@ -83,7 +84,7 @@ class UI():
         
         
         #List working step
-        stepScrollList = cmds.textScrollList('steps', p=master_lay, numberOfRows=3, allowMultiSelection=False)
+        self.stepScrollList = cmds.textScrollList('steps', p=master_lay, numberOfRows=3, allowMultiSelection=False)
         
         
         cmds.button(p=master_lay, label="open", command=self.openLastEdit)
@@ -116,6 +117,11 @@ class UI():
         else:
             install.mode = ''
         print(install.mode)
+        return
+
+    def search(self):
+        search_text = cmds.textField(self.search_field, q=1, t=1)
+        print(search_text)
         return
 
     def openDirectory(self, *args):
@@ -215,7 +221,7 @@ class UI():
         return steps
     
     def selectedStep(self, *args):
-        return cmds.textScrollList('steps', q=True, si=True)[0]
+        return cmds.textScrollList(self.stepScrollList, q=True, si=True)[0]
     
     def getWorkingDirectory(self, *args):
         print(os.path.normpath(os.path.join(self.getAssetDirectory(), 'maya')))
