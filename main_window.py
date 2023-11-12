@@ -69,15 +69,14 @@ class UI():
         #List asset type
         self.assetTypeScrollList = cmds.textScrollList('assetType', p=master_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=self.updateAssetsScrollList)
         
+        self.search_field = cmds.textField(p=master_lay, sf=1, tcc='print("hello")')
         
         #List assets
         assets_lay = cmds.formLayout(p=master_lay)
-        self.search_field = cmds.textField(p=assets_lay, sf=1, tcc='print("hello")')
         assetsScrollList = cmds.textScrollList('assets', p=assets_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=self.updateStepScrollList)
         assetsAddButton = cmds.symbolButton('assetsAddButton', p=assets_lay, ann=f'add asset', i='pickHandlesComp', height=icon_size, width=icon_size, command=self.addAsset)
         # Attach the assetsScrollList
-        cmds.formLayout(assets_lay, e=True, attachForm=[(self.search_field, "left", 0), (self.search_field, "top", 0), (self.search_field, "right", 0)])
-        cmds.formLayout(assets_lay, e=True, attachForm=(assetsScrollList, "left", 0), attachControl=(assetsScrollList, "top", 0, self.search_field))
+        cmds.formLayout(assets_lay, e=True, attachForm=[(assetsScrollList, "left", 0), (assetsScrollList, "top", 0)])
         # Attach the assetsAddButton
         cmds.formLayout(assets_lay, e=True, attachForm=[(assetsAddButton, "right", 0), (assetsAddButton, "top", 0)])
         cmds.formLayout(assets_lay, e=True, attachControl=[(assetsScrollList, "right", 0, assetsAddButton)])
