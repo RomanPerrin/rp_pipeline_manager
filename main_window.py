@@ -134,9 +134,9 @@ class UI():
                 if not word.lower() in asset.lower():
                     print('not', word, asset)
                     break
-                print(word, asset)
-            print('added', asset)
-            assetList.append(asset)
+            else:
+                print('added', asset)
+                assetList.append(asset)
         
         cmds.textScrollList('assets', e=True, removeAll=True)
         cmds.textScrollList('assets', e=True, append=assetList)
