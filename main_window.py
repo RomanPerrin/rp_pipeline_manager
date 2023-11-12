@@ -130,7 +130,7 @@ class UI():
                     assetList.append(asset)
         
         cmds.textScrollList('assets', e=True, removeAll=True)
-        cmds.textScrollList('assets', e=True, append=assets)
+        cmds.textScrollList('assets', e=True, append=assetList)
         cmds.symbolButton('assetsAddButton', e=True, ann=f'add {self.selectedAssetType()}')
         return assetList
 
