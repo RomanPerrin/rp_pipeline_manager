@@ -124,10 +124,12 @@ class UI():
         
         assetList = []
         assets = self.getAssets()
-        for word in search_text.split(' '):
-            for asset in assets:
-                if word.lower() in asset.lower():
-                    assetList.append(asset)
+        print(search_text.split(' '))
+        for asset in assets:
+            for word in search_text.split(' '):
+                if not word.lower() in asset.lower():
+                    break
+            assetList.append(asset)
         
         cmds.textScrollList('assets', e=True, removeAll=True)
         cmds.textScrollList('assets', e=True, append=assetList)
