@@ -37,7 +37,7 @@ class UI():
         cmds.optionVar(iv=('rfmExtensionsInChannelBox', 0))
     
     def UI(self, *args):
-        size = (230, 300)
+        size = (250, 300)
         
         self.window = f"rp_pipeline_manager"
         if install.getInstalledBranch() != 'main':
@@ -69,6 +69,8 @@ class UI():
         #List asset type
         self.assetTypeScrollList = cmds.textScrollList('assetType', p=master_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=self.updateAssetsScrollList)
         
+        #search field
+        self.search_field = cmds.textField(p=master_lay, sf=1, tcc=self.search)
         
         #List assets
         assets_lay = cmds.formLayout(p=master_lay)
@@ -82,7 +84,7 @@ class UI():
         
         
         #List working step
-        stepScrollList = cmds.textScrollList('steps', p=master_lay, numberOfRows=3, allowMultiSelection=False)
+        self.stepScrollList = cmds.textScrollList('steps', p=master_lay, numberOfRows=3, allowMultiSelection=False)
         
         
         cmds.button(p=master_lay, label="open", command=self.openLastEdit)
@@ -116,6 +118,21 @@ class UI():
             install.mode = ''
         print(install.mode)
         return
+
+    def search(self, *args):
+        search_text = cmds.textField(self.search_field, q=1, tx=1)
+        
+        assetList = []
+        assets = self.getAssets()
+        for word in search_text.split(' '):
+            for asset in assets:
+                if word.lower() in asset.lower():
+                    assetList.append(asset)
+        
+        cmds.textScrollList('assets', e=True, removeAll=True)
+        cmds.textScrollList('assets', e=True, append=assetList)
+        cmds.symbolButton('assetsAddButton', e=True, ann=f'add {self.selectedAssetType()}')
+        return assetList
 
     def openDirectory(self, *args):
         dir = os.path.normpath(self.pipe_dir)
@@ -200,7 +217,7 @@ class UI():
     
     def updateStepScrollList(self, *args):
         #steps = self.getWorkingStep()
-        steps = ['lookdev', 'modeling', 'rig']
+        steps = ['modeling', 'lookdev', 'rig']
         cmds.textScrollList('steps', e=True, removeAll=True)
         cmds.textScrollList('steps', e=True, append=steps)
     
@@ -214,7 +231,7 @@ class UI():
         return steps
     
     def selectedStep(self, *args):
-        return cmds.textScrollList('steps', q=True, si=True)[0]
+        return cmds.textScrollList(self.stepScrollList, q=True, si=True)[0]
     
     def getWorkingDirectory(self, *args):
         print(os.path.normpath(os.path.join(self.getAssetDirectory(), 'maya')))
