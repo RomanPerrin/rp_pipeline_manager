@@ -127,15 +127,12 @@ class UI():
         searchList = search_text.split(' ')
         while ('' in searchList):
             searchList.remove('')
-        print(searchList)
 
         for asset in assets:
             for word in searchList:
                 if not word.lower() in asset.lower():
-                    print('not', word, asset)
                     break
             else:
-                print('added', asset)
                 assetList.append(asset)
         
         cmds.textScrollList('assets', e=True, removeAll=True)
