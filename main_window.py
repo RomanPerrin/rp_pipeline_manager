@@ -123,11 +123,13 @@ class UI():
         search_text = cmds.textField(self.search_field, q=1, tx=1)
         print(search_text)
         
-        asset = []
+        assetList = []
         assets = self.getAssets()
         for word in search_text.split(' '):
-            asset.append(asset for asset in assets if word in asset)
-        print(asset)
+            for asset in assets:
+                if word in asset:
+                    assetList.append(asset)
+        print(assetList)
         return search_text
 
     def openDirectory(self, *args):
