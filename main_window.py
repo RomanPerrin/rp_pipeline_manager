@@ -37,7 +37,7 @@ class UI():
         cmds.optionVar(iv=('rfmExtensionsInChannelBox', 0))
     
     def UI(self, *args):
-        size = (250, 300)
+        size = (320, 300)
         
         self.window = f"rp_pipeline_manager"
         if install.getInstalledBranch() != 'main':
@@ -124,10 +124,16 @@ class UI():
         
         assetList = []
         assets = self.getAssets()
-        for word in search_text.split(' '):
-            for asset in assets:
-                if word.lower() in asset.lower():
-                    assetList.append(asset)
+        searchList = search_text.split(' ')
+        while ('' in searchList):
+            searchList.remove('')
+
+        for asset in assets:
+            for word in searchList:
+                if not word.lower() in asset.lower():
+                    break
+            else:
+                assetList.append(asset)
         
         cmds.textScrollList('assets', e=True, removeAll=True)
         cmds.textScrollList('assets', e=True, append=assetList)
