@@ -124,9 +124,13 @@ class UI():
         
         assetList = []
         assets = self.getAssets()
-        print(search_text.split(' '))
+        searchList = search_text.split(' ')
+        if '' in searchList:
+            searchList = searchList.remove('')
+        print(searchList)
+
         for asset in assets:
-            for word in search_text.split(' ').remove(''):
+            for word in searchList:
                 if not word.lower() in asset.lower():
                     print('not', word, asset)
                     break
