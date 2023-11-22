@@ -237,7 +237,12 @@ class UI():
         return steps
     
     def selectedStep(self, *args):
-        return cmds.textScrollList(self.stepScrollList, q=True, si=True)[0]
+        if not self.selectedAssetType() == 'dress':
+            step = cmds.textScrollList(self.stepScrollList, q=True, si=True)[0]
+        
+        step = 'dressing'
+        
+        return step
     
     def getWorkingDirectory(self, *args):
         print(os.path.normpath(os.path.join(self.getAssetDirectory(), 'maya')))
@@ -266,7 +271,7 @@ class UI():
         
         cmds.file(f=True, new=True )
         
-        if self.selectedStep() != 'modeling':
+        if not self.selectedStep() in ['modeling', 'dressing']:
             if not os.path.isdir(os.path.join(edit_dir, 'incrementalSave')):
                 cmds.file(os.path.join(working_dir, 'scenes', 'publish', 'modeling', f"{self.selectedAssets()}_publish_modeling.ma"), reference=True, ns=f"{self.selectedAssets()}_{self.selectedStep()}")
         
@@ -454,7 +459,7 @@ class UI():
                     cmds.namespace(removeNamespace=namespace, mergeNamespaceWithRoot=True)
 
     def importAsReference(self, *args):
-        cmds.file( save=True, type='mayaAscii' )
+        #cmds.file( save=True, type='mayaAscii' )
         cmds.file(os.path.join(self.getWorkingDirectory(), 'scenes', 'publish', self.selectedStep(), f"{self.selectedAssets()}_publish_{self.selectedStep()}.ma"), reference=True, ns=f"{self.selectedAssets()}_{self.selectedStep()}")
         self.addRmanUserToken()
     
