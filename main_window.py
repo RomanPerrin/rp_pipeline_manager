@@ -67,7 +67,7 @@ class UI():
         
         
         #List asset type
-        self.assetTypeScrollList = cmds.textScrollList('assetType', p=master_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=self.updateAssetsScrollList)
+        self.assetTypeScrollList = cmds.textScrollList('assetType', p=master_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=self.search)
         
         #search field
         self.search_field = cmds.textField(p=master_lay, sf=1, tcc=self.search)
@@ -120,6 +120,7 @@ class UI():
         return
 
     def search(self, *args):
+        self.updateStepScrollList()
         search_text = cmds.textField(self.search_field, q=1, tx=1)
         
         assetList = []
@@ -189,7 +190,7 @@ class UI():
                 cmds.textScrollList('assetType', e=True, removeAll=True)
                 cmds.textScrollList('assetType', e=True, append=assetType)
                 cmds.textScrollList('assetType', e=True, selectItem=i)
-                self.updateAssetsScrollList()
+                self.search()
     
     def getAssetType(self, pipeline_dir, *args):
         assetType = []
@@ -237,10 +238,10 @@ class UI():
         return steps
     
     def selectedStep(self, *args):
-        if not self.selectedAssetType() == 'dress':
-            step = cmds.textScrollList(self.stepScrollList, q=True, si=True)[0]
-        
         step = 'dressing'
+        
+        if self.selectedAssetType() != 'dress':
+            step = cmds.textScrollList(self.stepScrollList, q=True, si=True)[0]
         
         return step
     
@@ -270,7 +271,7 @@ class UI():
             return
         
         cmds.file(f=True, new=True )
-        
+        print('import mode?', self.selectedStep(), not self.selectedStep() in ['modeling', 'dressing'])
         if not self.selectedStep() in ['modeling', 'dressing']:
             if not os.path.isdir(os.path.join(edit_dir, 'incrementalSave')):
                 cmds.file(os.path.join(working_dir, 'scenes', 'publish', 'modeling', f"{self.selectedAssets()}_publish_modeling.ma"), reference=True, ns=f"{self.selectedAssets()}_{self.selectedStep()}")
@@ -609,7 +610,7 @@ class addAssetUI():
         
         print(f'{self.assets_dir} created at {asset_dir}')
         cmds.deleteUI(self.window)
-        self.obj.updateAssetsScrollList()
+        self.obj.search()
         cmds.textScrollList('assets', e=True, si=assetName)
         return
     
