@@ -303,7 +303,7 @@ class UI():
             print('creating set geo cache')
             cmds.sets(cmds.listRelatives(sel, p=1), n=f'set_geo_cache {self.selectedAssets()}')
         
-        if self.selectedStep() != 'rig':
+        if self.selectedStep() == 'modeling':
             cmds.polyClean()
             print('fixing non-manifold')
             cmds.delete(cmds.polyInfo(nmv=1, nuv=1, nue=1, nme=1))
