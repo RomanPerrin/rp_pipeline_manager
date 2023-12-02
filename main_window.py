@@ -494,7 +494,7 @@ class UI():
                 # When a deep namespace is removed, it also removes the root. So check here to see if these still exist.
                 if cmds.namespace(exists=namespace) is True:
                     cmds.namespace(removeNamespace=namespace, mergeNamespaceWithRoot=True)
-                    preint("deleting", namespace)
+                    print("deleting", namespace)
 
     def importAsReference(self, *args):
         #cmds.file( save=True, type='mayaAscii' )
