@@ -37,7 +37,7 @@ class UI():
         cmds.optionVar(iv=('rfmExtensionsInChannelBox', 0))
     
     def UI(self, *args):
-        size = (320, 300)
+        size = (200, 400)
         
         self.window = f"rp_pipeline_manager"
         if install.getInstalledBranch() != 'main':
@@ -378,7 +378,7 @@ class UI():
         except Exception as error:
             cmds.error("error during publish", error)
         
-        # cmds.file(current_scene, open=True , force=True)
+        cmds.file(current_scene, open=True , force=True)
     
     def deleteUnusedShadingNodes(self):
         '''
