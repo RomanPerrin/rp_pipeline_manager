@@ -374,8 +374,8 @@ class UI():
             # cmds.file(rename=file_name)
             # cmds.file(save=True, type='mayaAscii')
         
-        except:
-            cmds.error("error during publish")
+        except Exception as error:
+            cmds.error("error during publish", error)
         
         cmds.file(current_scene, open=True , force=True)
     
@@ -443,7 +443,11 @@ class UI():
         for set in setList:
             if not cmds.sets(set,q=True):
                 emptySetList.append(set)
-    
+
+        # Removing Mash network from the deletion list
+        for mash in cmds.ls(type="MASH_Waiter"):
+            emptySetList.remove(mash)
+
         # Delete empty sets
         for emptySet in emptySetList:
             try:
@@ -457,15 +461,19 @@ class UI():
     def deleteUnusedPlugins(*args):
         # Find and remove unknown plugins
         unknown_plugins = cmds.unknownPlugin(query=True, list=True)
-        if unknown_plugins:
-            for plugin in unknown_plugins:
-                try:
-                    cmds.unknownPlugin(plugin, remove=True)
-                    print("removing", plugin)
-                except Exception as error:
-                    # Oddly enough, even if a plugin is unknown, it can still have a dependency in the scene.
-                    # So in this case, we log the error to look at after.
-                    cmds.warning("Unknown plugin cannot be removed due to ERROR: {}".format(error))
+
+        if not unknown_plugins:
+            print("no unused plugins")
+            return
+        
+        for plugin in unknown_plugins:
+            try:
+                cmds.unknownPlugin(plugin, remove=True)
+                print("removing", plugin)
+            except Exception as error:
+                # Oddly enough, even if a plugin is unknown, it can still have a dependency in the scene.
+                # So in this case, we log the error to look at after.
+                cmds.warning("Unknown plugin cannot be removed due to ERROR: {}".format(error))
 
     def importObjFromRef(*args):
         refs = cmds.ls(rf = True)
