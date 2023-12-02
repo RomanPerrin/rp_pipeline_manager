@@ -366,10 +366,11 @@ class UI():
                 no_intermediate_meshes = cmds.ls( type="mesh", ap=True, noIntermediate=True )
                 for shape in list(set(all_meshes)-set(no_intermediate_meshes)):
                     cmds.delete(shape)
-                    print("deleting", shape)
+                    print("deleting", shape, "namespace")
 
             cmds.select(selection_export)
             cmds.file(file_name, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
+            print("publish scene saved")
 
             # cmds.file(rename=file_name)
             # cmds.file(save=True, type='mayaAscii')
@@ -377,7 +378,7 @@ class UI():
         except Exception as error:
             cmds.error("error during publish", error)
         
-        cmds.file(current_scene, open=True , force=True)
+        # cmds.file(current_scene, open=True , force=True)
     
     def deleteUnusedShadingNodes(self):
         '''
