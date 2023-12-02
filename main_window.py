@@ -325,12 +325,16 @@ class UI():
                 for i in sel:
                     cmds.select(i, r=True)
                     cmds.hyperShade(assign='lambert1')
+                
+                print("renaming shapes")
+                cache_manager_v1_20.rename_meshes(force=True, message=False)
 
             print("deleting volume aggregate")
             self.deleteVolumAggregate()
 
             print("deleting unsused nodes")
             unknownNodes = cmds.ls(typ=('unknown','unknownDag'))
+            print(unknownNodes)
             for node in unknownNodes:
                 try:
                     cmds.lockNode(node,l=False)
@@ -345,10 +349,10 @@ class UI():
             self.deleteDisplayLayers()
 
             print('deleting empty sets')
-            self.deleteRenderLayers()
+            self.deleteEmptySets()
 
             print('deleting render layer')
-            self.deleteEmptySets()
+            self.deleteRenderLayers()
 
             print("remove unused plugins")
             self.deleteUnusedPlugins()
@@ -360,17 +364,17 @@ class UI():
                 print("deleting intermediate shapes")
                 all_meshes = cmds.ls( type="mesh", ap=True )
                 no_intermediate_meshes = cmds.ls( type="mesh", ap=True, noIntermediate=True )
-                cmds.delete( list(set(all_meshes)-set(no_intermediate_meshes) ) )
+                for shape in list(set(all_meshes)-set(no_intermediate_meshes) )
+                    cmds.delete(shape)
+                    print("deleting", shape)
 
-            print("renaming shapes")
-            cache_manager_v1_20.rename_meshes(force=True, message=False)
-
+            cmds.select(selection_export)
             cmds.file(file_name, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
 
             # cmds.file(rename=file_name)
             # cmds.file(save=True, type='mayaAscii')
         
-        except Exception:
+        except:
             cmds.error("error during publish")
         
         cmds.file(current_scene, open=True , force=True)
@@ -392,7 +396,9 @@ class UI():
         displayLayers.remove('defaultLayer')
 
         # Delete display layers
-        if displayLayers: cmds.delete(displayLayers)
+        if displayLayers:
+            print(displayLayers)
+            cmds.delete(displayLayers)
 
         # Return result
         return displayLayers
@@ -406,7 +412,9 @@ class UI():
         renderLayers.remove('defaultRenderLayer')
     
 	    # Delete render layers
-        if renderLayers: cmds.delete(renderLayers)
+        if renderLayers: 
+            print(renderLayers)
+            cmds.delete(renderLayers)
     
 	    # Return result
         return renderLayers
@@ -424,7 +432,7 @@ class UI():
     def deleteEmptySets(self, setList=[]):
         '''
         Delete empty object sets
-        @param setList: A list of sets to check. If empty, chack all sets in current scene.
+        @param setList: A list of sets to check. If empty, checks all sets in current scene.
         @type setList: list
         '''
         # Check setList
@@ -438,8 +446,10 @@ class UI():
     
         # Delete empty sets
         for emptySet in emptySetList:
-            try: cmds.delete(emptySet)
-            except: pass
+            try:
+                cmds.delete(emptySet)
+                print(emptySet)
+            except: print("error during", emptySet, "deletion")
     
         # Return result
         return emptySetList
@@ -451,6 +461,7 @@ class UI():
             for plugin in unknown_plugins:
                 try:
                     cmds.unknownPlugin(plugin, remove=True)
+                    print("removing", plugin)
                 except Exception as error:
                     # Oddly enough, even if a plugin is unknown, it can still have a dependency in the scene.
                     # So in this case, we log the error to look at after.
@@ -475,6 +486,7 @@ class UI():
                 # When a deep namespace is removed, it also removes the root. So check here to see if these still exist.
                 if cmds.namespace(exists=namespace) is True:
                     cmds.namespace(removeNamespace=namespace, mergeNamespaceWithRoot=True)
+                    preint("deleting", namespace)
 
     def importAsReference(self, *args):
         #cmds.file( save=True, type='mayaAscii' )
