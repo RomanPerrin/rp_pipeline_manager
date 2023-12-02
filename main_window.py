@@ -289,7 +289,7 @@ class UI():
     
     def publish(self, *args):
         selection_export = cmds.ls(sl=1)
-        if not sel:
+        if not selection_export:
             dismissed = cmds.framelessDialog( title='Publish error', message='No selection found', 
                     path='please select an item and try again', button=['OK'], primary=['OK'])
             return
