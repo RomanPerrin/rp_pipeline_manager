@@ -250,9 +250,10 @@ class UI():
         return os.path.normpath(os.path.join(self.getAssetDirectory(), 'maya'))
     
     def openLastEdit(self, *args):
+        saveScene()
+
         working_dir = self.getWorkingDirectory()
         working_dir = working_dir.replace(os.sep, '/')
-        saveScene()
         
         #cmds.unloadPlugin('rfm_volume_aggregate_set.py', force=True)
         #cmds.unloadPlugin('rfm_manipulators.py', force=True)
@@ -287,76 +288,92 @@ class UI():
         return
     
     def publish(self, *args):
-        cmds.file( save=True, type='mayaAscii' )
-        
-        print("importing object from reference")
-        self.importObjFromRef()
+        selection_export = cmds.ls(sl=1)
+        if not sel:
+            dismissed = cmds.framelessDialog( title='Publish error', message='No selection found', 
+                    path='please select an item and try again', button=['OK'], primary=['OK'])
+            return
+        current_scene = cmds.file(q=1, sn=1)
+        file_name = os.path.join(self.getWorkingDirectory(), "scenes", "publish", self.selectedStep(), f"{self.selectedAssets()}_publish_{self.selectedStep()}")
 
-        if self.selectedStep() == 'modeling':
-            cmds.unloadPlugin('RenderMan_for_Maya.py', force=True)
-            print('assigning Lambert')
-            sel = cmds.ls(geometry=True)
-            for i in sel:
-                cmds.select(i, r=True)
-                cmds.hyperShade(assign='lambert1')
+        saveScene()
+        
+        try:
+            print("importing object from reference")
+            self.importObjFromRef()
+            
+            print("deactivating smooth preview")
+            cmds.displaySmoothness(polygonObject=0)
 
-            print('creating set geo cache')
-            cmds.sets(cmds.listRelatives(sel, p=1), n=f'set_geo_cache {self.selectedAssets()}')
-        
-        if self.selectedStep() == 'modeling':
-            cmds.polyClean()
-            print('fixing non-manifold')
-            cmds.delete(cmds.polyInfo(nmv=1, nuv=1, nue=1, nme=1))
-            print('fixing lamina faces')
-            cmds.delete(cmds.polyInfo(lf=1))
-            cmds.makeIdentity(a=1)
-            cmds.DeleteHistory(cmds.ls())
-            cmds.makeIdentity(t=1, r=1, s=1)
+            if self.selectedStep() == 'modeling':
+                print('fixing non-manifold')
+                cmds.delete(cmds.polyInfo(nmv=1, nuv=1, nue=1, nme=1))
+                print('fixing lamina faces')
+                cmds.delete(cmds.polyInfo(lf=1))
+                cmds.makeIdentity(a=1)
+                cmds.DeleteHistory(cmds.ls())
+                cmds.makeIdentity(t=1, r=1, s=1)
+                cmds.polyClean()
 
-        print("deleting volume aggregate")
-        self.deleteVolumAggregate()
-        
-        print("deleting unsused nodes")
-        unknownNodes = cmds.ls(typ=('unknown','unknownDag'))
-        for node in unknownNodes:
-            try:
-                cmds.lockNode(node,l=False)
-                cmds.delete(node)
-            except:
-                print('Problem deleting unknown node "'+node+'"!')
-        
-        print('deleting unused shading nodes')
-        self.deleteUnusedShadingNodes()
-        
-        print('deleting display layers')
-        self.deleteDisplayLayers()
-        
-        print('deleting empty sets')
-        self.deleteRenderLayers()
-        
-        print('deleting render layer')
-        self.deleteEmptySets()
+                sel = cmds.ls(geometry=True)
+                if self.selectedAssetType() == 'prop':
+                    print('creating set geo cache')
+                    cmds.sets(cmds.listRelatives(sel, p=1), n=f'set_geo_cache {self.selectedAssets()}')
 
-        print("remove unused plugins")
-        self.deleteUnusedPlugins()
+                cmds.unloadPlugin('RenderMan_for_Maya.py', force=True)
+                print('assigning Lambert')
+                for i in sel:
+                    cmds.select(i, r=True)
+                    cmds.hyperShade(assign='lambert1')
+
+            print("deleting volume aggregate")
+            self.deleteVolumAggregate()
+
+            print("deleting unsused nodes")
+            unknownNodes = cmds.ls(typ=('unknown','unknownDag'))
+            for node in unknownNodes:
+                try:
+                    cmds.lockNode(node,l=False)
+                    cmds.delete(node)
+                except:
+                    print('Problem deleting unknown node "'+node+'"!')
+
+            print('deleting unused shading nodes')
+            self.deleteUnusedShadingNodes()
         
-        print("deleting namespaces")
-        self.deleteNamespaces()
+            print('deleting display layers')
+            self.deleteDisplayLayers()
+
+            print('deleting empty sets')
+            self.deleteRenderLayers()
+
+            print('deleting render layer')
+            self.deleteEmptySets()
+
+            print("remove unused plugins")
+            self.deleteUnusedPlugins()
+
+            print("deleting namespaces")
+            self.deleteNamespaces()
+
+            if self.selectedStep() != 'rig':
+                print("deleting intermediate shapes")
+                all_meshes = cmds.ls( type="mesh", ap=True )
+                no_intermediate_meshes = cmds.ls( type="mesh", ap=True, noIntermediate=True )
+                cmds.delete( list(set(all_meshes)-set(no_intermediate_meshes) ) )
+
+            print("renaming shapes")
+            cache_manager_v1_20.rename_meshes(force=True, message=False)
+
+            cmds.file(file_name, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
+
+            # cmds.file(rename=file_name)
+            # cmds.file(save=True, type='mayaAscii')
         
-        if self.selectedStep() != 'rig':
-            print("deleting intermediate shapes")
-            all_meshes = cmds.ls( type="mesh", ap=True )
-            no_intermediate_meshes = cmds.ls( type="mesh", ap=True, noIntermediate=True )
-            cmds.delete( list(set(all_meshes)-set(no_intermediate_meshes) ) )
+        except Exception:
+            cmds.error("error during publish")
         
-        print("renaming shapes")
-        cache_manager_v1_20.rename_meshes(force=True, message=False)
-        
-        print("deactivating smooth preview")
-        cmds.displaySmoothness(polygonObject=0)
-        
-        cmds.file(rename=os.path.join(self.getWorkingDirectory(), "scenes", "publish", self.selectedStep(), f"{self.selectedAssets()}_publish_{self.selectedStep()}"))
-        cmds.file( save=True, type='mayaAscii' )
+        cmds.file(current_scene, open=True , force=True)
     
     def deleteUnusedShadingNodes(self):
         '''
