@@ -68,7 +68,6 @@ class UI():
         
         #List asset type
         self.assetTypeScrollList = cmds.textScrollList('assetType', p=master_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=self.search)
-        self.assetTypeScrollList = cmds.textScrollList('assetType', p=master_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=self.search)
         
         #search field
         self.search_field = cmds.textField(p=master_lay, sf=1, tcc=self.search)
