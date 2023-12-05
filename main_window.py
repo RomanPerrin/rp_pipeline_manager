@@ -288,7 +288,7 @@ class UI():
         return
     
     def publish(self, *args):
-        selection_export = cmds.ls(sl=1, dag=1)
+        selection_export = cmds.ls(sl=1)
         if not selection_export:
             dismissed = cmds.framelessDialog( title='Publish error', message='No selection found', 
                     path='please select an item and try again', button=['OK'], primary=['OK'])
@@ -366,18 +366,20 @@ class UI():
                 no_intermediate_meshes = cmds.ls( type="mesh", ap=True, noIntermediate=True )
                 for shape in list(set(all_meshes)-set(no_intermediate_meshes)):
                     cmds.delete(shape)
-                    print("deleting", shape, "namespace")
-
+                    print("deleting", shape, "intermediate")
+	    	
             selection_export = [obj.split(':')[-1] for obj in selection_export]
-            shadingGrps:List = cmds.listConnections(selection_export ,type='shadingEngine')
+            sel = cmds.ls(selection_export, dag=1, l=1)
+            shadingGrps:List = cmds.listConnections(sel ,type='shadingEngine')
             if not shadingGrps:
                 shadingGrps = []
-            cmds.select(shadingGrps + selection_export, noExpand=True)
+            shaders = cmds.ls(cmds.listConnections(shadingGrps),materials=1)
+            if not shaders:
+                shaders = []
+            print(shaders + shadingGrps + sel)
+            cmds.select(shaders + shadingGrps + sel, noExpand=True)
             cmds.file(file_name, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
             print("publish scene saved")
-
-            # cmds.file(rename=file_name)
-            # cmds.file(save=True, type='mayaAscii')
         
         except Exception as error:
             cmds.error("error during publish", error)
