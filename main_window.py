@@ -288,7 +288,7 @@ class UI():
         return
     
     def publish(self, *args):
-        selection_export = cmds.ls(sl=1)
+        selection_export = cmds.ls(sl=1, dag=1)
         if not selection_export:
             dismissed = cmds.framelessDialog( title='Publish error', message='No selection found', 
                     path='please select an item and try again', button=['OK'], primary=['OK'])
@@ -368,9 +368,11 @@ class UI():
                     cmds.delete(shape)
                     print("deleting", shape, "namespace")
 
-            sel = cmds.ls(selection_export, dag=1)
-            shadingGrps = cmds.listConnections(sel,type='shadingEngine')
-            cmds.select(shadingGrps + sel, noExpand=True)
+            selection_export = [obj.split(':')[-1] for obj in selection_export]
+            shadingGrps:List = cmds.listConnections(selection_export ,type='shadingEngine')
+            if not shadingGrps:
+                shadingGrps = []
+            cmds.select(shadingGrps + selection_export, noExpand=True)
             cmds.file(file_name, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
             print("publish scene saved")
 
