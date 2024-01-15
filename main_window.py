@@ -56,7 +56,7 @@ class UI():
             state = 1
         self.mode = cmds.menuItem(l='Dev mode', cb=state, p=menu, c=self.changeMode)
 
-        tabs = cmds.tabLayout(innerMarginWidth=5, innerMarginHeight=5)
+        tabs = cmds.tabLayout(p=self.window, innerMarginWidth=5, innerMarginHeight=5)
         
 
         #ASSET TAB
