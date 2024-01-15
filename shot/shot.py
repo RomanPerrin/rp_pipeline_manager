@@ -46,9 +46,8 @@ class ShotUi():
         cmds.formLayout(shot_lay, e=True, attachForm=[(addButton, "right", 0), (addButton, "top", 0)])
         cmds.formLayout(shot_lay, e=True, attachControl=[(scrollList, "right", 0, addButton)])
 
-        # assetsScrollList = cmds.textScrollList('assets', p=assets_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=self.updateStepScrollList)
-
-        # self.openButton = cmds.button(p=self.layout, label="open", command=self.openLastEdit)
+        openShLayoutButton = cmds.button(p=self.layout, label="open shot layout", command=self.openShLayout)
+        createConformityLayoutButton = cmds.button(p=self.layout, label="create conformity layout", command=self.createConformityLayoutLayout)
 
         cmds.formLayout( self.layout, edit=True,
                         attachForm=[(sq_text, 'top', 5),
@@ -60,17 +59,21 @@ class ShotUi():
                                     (sh_text, 'left', 5),
                                     (shot_lay, 'left', 5),
                                     (shot_lay, 'right', 5),
-                                    (shot_lay, 'bottom', 5)],
+                                    (openShLayoutButton, 'left', 5),
+                                    (createConformityLayoutButton, 'right', 5)],
 
                         attachControl=[(sequence_lay, 'top', 5, sq_text),
                                        (openSqLayoutButton, 'top', 5, sequence_lay),
                                        (createShotLayoutButton, 'top', 5, sequence_lay),
-                                       (createShotLayoutButton, 'left', 5, openSqLayoutButton),
                                        (sh_text, 'top', 5, openSqLayoutButton),
-                                       (shot_lay, 'top', 5, sh_text)],
+                                       (shot_lay, 'top', 5, sh_text),
+                                       (openShLayoutButton, 'top', 5, shot_lay),
+                                       (createConformityLayoutButton, 'top', 5, shot_lay)],
                         
                         attachPosition=[(openSqLayoutButton, 'right', 5, 50),
-                                        (createShotLayoutButton, 'left', 0, 50)])
+                                        (createShotLayoutButton, 'left', 5, 50),
+                                        (openShLayoutButton, 'right', 5, 50),
+                                        (createConformityLayoutButton, 'left', 5, 50)])
 
 
     def updateSequenceScrollList(self, *args):
@@ -90,3 +93,9 @@ class ShotUi():
 
     def addShot(self, *args):
         print("adding shot")
+    
+    def openShLayout(self, *args):
+        print("opening shot layout")
+
+    def createConformityLayoutLayout(self, *args):
+        print("creating conformity layout")
