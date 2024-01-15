@@ -25,13 +25,13 @@ class ShotUi():
         sq_text = cmds.text(label="Sequence", p=self.layout)
         
         sequence_lay = cmds.formLayout(p=self.layout)
-        scrollList = cmds.textScrollList("sequence", p=sequence_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=partial(self.updateShotScrollList))
+        self.sequence_scrollList = cmds.textScrollList("sequence", p=sequence_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=partial(self.updateShotScrollList))
         addButton = cmds.symbolButton('sequenceAddButton', p=sequence_lay, ann=f'add sequence', i='pickHandlesComp', height=icon_size, width=icon_size, command=partial(self.addSequence))
         # Attach the assetsScrollList
-        cmds.formLayout(sequence_lay, e=True, attachForm=[(scrollList, "left", 0), (scrollList, "top", 0), (scrollList, "bottom", 0)])
+        cmds.formLayout(sequence_lay, e=True, attachForm=[(self.sequence_scrollList, "left", 0), (self.sequence_scrollList, "top", 0), (self.sequence_scrollList, "bottom", 0)])
         # Attach the assetsAddButton
         cmds.formLayout(sequence_lay, e=True, attachForm=[(addButton, "right", 0), (addButton, "top", 0)])
-        cmds.formLayout(sequence_lay, e=True, attachControl=[(scrollList, "right", 0, addButton)])
+        cmds.formLayout(sequence_lay, e=True, attachControl=[(self.sequence_scrollList, "right", 0, addButton)])
 
         openSqLayoutButton = cmds.button(p=self.layout, label="open seq layout", command=self.openSqLayout)
         createShotLayoutButton = cmds.button(p=self.layout, label="create shot layout", command=self.createShotLayoutLayout)
@@ -39,13 +39,13 @@ class ShotUi():
         sh_text = cmds.text(label="Shot", p=self.layout)
 
         shot_lay = cmds.formLayout(p=self.layout)
-        scrollList = cmds.textScrollList("shot", p=shot_lay, numberOfRows=5, allowMultiSelection=False)
+        self.shot_scrollList = cmds.textshot_scrollList("shot", p=shot_lay, numberOfRows=5, allowMultiSelection=False)
         addButton = cmds.symbolButton('shotAddButton', p=shot_lay, ann=f'add shot', i='pickHandlesComp', height=icon_size, width=icon_size, command=partial(self.addShot))
-        # Attach the assetsScrollList
-        cmds.formLayout(shot_lay, e=True, attachForm=[(scrollList, "left", 0), (scrollList, "top", 0), (scrollList, "bottom", 0)])
+        # Attach the assetsshot_scrollList
+        cmds.formLayout(shot_lay, e=True, attachForm=[(self.shot_scrollList, "left", 0), (self.shot_scrollList, "top", 0), (self.shot_scrollList, "bottom", 0)])
         # Attach the assetsAddButton
         cmds.formLayout(shot_lay, e=True, attachForm=[(addButton, "right", 0), (addButton, "top", 0)])
-        cmds.formLayout(shot_lay, e=True, attachControl=[(scrollList, "right", 0, addButton)])
+        cmds.formLayout(shot_lay, e=True, attachControl=[(self.shot_scrollList, "right", 0, addButton)])
 
         openShLayoutButton = cmds.button(p=self.layout, label="open shot layout", command=self.openShLayout)
         createConformityLayoutButton = cmds.button(p=self.layout, label="create conformity layout", command=self.createConformityLayoutLayout)

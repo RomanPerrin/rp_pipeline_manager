@@ -41,6 +41,7 @@ class addSequenceUI():
         print(f'{name} created at {dir}')
         cmds.deleteUI(self.window)
         self.obj.updateSequenceScrollList()
+        cmds.textScrollList(self.obj.sequence_scrollList, e=True, si=name)
         return
 
 class addShotUI():
@@ -65,11 +66,9 @@ class addShotUI():
         cmds.showWindow(self.window)
     
     def create(self, *args):
-        print(self.pipe_dir)
         shot_name = self.pipe_dir.split('/')[-1] + '_' + cmds.textField(self.name, q=True, text=True)
         
         shot_dir = os.path.join(self.pipe_dir, shot_name).replace(os.sep, '/')
-        print(shot_dir)
         os.makedirs(shot_dir, exist_ok=True)
         
         os.makedirs(os.path.join(shot_dir, 'camera'), exist_ok=True)
@@ -80,7 +79,7 @@ class addShotUI():
         print(f'{shot_name} created at {shot_dir}')
         cmds.deleteUI(self.window)
         self.obj.updateShotScrollList()
-        cmds.textScrollList('assets', e=True, si=shot_name)
+        cmds.textScrollList(self.obj.shot_scrollList, e=True, si=shot_name)
         return
     
     def createProject(self, project_dir, *args):
