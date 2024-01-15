@@ -13,7 +13,7 @@ from importlib import reload
 import install
 
 #files
-from asset.asset import AssetUi
+from asset import asset
 
 
 #self.pipe_dir/self.selectedAssetType()/self.selectedAssets()/maya/scenes/edit/self.selectedStep()
@@ -64,7 +64,7 @@ class UI():
         self.tabs = cmds.tabLayout(p=self.window, innerMarginWidth=5, innerMarginHeight=5)
         asset_lay = cmds.columnLayout(p=self.tabs, adjustableColumn=True)
 
-        self.assetUI = AssetUi(asset_lay)
+        self.assetUI = asset.AssetUi(asset_lay)
         
 
         #SHOT TAB
