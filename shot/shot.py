@@ -21,27 +21,44 @@ class ShotUi():
 
         self.shot_lay = cmds.formLayout(p=self.parent_layout)
 
-        cmds.text("Sequence")
+        self.sq_text = cmds.text("Sequence")
         
-        sequence_lay = cmds.formLayout(p=self.shot_lay)
-        scrollList = cmds.textScrollList("sequence", p=sequence_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=partial(self.updateSequenceScrollList))
-        addButton = cmds.symbolButton('sequenceAddButton', p=sequence_lay, ann=f'add sequence', i='pickHandlesComp', height=icon_size, width=icon_size, command=partial(self.addSequence))
+        self.sequence_lay = cmds.formLayout(p=self.shot_lay)
+        scrollList = cmds.textScrollList("sequence", p=self.sequence_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=partial(self.updateSequenceScrollList))
+        addButton = cmds.symbolButton('sequenceAddButton', p=self.sequence_lay, ann=f'add sequence', i='pickHandlesComp', height=icon_size, width=icon_size, command=partial(self.addSequence))
         # Attach the assetsScrollList
-        cmds.formLayout(sequence_lay, e=True, attachForm=[(scrollList, "left", 0), (scrollList, "top", 0), (scrollList, "bottom", 0)])
+        cmds.formLayout(self.sequence_lay, e=True, attachForm=[(scrollList, "left", 0), (scrollList, "top", 0), (scrollList, "bottom", 0)])
         # Attach the assetsAddButton
-        cmds.formLayout(sequence_lay, e=True, attachForm=[(addButton, "right", 0), (addButton, "top", 0)])
-        cmds.formLayout(sequence_lay, e=True, attachControl=[(scrollList, "right", 0, addButton)])
+        cmds.formLayout(self.sequence_lay, e=True, attachForm=[(addButton, "right", 0), (addButton, "top", 0)])
+        cmds.formLayout(self.sequence_lay, e=True, attachControl=[(scrollList, "right", 0, addButton)])
 
-        cmds.text("Shot")
+        self.sh_text = cmds.text("Shot")
 
-        shot_lay = cmds.formLayout(p=self.shot_lay)
-        scrollList = cmds.textScrollList("shot", p=shot_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=partial(self.updateShotScrollList))
-        addButton = cmds.symbolButton('shotAddButton', p=shot_lay, ann=f'add shot', i='pickHandlesComp', height=icon_size, width=icon_size, command=partial(self.addShot))
+        self.shot_lay = cmds.formLayout(p=self.shot_lay)
+        scrollList = cmds.textScrollList("shot", p=self.shot_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=partial(self.updateShotScrollList))
+        addButton = cmds.symbolButton('shotAddButton', p=self.shot_lay, ann=f'add shot', i='pickHandlesComp', height=icon_size, width=icon_size, command=partial(self.addShot))
         # Attach the assetsScrollList
-        cmds.formLayout(shot_lay, e=True, attachForm=[(scrollList, "left", 0), (scrollList, "top", 0), (scrollList, "bottom", 0)])
+        cmds.formLayout(self.shot_lay, e=True, attachForm=[(scrollList, "left", 0), (scrollList, "top", 0), (scrollList, "bottom", 0)])
         # Attach the assetsAddButton
-        cmds.formLayout(shot_lay, e=True, attachForm=[(addButton, "right", 0), (addButton, "top", 0)])
-        cmds.formLayout(shot_lay, e=True, attachControl=[(scrollList, "right", 0, addButton)])
+        cmds.formLayout(self.shot_lay, e=True, attachForm=[(addButton, "right", 0), (addButton, "top", 0)])
+        cmds.formLayout(self.shot_lay, e=True, attachControl=[(scrollList, "right", 0, addButton)])
+
+        cmds.formLayout( self.shot_lay, edit=True,
+                        attachForm=[(self.sq_text, 'top', 5),
+                                    (self.sq_text, 'left', 5),
+                                    (self.sq_text, 'right', 5),
+
+                                    (self.sequence_lay, 'left', 5),
+                                    (self.sequence_lay, 'right', 5),
+                                    (self.sh_text, 'left', 5),
+                                    (self.sh_text, 'right', 5),
+                                    (self.shot_lay, 'right', 5),
+                                    (self.shot_lay, 'right', 5)],
+
+                        attachControl=[(self.sequence_lay, 'top', 5, self.sq_text),
+                                       (self.sh_text, 'top', 5, self.sequence_lay),
+                                       (self.shot_lay, 'bottom', 5, self.sh_text)])
+
 
     def updateSequenceScrollList(self):
         print("update sequence")
