@@ -72,7 +72,7 @@ class UI():
         #SHOT TAB
         self.shotUI = shot.ShotUi(self.tabs)
 
-        cmds.tabLayout( self.tabs, edit=True, tabLabel=((self.assetUI.asset_lay, 'Asset'), (self.shotUI.shot_lay, 'Shot')) )
+        cmds.tabLayout( self.tabs, edit=True, tabLabel=((self.assetUI.asset_lay, 'Asset'), (self.shotUI.layout, 'Shot')) )
 
         try:
             self.pipe_dir = self.loadPipelineDirectory()
