@@ -3,6 +3,7 @@ __author__ = 'Roman PERRIN'
 #Author: Roman PERRIN
 
 #Libraries
+from typing import Callable
 import maya.cmds as cmds
 import maya.mel as mel
 import os
@@ -14,6 +15,7 @@ from rp_pipeline_manager import install
 
 #files
 from rp_pipeline_manager.asset import asset
+from rp_pipeline_manager.shot import shot
 
 icon_size = 35
 row_size = 35
@@ -62,17 +64,15 @@ class UI():
         cmds.symbolButton(p=pipe_dir_lay, ann='browse', i='fileOpen.png', height=icon_size, width=icon_size, command=partial(self.fileDialog, 2, "Pipeline directory"))
         
 
-        #ASSET TAB
-        self.tabs = cmds.tabLayout(p=self.window, height = 400, innerMarginWidth=5, innerMarginHeight=5)
+        self.tabs = cmds.tabLayout(p=self.window, innerMarginWidth=5, innerMarginHeight=5)
 
+        #ASSET TAB
         self.assetUI = asset.AssetUi(self.tabs)
         
-
         #SHOT TAB
-        shot_lay = cmds.columnLayout(p=self.tabs, adjustableColumn=True)
+        self.shotUI = shot.ShotUi(self.tabs)
 
-
-        cmds.tabLayout( self.tabs, edit=True, tabLabel=((self.assetUI.asset_lay, 'Asset'), (shot_lay, 'Shot')) )
+        cmds.tabLayout( self.tabs, edit=True, tabLabel=((self.assetUI.asset_lay, 'Asset'), (self.assetUI.shot_lay, 'Shot')) )
 
         try:
             self.pipe_dir = self.loadPipelineDirectory()
@@ -125,3 +125,12 @@ class UI():
         return cmds.textField(self.pipeline_dir, q=True, text=True)
     
     
+def scrollListAdd(layout:str, name:str, updateScrollList:Callable, addCommand:Callable):
+    assets_lay = cmds.formLayout(p=layout)
+    scrollList = cmds.textScrollList(name, p=assets_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=updateScrollList)
+    addButton = cmds.symbolButton('{name}AddButton', p=assets_lay, ann=f'add {name}', i='pickHandlesComp', height=icon_size, width=icon_size, command=addCommand)
+    # Attach the assetsScrollList
+    cmds.formLayout(assets_lay, e=True, attachForm=[(scrollList, "left", 0), (scrollList, "top", 0), (scrollList, "bottom", 0)])
+    # Attach the assetsAddButton
+    cmds.formLayout(assets_lay, e=True, attachForm=[(addButton, "right", 0), (addButton, "top", 0)])
+    cmds.formLayout(assets_lay, e=True, attachControl=[(scrollList, "right", 0, addButton)])    

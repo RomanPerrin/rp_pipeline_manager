@@ -6,5 +6,5 @@ __author__ = 'Roman PERRIN'
 from importlib import reload
 
 #files
-from . import main_window
-reload(main_window)
+from . import shot
+reload(shot)
