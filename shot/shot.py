@@ -25,7 +25,7 @@ class ShotUi():
         
         sequence_lay = cmds.formLayout(p=self.layout)
         scrollList = cmds.textScrollList("sequence", p=sequence_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=partial(self.updateShotScrollList))
-        addButton = cmds.symbolButton('sequenceAddButton', p=sequence_lay, ann=f'add sequence', i='pickHandlesComp', height=icon_size, width=icon_size, command=partial(addSequenceUI, self.pipe_dir, self))
+        addButton = cmds.symbolButton('sequenceAddButton', p=sequence_lay, ann=f'add sequence', i='pickHandlesComp', height=icon_size, width=icon_size, command=partial(self.addSequence))
         # Attach the assetsScrollList
         cmds.formLayout(sequence_lay, e=True, attachForm=[(scrollList, "left", 0), (scrollList, "top", 0), (scrollList, "bottom", 0)])
         # Attach the assetsAddButton
@@ -105,6 +105,10 @@ class ShotUi():
         cmds.textScrollList('sequence', e=True, append=sequence_list)
         return sequence_list
 
+    def addSequence(self, *args):
+        print("adding sequence")
+        addSequenceUI(self.pipe_dir, self)
+    
     def openSqLayout(self, *args):
         print("opening sequence layout")
     
