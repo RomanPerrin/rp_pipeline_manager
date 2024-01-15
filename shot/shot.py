@@ -23,7 +23,7 @@ class ShotUi():
         sq_text = cmds.text(label="Sequence", p=self.layout)
         
         sequence_lay = cmds.formLayout(p=self.layout)
-        scrollList = cmds.textScrollList("sequence", p=sequence_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=partial(self.updateSequenceScrollList))
+        scrollList = cmds.textScrollList("sequence", p=sequence_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=partial(self.updateShotScrollList))
         addButton = cmds.symbolButton('sequenceAddButton', p=sequence_lay, ann=f'add sequence', i='pickHandlesComp', height=icon_size, width=icon_size, command=partial(self.addSequence))
         # Attach the assetsScrollList
         cmds.formLayout(sequence_lay, e=True, attachForm=[(scrollList, "left", 0), (scrollList, "top", 0), (scrollList, "bottom", 0)])
@@ -37,7 +37,7 @@ class ShotUi():
         sh_text = cmds.text(label="Shot", p=self.layout)
 
         shot_lay = cmds.formLayout(p=self.layout)
-        scrollList = cmds.textScrollList("shot", p=shot_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=partial(self.updateShotScrollList))
+        scrollList = cmds.textScrollList("shot", p=shot_lay, numberOfRows=5, allowMultiSelection=False)
         addButton = cmds.symbolButton('shotAddButton', p=shot_lay, ann=f'add shot', i='pickHandlesComp', height=icon_size, width=icon_size, command=partial(self.addShot))
         # Attach the assetsScrollList
         cmds.formLayout(shot_lay, e=True, attachForm=[(scrollList, "left", 0), (scrollList, "top", 0), (scrollList, "bottom", 0)])
@@ -95,7 +95,7 @@ class ShotUi():
         self.pipe_dir = main_window.pipe_dir
         sequence_list = []
         if self.pipe_dir:
-            self.sequence_dir = os.path.join(self.pipe_dir, "05_shot", "_master_layout")
+            self.sequence_dir = os.path.join(self.pipe_dir, "05_shot")
             for dir in os.listdir(self.sequence_dir):
                 if os.path.isdir(os.path.join(self.sequence_dir, dir)):
                     sequence_list.append(dir)
@@ -115,6 +115,16 @@ class ShotUi():
 
     def updateShotScrollList(self, *args):
         print("update shot")
+        shot_list = []
+        if self.pipe_dir:
+            self.shot_dir = os.path.join(self.pipe_dir, "05_shot", cmds.textScrollList('sequence', q=True, si=True)[0])
+            for dir in os.listdir(self.shot_dir):
+                if os.path.isdir(os.path.join(self.shot_dir, dir)):
+                    shot_list.append(dir)
+        print(shot_list)
+        cmds.textScrollList('shot', e=True, removeAll=True)
+        cmds.textScrollList('shot', e=True, append=shot_list)
+        return shot_list
 
     def addShot(self, *args):
         print("adding shot")
