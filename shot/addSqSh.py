@@ -13,8 +13,8 @@ icon_size = 35
 row_size = 35
 
 class addSequenceUI():
-    def __init__(self, pipe_dir, obj, *args):
-        self.pipe_dir = pipe_dir
+    def __init__(self, dir, obj, *args):
+        self.pipe_dir = dir
         self.obj = obj
         self.UI()
     
@@ -28,12 +28,12 @@ class addSequenceUI():
         
         master_lay = cmds.rowLayout(numberOfColumns=3, height=row_size, adjustableColumn=2)
         cmds.text(label=f'name of the new sequence')
-        self.name = cmds.textField(p=master_lay, enterCommand=self.addAsset)
-        cmds.button(p=master_lay, label='Create', command=self.addAsset)
+        self.name = cmds.textField(p=master_lay, enterCommand=self.create)
+        cmds.button(p=master_lay, label='Create', command=self.create)
         
         cmds.showWindow(self.window)
     
-    def addAsset(self, *args):
+    def create(self, *args):
         name = cmds.textField(self.name, q=True, text=True)
         dir = os.path.join(self.pipe_dir, name).replace(os.sep, '/')
         os.makedirs(dir, exist_ok=True)
@@ -44,43 +44,43 @@ class addSequenceUI():
         return
 
 class addShotUI():
-    def __init__(self, pipeline_dir, assets_dir, obj, *args):
-        self.pipeline_dir = pipeline_dir
-        self.assets_dir = assets_dir
+    def __init__(self, dir, obj, *args):
+        self.pipe_dir = dir
         self.obj = obj
         self.UI()
     
     def UI(self, *args):
         size = (300, 50)
         
-        self.window = f"Add {self.assets_dir}"
+        self.window = f"Add shot"
         if cmds.window(self.window, q=True,exists=True):
             cmds.deleteUI(self.window)
         self.window = cmds.window(self.window, wh=size, minimizeButton=False, maximizeButton=False)
         
         master_lay = cmds.rowLayout(numberOfColumns=3, height=row_size, adjustableColumn=2)
-        cmds.text(label=f'name of the new {self.assets_dir}')
-        self.asset_name = cmds.textField(p=master_lay, enterCommand=self.addAsset)
-        cmds.button(p=master_lay, label='Create', command=self.addAsset)
+        cmds.text(label=f'name of the new shot')
+        self.name = cmds.textField(p=master_lay, enterCommand=self.create)
+        cmds.button(p=master_lay, label='Create', command=self.create)
         
         cmds.showWindow(self.window)
     
-    def addAsset(self, *args):
-        assetName = cmds.textField(self.asset_name, q=True, text=True)
-        asset_dir = os.path.join(self.pipeline_dir, self.assets_dir, assetName, 'maya')
-        asset_dir = asset_dir.replace(os.sep, '/')
+    def create(self, *args):
+        shot_name = self.pipe_dir.split('/')[-1] + cmds.textField(self.name, q=True, text=True)
+        print(shot_name)
+        return
+        asset_dir = os.path.join(self.pipe_dir, shot_name).replace(os.sep, '/')
         os.makedirs(asset_dir, exist_ok=True)
         
-        os.makedirs(os.path.join(self.pipeline_dir, self.assets_dir, assetName, 'paint_2D'), exist_ok=True)
-        os.makedirs(os.path.join(self.pipeline_dir, self.assets_dir, assetName, 'paint_3D'), exist_ok=True)
-        os.makedirs(os.path.join(self.pipeline_dir, self.assets_dir, assetName, 'sculpt'), exist_ok=True)
-        os.makedirs(os.path.join(self.pipeline_dir, self.assets_dir, assetName, 'houdini'), exist_ok=True)
+        os.makedirs(os.path.join(self.pipe_dir, self.assets_dir, shot_name, 'paint_2D'), exist_ok=True)
+        os.makedirs(os.path.join(self.pipe_dir, self.assets_dir, shot_name, 'paint_3D'), exist_ok=True)
+        os.makedirs(os.path.join(self.pipe_dir, self.assets_dir, shot_name, 'sculpt'), exist_ok=True)
+        os.makedirs(os.path.join(self.pipe_dir, self.assets_dir, shot_name, 'houdini'), exist_ok=True)
         self.createProject(os.path.join(asset_dir))
         
         print(f'{self.assets_dir} created at {asset_dir}')
         cmds.deleteUI(self.window)
         self.obj.search()
-        cmds.textScrollList('assets', e=True, si=assetName)
+        cmds.textScrollList('assets', e=True, si=shot_name)
         return
     
     def createProject(self, project_dir, *args):
