@@ -21,7 +21,7 @@ class ShotUi():
 
         self.shot_lay = cmds.formLayout(p=self.parent_layout)
 
-        main_window.scrollListAdd(self.shot_lay, "sequence", self.updateSequenceScrollList(), self.addSequence())
+        main_window.scrollListAdd(self.shot_lay, "sequence", self.updateSequenceScrollList, self.addSequence)
 
     def updateSequenceScrollList(self):
         print("update sequence")
