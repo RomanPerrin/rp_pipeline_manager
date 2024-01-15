@@ -13,7 +13,7 @@ from importlib import reload
 from rp_pipeline_manager import install
 
 #files
-from asset import asset
+from .asset import asset
 
 icon_size = 35
 row_size = 35
