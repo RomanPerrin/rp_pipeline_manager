@@ -112,6 +112,18 @@ class ShotUi():
     
     def openSqLayout(self, *args):
         print("opening sequence layout")
+        sequence_name = cmds.textScrollList('sequence', q=True, si=True)[0]
+        if not f"{sequence_name}_master_layout" in os.listdir(os.path.join(self.sequence_dir, "_master_layout")):
+            os.makedirs(os.path.join(self.sequence_dir, "_master_layout", f"{sequence_name}_master_layout"), exist_ok=True)
+
+        filename = os.path.join(self.sequence_dir, "_master_layout", f"{sequence_name}_master_layout", f"{sequence_name}_master_layout.ma")
+        if os.path.exists(filename):
+            cmds.file(filename, open=True , force=True)
+            return
+        
+        cmds.file(rename=filename)
+        cmds.file(f=True, type='mayaAscii', save=True )
+        
     
     def createShotLayoutLayout(self, *args):
         print("creating shot layout")
@@ -130,7 +142,6 @@ class ShotUi():
         return shot_list
 
     def addShot(self, *args):
-        print("adding shot")
         addShotUI(self.shot_dir, self)
     
     def openShLayout(self, *args):
