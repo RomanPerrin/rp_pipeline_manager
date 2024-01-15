@@ -21,7 +21,15 @@ class ShotUi():
 
         self.shot_lay = cmds.formLayout(p=self.parent_layout)
 
-        main_window.scrollListAdd(self.shot_lay, "sequence", self.updateSequenceScrollList, self.addSequence)
+        
+        lay = cmds.formLayout(p=self.shot_lay)
+        scrollList = cmds.textScrollList("sequence", p=lay, numberOfRows=5, allowMultiSelection=False, selectCommand=partial(self.updateSequenceScrollList))
+        addButton = cmds.symbolButton('sequenceAddButton', p=lay, ann=f'add {name}', i='pickHandlesComp', height=icon_size, width=icon_size, command=partial(self.addSequence))
+        # Attach the assetsScrollList
+        cmds.formLayout(lay, e=True, attachForm=[(scrollList, "left", 0), (scrollList, "top", 0), (scrollList, "bottom", 0)])
+        # Attach the assetsAddButton
+        cmds.formLayout(lay, e=True, attachForm=[(addButton, "right", 0), (addButton, "top", 0)])
+        cmds.formLayout(lay, e=True, attachControl=[(scrollList, "right", 0, addButton)])
 
     def updateSequenceScrollList(self):
         print("update sequence")
