@@ -96,7 +96,7 @@ class addShotUI():
         os.makedirs(os.path.join(project_dir, 'sourceimages', 'imagePlane'), exist_ok=True)
         os.makedirs(os.path.join(project_dir, 'sourceimages', 'imageSequence'), exist_ok=True)
         
-        source = os.path.join(os.path.dirname(__file__), 'workspace.mel')
+        source = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'workspace.mel')
         source = source.replace(os.sep, '/')
         destination = os.path.join(project_dir, 'workspace.mel')
         destination = destination.replace(os.sep, '/')
