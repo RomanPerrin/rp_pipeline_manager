@@ -18,6 +18,7 @@ class ShotUi():
     def __init__(self, parent_layout) -> None:
         self.parent_layout = parent_layout
         self.pipe_dir = main_window.pipe_dir
+        print(self.pipe_dir, main_window.pipe_dir)
 
         self.layout = cmds.formLayout(p=self.parent_layout)
 
