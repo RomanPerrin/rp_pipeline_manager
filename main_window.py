@@ -14,8 +14,8 @@ from importlib import reload
 from rp_pipeline_manager import install
 
 #files
-from rp_pipeline_manager.asset import asset
-from rp_pipeline_manager.shot import shot
+from asset import asset
+from shot import shot
 
 icon_size = 35
 row_size = 35
@@ -36,7 +36,7 @@ class UI():
         self.UI()
         cmds.optionVar(iv=('isIncrementalSaveEnabled', 1))
         cmds.optionVar(iv=('incrementalSaveLimitBackups', 1))
-        cmds.optionVar(iv=('incrementalSaveMaxBackups', 10))
+        cmds.optionVar(iv=('incrementalSaveMaxBackups', 15))
     
     def UI(self, *args):
         global pipe_dir
