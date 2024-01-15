@@ -13,8 +13,8 @@ from importlib import reload
 from . import install
 
 #files
-from asset import publish
-from asset import addAsset
+from .asset import publish
+from .asset import addAsset
 
 icon_size = 35
 row_size = 35
