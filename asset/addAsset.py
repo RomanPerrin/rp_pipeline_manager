@@ -3,10 +3,14 @@ __author__ = 'Roman PERRIN'
 #Author: Roman PERRIN
 
 #Libraries
+import main_window
 import maya.cmds as cmds
 import os
 
 #files
+
+icon_size = main_window.icon_size
+row_size = main_window.row_size
 
 class addAssetUI():
     def __init__(self, pipeline_dir, assets_dir, obj, *args):
