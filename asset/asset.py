@@ -66,9 +66,10 @@ class AssetUi():
 
                         attachControl=[(self.search_field, 'top', 5, self.assetTypeScrollList),
                                        (assets_lay, 'top', 5, self.search_field),
+                                       (self.stepScrollList, 'bottom', 5, self.openButton),
                                        (self.publishButton, 'bottom', 5, self.importRefButton),
                                        (self.openButton, 'bottom', 5, self.publishButton),
-                                       (assets_lay, 'bottom', 5, self.openButton)])
+                                       (assets_lay, 'bottom', 5, self.stepScrollList)])
 
 
         try:
