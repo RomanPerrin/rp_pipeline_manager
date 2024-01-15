@@ -10,7 +10,7 @@ from functools import partial
 import shutil
 import json
 from importlib import reload
-import install
+from rp_pipeline_manager import install
 
 #files
 from asset import asset
