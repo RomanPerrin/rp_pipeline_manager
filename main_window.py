@@ -10,7 +10,7 @@ from functools import partial
 import shutil
 import json
 from importlib import reload
-import install
+from . import install
 
 #files
 from asset.asset import AssetUi
