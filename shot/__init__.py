@@ -6,11 +6,5 @@ __author__ = 'Roman PERRIN'
 from importlib import reload
 
 #files
-from . import publish
-reload(publish)
-
-from . import asset
-reload(asset)
-
-from . import addAsset
-reload(addAsset)
+from . import main_window
+reload(main_window)
