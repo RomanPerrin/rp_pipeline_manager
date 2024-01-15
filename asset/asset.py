@@ -43,6 +43,12 @@ class AssetUi():
         cmds.button(p=self.parent_layout, label="publish", command=partial(publish.publish, self))
         cmds.button(p=self.parent_layout, label="import as reference", command=self.importAsReference)
 
+        try:
+            self.getAssetsDirectory()
+            self.updateAssetTypeScrollList()
+        except:
+            pass
+
     def search(self, *args):
         self.updateStepScrollList()
         search_text = cmds.textField(self.search_field, q=1, tx=1)
