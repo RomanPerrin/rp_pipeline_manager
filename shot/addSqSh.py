@@ -14,7 +14,7 @@ row_size = 35
 
 class addSequenceUI():
     def __init__(self, dir, obj, *args):
-        self.pipe_dir = dir
+        self.pipe_dir = dir.replace(os.sep, '/')
         self.obj = obj
         self.UI()
     
