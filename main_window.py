@@ -127,8 +127,8 @@ class UI():
     
 def scrollListAdd(layout:str, name:str, updateScrollList:Callable, addCommand:Callable):
     assets_lay = cmds.formLayout(p=layout)
-    scrollList = cmds.textScrollList(name, p=assets_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=updateScrollList)
-    addButton = cmds.symbolButton('{name}AddButton', p=assets_lay, ann=f'add {name}', i='pickHandlesComp', height=icon_size, width=icon_size, command=addCommand)
+    scrollList = cmds.textScrollList(name, p=assets_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=updateScrollList())
+    addButton = cmds.symbolButton('{name}AddButton', p=assets_lay, ann=f'add {name}', i='pickHandlesComp', height=icon_size, width=icon_size, command=addCommand())
     # Attach the assetsScrollList
     cmds.formLayout(assets_lay, e=True, attachForm=[(scrollList, "left", 0), (scrollList, "top", 0), (scrollList, "bottom", 0)])
     # Attach the assetsAddButton
