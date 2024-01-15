@@ -56,11 +56,11 @@ class UI():
             state = 1
         self.mode = cmds.menuItem(l='Dev mode', cb=state, p=menu, c=self.changeMode)
 
-        tabs = cmds.tabLayout(p=self.window, innerMarginWidth=5, innerMarginHeight=5)
+        self.tabs = cmds.tabLayout(p=self.window, innerMarginWidth=5, innerMarginHeight=5)
         
 
         #ASSET TAB
-        asset_lay = cmds.columnLayout(p=self.window, adjustableColumn=True)
+        asset_lay = cmds.columnLayout(p=self.tabs, adjustableColumn=True)
         
         #file dialog
         pipe_dir_lay = cmds.rowLayout(p=asset_lay, numberOfColumns=3, height=row_size, adjustableColumn=1)
@@ -92,7 +92,7 @@ class UI():
         
 
         #SHOT TAB
-        shot_lay = cmds.columnLayout(p=self.window, adjustableColumn=True)
+        shot_lay = cmds.columnLayout(p=self.tabs, adjustableColumn=True)
 
 
         cmds.tabLayout( tabs, edit=True, tabLabel=((asset_lay, 'Asset'), (shot_lay, 'Shot')) )
