@@ -114,6 +114,7 @@ class ShotUi():
     
     def createShotLayoutLayout(self, *args):
         print("creating shot layout")
+        addSequenceUI(self.shot_dir, self)
 
     def updateShotScrollList(self, *args):
         # print("update shot")
