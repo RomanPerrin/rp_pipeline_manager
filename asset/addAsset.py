@@ -9,8 +9,8 @@ import os
 
 #files
 
-icon_size = main_window.icon_size
-row_size = main_window.row_size
+icon_size = 35
+row_size = 35
 
 class addAssetUI():
     def __init__(self, pipeline_dir, assets_dir, obj, *args):
