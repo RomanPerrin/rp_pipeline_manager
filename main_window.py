@@ -87,7 +87,7 @@ class UI():
         self.stepScrollList = cmds.textScrollList('steps', p=asset_lay, numberOfRows=3, allowMultiSelection=False)
         
         cmds.button(p=asset_lay, label="open", command=self.openLastEdit)
-        cmds.button(p=asset_lay, label="publish", command=publish.publish(self))
+        cmds.button(p=asset_lay, label="publish", command=partial(publish.publish(self)))
         cmds.button(p=asset_lay, label="import as reference", command=self.importAsReference)
         
 
