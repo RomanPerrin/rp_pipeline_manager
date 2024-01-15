@@ -20,7 +20,7 @@ class AssetUi():
         self.parent_layout = parent_layout
         self.pipe_dir = ""
 
-        self.asset_lay = cmds.formLayout(p=self.parent_layout)
+        self.asset_lay = cmds.formLayout(p=self.parent_layout, height = 400)
 
         #List asset type
         self.assetTypeScrollList = cmds.textScrollList('assetType', p=self.asset_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=self.search)
