@@ -107,7 +107,7 @@ class ShotUi():
 
     def addSequence(self, *args):
         print("adding sequence")
-        addSequenceUI(self.pipe_dir, self)
+        addSequenceUI(self.sequence_dir, self)
     
     def openSqLayout(self, *args):
         print("opening sequence layout")
