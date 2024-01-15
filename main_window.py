@@ -3,7 +3,6 @@ __author__ = 'Roman PERRIN'
 #Author: Roman PERRIN
 
 #Libraries
-from asset.asset import AssetUi
 import maya.cmds as cmds
 import maya.mel as mel
 import os
@@ -14,6 +13,7 @@ from importlib import reload
 import install
 
 #files
+from asset.asset import AssetUi
 
 
 #self.pipe_dir/self.selectedAssetType()/self.selectedAssets()/maya/scenes/edit/self.selectedStep()

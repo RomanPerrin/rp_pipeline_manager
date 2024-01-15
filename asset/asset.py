@@ -9,8 +9,8 @@ import os
 from functools import partial
 
 #files
-from asset import publish
-from asset import addAsset
+from . import publish
+from . import addAsset
 
 icon_size = 35
 row_size = 35
