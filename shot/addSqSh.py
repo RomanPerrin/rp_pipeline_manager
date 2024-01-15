@@ -68,7 +68,7 @@ class addShotUI():
         shot_name = self.pipe_dir.split('/')[-1] + '_' + cmds.textField(self.name, q=True, text=True)
         shot_dir = os.path.join(self.pipe_dir, shot_name).replace(os.sep, '/')
         os.makedirs(shot_dir, exist_ok=True)
-        
+        return
         os.makedirs(os.path.join(shot_dir, 'camera'), exist_ok=True)
         os.makedirs(os.path.join(shot_dir, 'houdini'), exist_ok=True)
         os.makedirs(os.path.join(shot_dir, 'nuke'), exist_ok=True)
@@ -76,7 +76,7 @@ class addShotUI():
         
         print(f'{shot_name} created at {shot_dir}')
         cmds.deleteUI(self.window)
-        self.obj.search()
+        self.obj.updateShotScrollList()
         cmds.textScrollList('assets', e=True, si=shot_name)
         return
     
