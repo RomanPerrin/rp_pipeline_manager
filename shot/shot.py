@@ -46,7 +46,7 @@ class ShotUi():
         cmds.formLayout(shot_lay, e=True, attachForm=[(addButton, "right", 0), (addButton, "top", 0)])
         cmds.formLayout(shot_lay, e=True, attachControl=[(scrollList, "right", 0, addButton)])
 
-        assetsScrollList = cmds.textScrollList('assets', p=assets_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=self.updateStepScrollList)
+        # assetsScrollList = cmds.textScrollList('assets', p=assets_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=self.updateStepScrollList)
 
         self.openButton = cmds.button(p=self.layout, label="open", command=self.openLastEdit)
 
