@@ -10,6 +10,7 @@ from functools import partial
 
 #files
 from .. import main_window
+from .addSqSh import addSequenceUI
 
 icon_size = 35
 row_size = 35
@@ -24,7 +25,7 @@ class ShotUi():
         
         sequence_lay = cmds.formLayout(p=self.layout)
         scrollList = cmds.textScrollList("sequence", p=sequence_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=partial(self.updateShotScrollList))
-        addButton = cmds.symbolButton('sequenceAddButton', p=sequence_lay, ann=f'add sequence', i='pickHandlesComp', height=icon_size, width=icon_size, command=partial(self.addSequence))
+        addButton = cmds.symbolButton('sequenceAddButton', p=sequence_lay, ann=f'add sequence', i='pickHandlesComp', height=icon_size, width=icon_size, command=partial(addSequenceUI, self.pipe_dir, self))
         # Attach the assetsScrollList
         cmds.formLayout(sequence_lay, e=True, attachForm=[(scrollList, "left", 0), (scrollList, "top", 0), (scrollList, "bottom", 0)])
         # Attach the assetsAddButton
@@ -91,7 +92,7 @@ class ShotUi():
 
 
     def updateSequenceScrollList(self, *args):
-        print("update sequence")
+        # print("update sequence")
         self.pipe_dir = main_window.pipe_dir
         sequence_list = []
         if self.pipe_dir:
@@ -99,14 +100,11 @@ class ShotUi():
             for dir in os.listdir(self.sequence_dir):
                 if os.path.isdir(os.path.join(self.sequence_dir, dir)):
                     sequence_list.append(dir)
-        print(sequence_list)
+        # print(sequence_list)
         cmds.textScrollList('sequence', e=True, removeAll=True)
         cmds.textScrollList('sequence', e=True, append=sequence_list)
         return sequence_list
 
-    def addSequence(self, *args):
-        print("adding sequence")
-    
     def openSqLayout(self, *args):
         print("opening sequence layout")
     
@@ -114,14 +112,14 @@ class ShotUi():
         print("creating shot layout")
 
     def updateShotScrollList(self, *args):
-        print("update shot")
+        # print("update shot")
         shot_list = []
         if self.pipe_dir:
             self.shot_dir = os.path.join(self.pipe_dir, "05_shot", cmds.textScrollList('sequence', q=True, si=True)[0])
             for dir in os.listdir(self.shot_dir):
                 if os.path.isdir(os.path.join(self.shot_dir, dir)):
                     shot_list.append(dir)
-        print(shot_list)
+        # print(shot_list)
         cmds.textScrollList('shot', e=True, removeAll=True)
         cmds.textScrollList('shot', e=True, append=shot_list)
         return shot_list

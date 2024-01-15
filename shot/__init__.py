@@ -8,3 +8,6 @@ from importlib import reload
 #files
 from . import shot
 reload(shot)
+
+from . import addSqSh
+reload(addSqSh)
