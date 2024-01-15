@@ -21,7 +21,7 @@ class ShotUi():
 
         self.layout = cmds.formLayout(p=self.parent_layout)
 
-        # self.sq_text = cmds.text(label="Sequence", p=layout)
+        sq_text = cmds.text(label="Sequence", p=layout)
         
         sequence_lay = cmds.formLayout(p=self.layout)
         scrollList = cmds.textScrollList("sequence", p=sequence_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=partial(self.updateSequenceScrollList))
@@ -32,7 +32,7 @@ class ShotUi():
         cmds.formLayout(sequence_lay, e=True, attachForm=[(addButton, "right", 0), (addButton, "top", 0)])
         cmds.formLayout(sequence_lay, e=True, attachControl=[(scrollList, "right", 0, addButton)])
 
-        # self.sh_text = cmds.text(label="Shot", p=layout)
+        sh_text = cmds.text(label="Shot", p=layout)
 
         shot_lay = cmds.formLayout(p=self.layout)
         scrollList = cmds.textScrollList("shot", p=shot_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=partial(self.updateShotScrollList))
@@ -44,14 +44,20 @@ class ShotUi():
         cmds.formLayout(shot_lay, e=True, attachControl=[(scrollList, "right", 0, addButton)])
 
         cmds.formLayout( self.layout, edit=True,
-                        attachForm=[(sequence_lay, 'left', 5),
+                        attachForm=[(sq_text, 'top', 5),
+                                    (sq_text, 'left', 5),
+                                    (sq_text, 'right', 5),
+                                    (sequence_lay, 'left', 5),
                                     (sequence_lay, 'right', 5),
-                                    (shot_lay, 'top', 5),
+                                    (sh_text, 'left', 5),
+                                    (sh_text, 'right', 5),
                                     (shot_lay, 'left', 5),
                                     (shot_lay, 'right', 5),
                                     (shot_lay, 'bottom', 5)],
 
-                        attachControl=[(sequence_lay, 'top', 5, shot_lay)])
+                        attachControl=[(sequence_lay, 'top', 5, sq_text),
+                                       (sh_text, 'top', 5, sequence_lay),
+                                       (shot_lay, 'top', 5, sh_text)])
 
 
     def updateSequenceScrollList(self):
