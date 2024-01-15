@@ -17,8 +17,6 @@ row_size = 35
 class ShotUi():
     def __init__(self, parent_layout) -> None:
         self.parent_layout = parent_layout
-        self.pipe_dir = main_window.pipe_dir
-        print(self.pipe_dir, main_window.pipe_dir)
 
         self.layout = cmds.formLayout(p=self.parent_layout)
 
@@ -94,6 +92,7 @@ class ShotUi():
 
     def updateSequenceScrollList(self, *args):
         print("update sequence")
+        self.pipe_dir = main_window.pipe_dir
         sequence_list = []
         if self.pipe_dir:
             self.sequence_dir = os.path.join(self.pipe_dir, "05_shot", "_master_layout")

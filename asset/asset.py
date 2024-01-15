@@ -19,8 +19,6 @@ row_size = 35
 class AssetUi():
     def __init__(self, parent_layout) -> None:
         self.parent_layout = parent_layout
-        self.pipe_dir = main_window.pipe_dir
-        print(self.pipe_dir, main_window.pipe_dir)
         self.asset_lay = cmds.formLayout(p=self.parent_layout)
 
         #List asset type
@@ -115,6 +113,7 @@ class AssetUi():
         return (os.path.join(self.getAssetTypeDirectory(), self.selectedAssets())).replace(os.sep, '/')
 
     def updateAssetTypeScrollList(self, *args):
+        self.pipe_dir = main_window.pipe_dir
         if not self.pipe_dir.split('/')[-1] in ['character', 'dress', 'module', 'prop', 'set']:
             assetType = self.getAssetType(self.getAssetsDirectory())
             cmds.textScrollList('assetType', e=True, removeAll=True)
