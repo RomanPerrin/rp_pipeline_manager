@@ -11,6 +11,7 @@ from functools import partial
 #files
 from .. import main_window
 from .addSqSh import addSequenceUI
+from .addSqSh import addShotUI
 
 icon_size = 35
 row_size = 35
@@ -130,7 +131,7 @@ class ShotUi():
 
     def addShot(self, *args):
         print("adding shot")
-        addSequenceUI(self.shot_dir, self)
+        addShotUI(self.shot_dir, self)
     
     def openShLayout(self, *args):
         print("opening shot layout")
