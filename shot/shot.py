@@ -32,6 +32,9 @@ class ShotUi():
         cmds.formLayout(sequence_lay, e=True, attachForm=[(addButton, "right", 0), (addButton, "top", 0)])
         cmds.formLayout(sequence_lay, e=True, attachControl=[(scrollList, "right", 0, addButton)])
 
+        openSqLayoutButton = cmds.button(p=self.layout, label="open seq layout", command=self.openSqLayout)
+        createShotLayoutButton = cmds.button(p=self.layout, label="open seq layout", command=self.createShotLayoutLayout)
+
         sh_text = cmds.text(label="Shot", p=self.layout)
 
         shot_lay = cmds.formLayout(p=self.layout)
@@ -43,31 +46,44 @@ class ShotUi():
         cmds.formLayout(shot_lay, e=True, attachForm=[(addButton, "right", 0), (addButton, "top", 0)])
         cmds.formLayout(shot_lay, e=True, attachControl=[(scrollList, "right", 0, addButton)])
 
+        assetsScrollList = cmds.textScrollList('assets', p=assets_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=self.updateStepScrollList)
+
+        self.openButton = cmds.button(p=self.layout, label="open", command=self.openLastEdit)
+
         cmds.formLayout( self.layout, edit=True,
                         attachForm=[(sq_text, 'top', 5),
                                     (sq_text, 'left', 5),
-                                    (sq_text, 'right', 5),
                                     (sequence_lay, 'left', 5),
                                     (sequence_lay, 'right', 5),
+                                    (openSqLayoutButton, 'left', 5),
+                                    (createShotLayoutButton, 'right', 5),
                                     (sh_text, 'left', 5),
-                                    (sh_text, 'right', 5),
                                     (shot_lay, 'left', 5),
                                     (shot_lay, 'right', 5),
                                     (shot_lay, 'bottom', 5)],
 
                         attachControl=[(sequence_lay, 'top', 5, sq_text),
-                                       (sh_text, 'top', 5, sequence_lay),
+                                       (openSqLayoutButton, 'top', 5, sequence_lay),
+                                       (createShotLayoutButton, 'top', 5, sequence_lay),
+                                       (createShotLayoutButton, 'left', 5, openSqLayoutButton),
+                                       (sh_text, 'top', 5, openSqLayoutButton),
                                        (shot_lay, 'top', 5, sh_text)])
 
 
-    def updateSequenceScrollList(self):
+    def updateSequenceScrollList(self, *args):
         print("update sequence")
 
-    def addSequence(self):
-        print("ading sequence")
+    def addSequence(self, *args):
+        print("adding sequence")
+    
+    def openSqLayout(self, *args):
+        print("opening sequence layout")
+    
+    def createShotLayoutLayout(self, *args):
+        print("creating shot layout")
 
-    def updateShotScrollList(self):
+    def updateShotScrollList(self, *args):
         print("update shot")
 
-    def addShot(self):
-        print("ading shot")
+    def addShot(self, *args):
+        print("adding shot")
