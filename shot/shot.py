@@ -52,12 +52,12 @@ class ShotUi():
                                     (self.sequence_lay, 'right', 5),
                                     (self.sh_text, 'left', 5),
                                     (self.sh_text, 'right', 5),
-                                    (self.shot_lay, 'right', 5),
+                                    (self.shot_lay, 'left', 5),
                                     (self.shot_lay, 'right', 5)],
 
                         attachControl=[(self.sequence_lay, 'top', 5, self.sq_text),
                                        (self.sh_text, 'top', 5, self.sequence_lay),
-                                       (self.shot_lay, 'bottom', 5, self.sh_text)])
+                                       (self.shot_lay, 'top', 5, self.sh_text)])
 
 
     def updateSequenceScrollList(self):
