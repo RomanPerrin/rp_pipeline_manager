@@ -30,7 +30,7 @@ class AssetUi():
 
         #List assets
         assets_lay = cmds.formLayout(p=self.asset_lay, height = 100)
-        assetsScrollList = cmds.textScrollList('assets', p=assets_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=self.updateStepScrollList)
+        assetsScrollList = cmds.textScrollList('assets', height = 100, p=assets_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=self.updateStepScrollList)
         assetsAddButton = cmds.symbolButton('assetsAddButton', p=assets_lay, ann=f'add asset', i='pickHandlesComp', height=icon_size, width=icon_size, command=self.addAsset)
         # Attach the assetsScrollList
         cmds.formLayout(assets_lay, e=True, attachForm=[(assetsScrollList, "left", 0), (assetsScrollList, "top", 0), (assetsScrollList, "bottom", 0)])
