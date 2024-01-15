@@ -22,6 +22,7 @@ class ShotUi():
         self.shot_lay = cmds.formLayout(p=self.parent_layout)
 
         self.sq_text = cmds.text(label="Sequence", p=self.shot_lay)
+        print(self.sq_text)
         
         self.sequence_lay = cmds.formLayout(p=self.shot_lay)
         scrollList = cmds.textScrollList("sequence", p=self.sequence_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=partial(self.updateSequenceScrollList))
@@ -33,6 +34,7 @@ class ShotUi():
         cmds.formLayout(self.sequence_lay, e=True, attachControl=[(scrollList, "right", 0, addButton)])
 
         self.sh_text = cmds.text(label="Shot", p=self.shot_lay)
+        print(self.sh_text)
 
         self.shot_lay = cmds.formLayout(p=self.shot_lay)
         scrollList = cmds.textScrollList("shot", p=self.shot_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=partial(self.updateShotScrollList))
