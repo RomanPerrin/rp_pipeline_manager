@@ -10,7 +10,7 @@ from functools import partial
 import shutil
 import json
 from importlib import reload
-from . import install
+import install
 
 #files
 from .asset import publish
