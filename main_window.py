@@ -79,7 +79,7 @@ class UI():
             self.pipe_dir = self.loadPipelineDirectory()
             cmds.textField(self.pipeline_dir, e=True, text=self.pipe_dir)
             self.getPipelineDirectory()
-            self.assetUI.pipe_dir = dir
+            self.assetUI.pipe_dir = self.pipe_dir
             self.assetUI.updateAssetTypeScrollList()
         except:
             pass
@@ -111,7 +111,7 @@ class UI():
         filename = cmds.fileDialog2(fileMode=fileMode, caption=caption)[0]
         cmds.textField(self.pipeline_dir, e=True, text=filename)
         self.savePipelineDirectory(filename)
-        dir = self.getPipelineDirectory()
+        self.getPipelineDirectory()
     
     def savePipelineDirectory(self, pipeline_dir, *args):
         with open(f"{os.path.dirname(__file__)}/data.json", "w") as file:
