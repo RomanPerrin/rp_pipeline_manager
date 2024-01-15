@@ -11,10 +11,9 @@ from functools import partial
 #files
 from asset import publish
 from asset import addAsset
-import main_window
 
-icon_size = main_window.icon_size
-row_size = main_window.row_size
+icon_size = 35
+row_size = 35
 
 class AssetUi():
     def __init__(self, parent_layout) -> None:
