@@ -35,7 +35,8 @@ class UI():
     def __init__(self, *args):
         self.UI()
         cmds.optionVar(iv=('isIncrementalSaveEnabled', 1))
-        cmds.optionVar(iv=('rfmExtensionsInChannelBox', 0))
+        cmds.optionVar(iv=('incrementalSaveLimitBackups', 1))
+        cmds.optionVar(iv=('incrementalSaveMaxBackups', 10))
     
     def UI(self, *args):
         global pipe_dir
