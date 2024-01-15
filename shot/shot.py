@@ -73,6 +73,7 @@ class ShotUi():
                                        (openSqLayoutButton, 'top', 5, sequence_lay),
                                        (createShotLayoutButton, 'top', 5, sequence_lay),
                                        (sh_text, 'top', 5, openSqLayoutButton),
+                                       (shot_lay, 'top', 5, sh_text),
                                        (shot_lay, 'bottom', 5, openShLayoutButton),
                                        (openShLayoutButton, 'bottom', 5, openShotRenderButton),
                                        (createConformityLayoutButton, 'bottom', 5, openShotRenderButton)],
