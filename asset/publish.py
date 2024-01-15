@@ -8,7 +8,7 @@ import maya.mel as mel
 import os
 
 #files
-import cache_manager_v1_20
+from . import cache_manager_v1_20
 
 def publish(self, *args):
     selection_export = cmds.ls(sl=1)
