@@ -133,4 +133,4 @@ def scrollListAdd(layout:str, name:str, updateScrollList:Callable, addCommand:Ca
     cmds.formLayout(assets_lay, e=True, attachForm=[(scrollList, "left", 0), (scrollList, "top", 0), (scrollList, "bottom", 0)])
     # Attach the assetsAddButton
     cmds.formLayout(assets_lay, e=True, attachForm=[(addButton, "right", 0), (addButton, "top", 0)])
-    cmds.formLayout(assets_lay, e=True, attachControl=[(scrollList, "right", 0, addButton)])    
+    cmds.formLayout(assets_lay, e=True, attachControl=[(scrollList, "right", 0, addButton)])
