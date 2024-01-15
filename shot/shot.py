@@ -97,7 +97,7 @@ class ShotUi():
         if self.pipe_dir:
             self.sequence_dir = os.path.join(self.pipe_dir, "05_shot", "_master_layout")
             for dir in os.listdir(self.sequence_dir):
-                if os.path.isdir(dir):
+                if os.path.isdir(os.path.join(self.sequence_dir, dir)):
                     sequence_list.append(dir)
         print(sequence_list)
         cmds.textScrollList('sequence', e=True, removeAll=True)
