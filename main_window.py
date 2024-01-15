@@ -63,7 +63,7 @@ class UI():
         
 
         #ASSET TAB
-        self.tabs = cmds.tabLayout(p=self.window, innerMarginWidth=5, innerMarginHeight=5)
+        self.tabs = cmds.tabLayout(p=self.window, height = 400, innerMarginWidth=5, innerMarginHeight=5)
 
         self.assetUI = asset.AssetUi(self.tabs)
         
