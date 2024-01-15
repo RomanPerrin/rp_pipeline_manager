@@ -66,7 +66,7 @@ class UI():
         self.tabs = cmds.tabLayout(p=self.window, innerMarginWidth=5, innerMarginHeight=5)
         asset_lay = cmds.columnLayout(p=self.tabs, adjustableColumn=True)
 
-        AssetUi(asset_lay)
+        self.assetUI = AssetUi(asset_lay)
         
 
         #SHOT TAB
@@ -110,7 +110,7 @@ class UI():
         cmds.textField(self.pipeline_dir, e=True, text=filename)
         self.savePipelineDirectory(filename)
         self.getPipelineDirectory()
-        self.updateAssetTypeScrollList()
+        self.assetUI.updateAssetTypeScrollList()
     
     def savePipelineDirectory(self, pipeline_dir, *args):
         with open(f"{os.path.dirname(__file__)}/data.json", "w") as file:
