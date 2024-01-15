@@ -42,7 +42,7 @@ class UI():
             self.window = f"{install.getInstalledBranch()}_rp_pipeline_manager"
         if cmds.window(self.window, q=True,exists=True):
             cmds.deleteUI(self.window)
-        self.window = cmds.window(self.window, wh=size, minimizeButton=False, maximizeButton=False)
+        self.window = cmds.window(self.window, wh=size, minimizeButton=True, maximizeButton=False)
         
         menuBarLayout = cmds.menuBarLayout()
         menu = cmds.menu(l='File', p=menuBarLayout)
