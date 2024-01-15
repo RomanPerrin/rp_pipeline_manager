@@ -64,16 +64,15 @@ class UI():
 
         #ASSET TAB
         self.tabs = cmds.tabLayout(p=self.window, innerMarginWidth=5, innerMarginHeight=5)
-        asset_lay = cmds.columnLayout(p=self.tabs, adjustableColumn=True)
 
-        self.assetUI = asset.AssetUi(asset_lay)
+        self.assetUI = asset.AssetUi(self.tabs)
         
 
         #SHOT TAB
         shot_lay = cmds.columnLayout(p=self.tabs, adjustableColumn=True)
 
 
-        cmds.tabLayout( self.tabs, edit=True, tabLabel=((asset_lay, 'Asset'), (shot_lay, 'Shot')) )
+        cmds.tabLayout( self.tabs, edit=True, tabLabel=((self.assetUI, 'Asset'), (shot_lay, 'Shot')) )
 
         try:
             self.pipe_dir = self.loadPipelineDirectory()

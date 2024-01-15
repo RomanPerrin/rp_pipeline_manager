@@ -20,14 +20,16 @@ class AssetUi():
         self.parent_layout = parent_layout
         self.pipe_dir = ""
 
+        self.asset_lay = cmds.columnLayout(p=self.parent_layout, adjustableColumn=True)
+
         #List asset type
-        self.assetTypeScrollList = cmds.textScrollList('assetType', p=self.parent_layout, numberOfRows=5, allowMultiSelection=False, selectCommand=self.search)
+        self.assetTypeScrollList = cmds.textScrollList('assetType', p=self.asset_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=self.search)
 
         #search field
-        self.search_field = cmds.textField(p=self.parent_layout, sf=1, tcc=self.search)
+        self.search_field = cmds.textField(p=self.asset_lay, sf=1, tcc=self.search)
 
         #List assets
-        assets_lay = cmds.formLayout(p=self.parent_layout)
+        assets_lay = cmds.formLayout(p=self.asset_lay)
         assetsScrollList = cmds.textScrollList('assets', p=assets_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=self.updateStepScrollList)
         assetsAddButton = cmds.symbolButton('assetsAddButton', p=assets_lay, ann=f'add asset', i='pickHandlesComp', height=icon_size, width=icon_size, command=self.addAsset)
         # Attach the assetsScrollList
@@ -37,11 +39,11 @@ class AssetUi():
         cmds.formLayout(assets_lay, e=True, attachControl=[(assetsScrollList, "right", 0, assetsAddButton)])
 
         #List working step
-        self.stepScrollList = cmds.textScrollList('steps', p=self.parent_layout, numberOfRows=3, allowMultiSelection=False)
+        self.stepScrollList = cmds.textScrollList('steps', p=self.asset_lay, numberOfRows=3, allowMultiSelection=False)
 
-        cmds.button(p=self.parent_layout, label="open", command=self.openLastEdit)
-        cmds.button(p=self.parent_layout, label="publish", command=partial(publish.publish, self))
-        cmds.button(p=self.parent_layout, label="import as reference", command=self.importAsReference)
+        cmds.button(p=self.asset_lay, label="open", command=self.openLastEdit)
+        cmds.button(p=self.asset_lay, label="publish", command=partial(publish.publish, self))
+        cmds.button(p=self.asset_lay, label="import as reference", command=self.importAsReference)
 
         try:
             self.getAssetsDirectory()
