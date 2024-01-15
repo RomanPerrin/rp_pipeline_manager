@@ -109,7 +109,8 @@ class UI():
         filename = cmds.fileDialog2(fileMode=fileMode, caption=caption)[0]
         cmds.textField(self.pipeline_dir, e=True, text=filename)
         self.savePipelineDirectory(filename)
-        self.getPipelineDirectory()
+        dir = self.getPipelineDirectory()
+        self.assetUI.pipe_dir = dir
         self.assetUI.updateAssetTypeScrollList()
     
     def savePipelineDirectory(self, pipeline_dir, *args):

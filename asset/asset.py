@@ -19,6 +19,7 @@ row_size = main_window.row_size
 class AssetUi():
     def __init__(self, parent_layout) -> None:
         self.parent_layout = parent_layout
+        self.pipe_dir = ""
 
         #List asset type
         self.assetTypeScrollList = cmds.textScrollList('assetType', p=self.parent_layout, numberOfRows=5, allowMultiSelection=False, selectCommand=self.search)
@@ -72,7 +73,7 @@ class AssetUi():
         return assetList
 
     def getAssetsDirectory(self, *args):
-        asset_dir = os.path.join(self.getPipelineDirectory(), '04_asset').replace(os.sep, '/')
+        asset_dir = os.path.join(self.pipe_dir, '04_asset').replace(os.sep, '/')
         if not os.path.isdir(asset_dir):
             raise Exception('Assets folder name not found')
 
