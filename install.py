@@ -2,6 +2,7 @@
 __author__ = 'Roman PERRIN'
 #Author: Roman PERRIN
 
+#Libraries
 from maya import cmds
 from maya import mel
 import os
@@ -9,6 +10,9 @@ import sys
 import shutil
 import platform
 import subprocess
+
+#files
+
 
 account = 'RomanPerrin'
 repo_name = 'rp_pipeline_manager'

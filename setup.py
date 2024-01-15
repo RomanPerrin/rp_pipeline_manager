@@ -2,10 +2,14 @@
 __author__ = 'Roman PERRIN'
 #Author: Roman PERRIN
 
+#Libraries
 import maya.cmds as cmds
 import os
 import maya.mel as mel
+
+#files
 import rp_pipeline_manager
+
 
 path = rp_pipeline_manager.__path__[0]
 
@@ -26,7 +30,7 @@ def installShelf() -> None:
                 label = "Pipeline Manager",
                 useAlpha = 1,
                 style = "iconOnly",
-                image = f"{path}/icone2.svg",
+                image = f"{path}/icons/icone2.svg",
                 command = "import rp_pipeline_manager\nfrom importlib import reload\nreload(rp_pipeline_manager)\nrp_pipeline_manager.main_window.UI()",
                 sourceType = "python",
                 commandRepeatable = 1,
