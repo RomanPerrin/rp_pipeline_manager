@@ -3,9 +3,9 @@ __author__ = 'Roman PERRIN'
 #Author: Roman PERRIN
 
 #Libraries
-from .. import main_window
 import maya.cmds as cmds
 import os
+import shutil
 
 #files
 
@@ -65,19 +65,16 @@ class addShotUI():
         cmds.showWindow(self.window)
     
     def create(self, *args):
-        shot_name = self.pipe_dir.split('/')[-1] + cmds.textField(self.name, q=True, text=True)
-        print(shot_name)
-        return
-        asset_dir = os.path.join(self.pipe_dir, shot_name).replace(os.sep, '/')
-        os.makedirs(asset_dir, exist_ok=True)
+        shot_name = self.pipe_dir.split('/')[-1] + '_' + cmds.textField(self.name, q=True, text=True)
+        shot_dir = os.path.join(self.pipe_dir, shot_name).replace(os.sep, '/')
+        os.makedirs(shot_dir, exist_ok=True)
         
-        os.makedirs(os.path.join(self.pipe_dir, self.assets_dir, shot_name, 'paint_2D'), exist_ok=True)
-        os.makedirs(os.path.join(self.pipe_dir, self.assets_dir, shot_name, 'paint_3D'), exist_ok=True)
-        os.makedirs(os.path.join(self.pipe_dir, self.assets_dir, shot_name, 'sculpt'), exist_ok=True)
-        os.makedirs(os.path.join(self.pipe_dir, self.assets_dir, shot_name, 'houdini'), exist_ok=True)
-        self.createProject(os.path.join(asset_dir))
+        os.makedirs(os.path.join(shot_dir, 'camera'), exist_ok=True)
+        os.makedirs(os.path.join(shot_dir, 'houdini'), exist_ok=True)
+        os.makedirs(os.path.join(shot_dir, 'nuke'), exist_ok=True)
+        self.createProject(os.path.join(shot_dir, 'maya'))
         
-        print(f'{self.assets_dir} created at {asset_dir}')
+        print(f'{shot_name} created at {shot_dir}')
         cmds.deleteUI(self.window)
         self.obj.search()
         cmds.textScrollList('assets', e=True, si=shot_name)
@@ -90,24 +87,14 @@ class addShotUI():
         os.makedirs(os.path.join(project_dir, 'data'), exist_ok=True)
         os.makedirs(os.path.join(project_dir, 'images'), exist_ok=True)
         os.makedirs(os.path.join(project_dir, 'movies'), exist_ok=True)
-        os.makedirs(os.path.join(project_dir, 'scenes', 'edit', 'assetLayout'), exist_ok=True)
-        os.makedirs(os.path.join(project_dir, 'scenes', 'edit', 'cloth'), exist_ok=True)
-        os.makedirs(os.path.join(project_dir, 'scenes', 'edit', 'dressing'), exist_ok=True)
-        os.makedirs(os.path.join(project_dir, 'scenes', 'edit', 'groom'), exist_ok=True)
-        os.makedirs(os.path.join(project_dir, 'scenes', 'edit', 'lookdev'), exist_ok=True)
-        os.makedirs(os.path.join(project_dir, 'scenes', 'edit', 'modeling'), exist_ok=True)
-        os.makedirs(os.path.join(project_dir, 'scenes', 'edit', 'rig'), exist_ok=True)
-        os.makedirs(os.path.join(project_dir, 'scenes', 'publish', 'assetLayout'), exist_ok=True)
-        os.makedirs(os.path.join(project_dir, 'scenes', 'publish', 'cloth'), exist_ok=True)
-        os.makedirs(os.path.join(project_dir, 'scenes', 'publish', 'dressing'), exist_ok=True)
-        os.makedirs(os.path.join(project_dir, 'scenes', 'publish', 'groom'), exist_ok=True)
-        os.makedirs(os.path.join(project_dir, 'scenes', 'publish', 'lightRig'), exist_ok=True)
-        os.makedirs(os.path.join(project_dir, 'scenes', 'publish', 'lookdev'), exist_ok=True)
-        os.makedirs(os.path.join(project_dir, 'scenes', 'publish', 'modeling'), exist_ok=True)
-        os.makedirs(os.path.join(project_dir, 'scenes', 'publish', 'rig'), exist_ok=True)
-        os.makedirs(os.path.join(project_dir, 'scenes', 'publish', 'shader'), exist_ok=True)
+        os.makedirs(os.path.join(project_dir, 'scenes', 'anim'), exist_ok=True)
+        os.makedirs(os.path.join(project_dir, 'scenes', 'layout'), exist_ok=True)
+        os.makedirs(os.path.join(project_dir, 'scenes', 'render'), exist_ok=True)
         os.makedirs(os.path.join(project_dir, 'sound'), exist_ok=True)
-        os.makedirs(os.path.join(project_dir, 'sourceimages'), exist_ok=True)
+        os.makedirs(os.path.join(project_dir, 'sourceimages', '3dPaintTextures'), exist_ok=True)
+        os.makedirs(os.path.join(project_dir, 'sourceimages', 'environment'), exist_ok=True)
+        os.makedirs(os.path.join(project_dir, 'sourceimages', 'imagePlane'), exist_ok=True)
+        os.makedirs(os.path.join(project_dir, 'sourceimages', 'imageSequence'), exist_ok=True)
         
         source = os.path.join(os.path.dirname(__file__), 'workspace.mel')
         source = source.replace(os.sep, '/')
