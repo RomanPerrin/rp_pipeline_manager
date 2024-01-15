@@ -33,7 +33,7 @@ class ShotUi():
         cmds.formLayout(sequence_lay, e=True, attachControl=[(scrollList, "right", 0, addButton)])
 
         openSqLayoutButton = cmds.button(p=self.layout, label="open seq layout", command=self.openSqLayout)
-        createShotLayoutButton = cmds.button(p=self.layout, label="open seq layout", command=self.createShotLayoutLayout)
+        createShotLayoutButton = cmds.button(p=self.layout, label="create shot layout", command=self.createShotLayoutLayout)
 
         sh_text = cmds.text(label="Shot", p=self.layout)
 
@@ -67,7 +67,10 @@ class ShotUi():
                                        (createShotLayoutButton, 'top', 5, sequence_lay),
                                        (createShotLayoutButton, 'left', 5, openSqLayoutButton),
                                        (sh_text, 'top', 5, openSqLayoutButton),
-                                       (shot_lay, 'top', 5, sh_text)])
+                                       (shot_lay, 'top', 5, sh_text)],
+                        
+                        attachPosition=[(openSqLayoutButton, 'right', 5, 50),
+                                        (createShotLayoutButton, 'left', 0, 50)])
 
 
     def updateSequenceScrollList(self, *args):
