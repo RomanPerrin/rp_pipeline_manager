@@ -66,6 +66,7 @@ class addShotUI():
     
     def create(self, *args):
         shot_name = self.pipe_dir.split('/')[-1] + '_' + cmds.textField(self.name, q=True, text=True)
+        print(shot_name)
         shot_dir = os.path.join(self.pipe_dir, shot_name).replace(os.sep, '/')
         print(shot_dir)
         os.makedirs(shot_dir, exist_ok=True)
