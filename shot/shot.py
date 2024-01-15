@@ -9,7 +9,7 @@ import os
 from functools import partial
 
 #files
-import main_window
+from rp_pipeline_manager import main_window
 
 icon_size = 35
 row_size = 35
