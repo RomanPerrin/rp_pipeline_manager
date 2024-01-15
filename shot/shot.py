@@ -9,7 +9,7 @@ import os
 from functools import partial
 
 #files
-from rp_pipeline_manager import main_window
+from .. import main_window
 
 icon_size = 35
 row_size = 35
@@ -17,7 +17,7 @@ row_size = 35
 class ShotUi():
     def __init__(self, parent_layout) -> None:
         self.parent_layout = parent_layout
-        self.pipe_dir = ""
+        self.pipe_dir = main_window.pipe_dir
 
         self.layout = cmds.formLayout(p=self.parent_layout)
 
@@ -84,10 +84,25 @@ class ShotUi():
                                         (createConformityLayoutButton, 'left', 5, 50),
                                         (openShotRenderButton, 'right', 5, 50),
                                         (openShotAnimButton, 'left', 5, 50)])
+    
+        try:
+            self.updateSequenceScrollList()
+        except:
+            pass
 
 
     def updateSequenceScrollList(self, *args):
         print("update sequence")
+        sequence_list = []
+        if self.pipe_dir:
+            self.sequence_dir = os.path.join(self.pipe_dir, "05_shot", "_master_layout")
+            for dir in os.listdir(self.sequence_dir):
+                if os.path.isdir(dir):
+                    sequence_list.append(dir)
+        print(sequence_list)
+        cmds.textScrollList('sequence', e=True, removeAll=True)
+        cmds.textScrollList('sequence', e=True, append=sequence_list)
+        return sequence_list
 
     def addSequence(self, *args):
         print("adding sequence")

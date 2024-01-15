@@ -11,6 +11,7 @@ from functools import partial
 #files
 from . import publish
 from . import addAsset
+from .. import main_window
 
 icon_size = 35
 row_size = 35
@@ -18,7 +19,7 @@ row_size = 35
 class AssetUi():
     def __init__(self, parent_layout) -> None:
         self.parent_layout = parent_layout
-        self.pipe_dir = ""
+        self.pipe_dir = main_window.pipe_dir
 
         self.asset_lay = cmds.formLayout(p=self.parent_layout)
 

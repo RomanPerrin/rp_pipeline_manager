@@ -19,6 +19,7 @@ from rp_pipeline_manager.shot import shot
 
 icon_size = 35
 row_size = 35
+pipe_dir = ""
 
 #self.pipe_dir/self.selectedAssetType()/self.selectedAssets()/maya/scenes/edit/self.selectedStep()
 
@@ -37,6 +38,7 @@ class UI():
         cmds.optionVar(iv=('rfmExtensionsInChannelBox', 0))
     
     def UI(self, *args):
+        global pipe_dir
         size = (200, 400)
         
         self.window = f"rp_pipeline_manager"
@@ -75,11 +77,11 @@ class UI():
         cmds.tabLayout( self.tabs, edit=True, tabLabel=((self.assetUI.asset_lay, 'Asset'), (self.shotUI.layout, 'Shot')) )
 
         try:
-            self.pipe_dir = self.loadPipelineDirectory()
-            cmds.textField(self.pipeline_dir, e=True, text=self.pipe_dir)
+            pipe_dir = self.loadPipelineDirectory()
+            cmds.textField(self.pipeline_dir, e=True, text=pipe_dir)
             self.getPipelineDirectory()
-            self.assetUI.pipe_dir = self.pipe_dir
             self.assetUI.updateAssetTypeScrollList()
+            self.shotUI.updateSequenceScrollList()
         except:
             pass
         
@@ -103,7 +105,8 @@ class UI():
         return
 
     def openDirectory(self, *args):
-        dir = os.path.normpath(self.pipe_dir)
+        global pipe_dir
+        dir = os.path.normpath(pipe_dir)
         os.popen(fr'explorer "{dir}"')
 
     def fileDialog(self, fileMode, caption, *args):
@@ -121,7 +124,8 @@ class UI():
             return json.load(file)
     
     def getPipelineDirectory(self, *args):
-        self.pipe_dir = cmds.textField(self.pipeline_dir, q=True, text=True)
+        global pipe_dir
+        pipe_dir = cmds.textField(self.pipeline_dir, q=True, text=True)
         return cmds.textField(self.pipeline_dir, q=True, text=True)
     
     
