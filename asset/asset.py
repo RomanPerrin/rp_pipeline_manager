@@ -20,7 +20,7 @@ class AssetUi():
         self.parent_layout = parent_layout
         self.pipe_dir = ""
 
-        self.asset_lay = cmds.columnLayout(p=self.parent_layout, adjustableColumn=True)
+        self.asset_lay = cmds.columnLayout(p=self.parent_layout, adjustableColumn=1)
 
         #List asset type
         self.assetTypeScrollList = cmds.textScrollList('assetType', p=self.asset_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=self.search)
@@ -33,7 +33,7 @@ class AssetUi():
         assetsScrollList = cmds.textScrollList('assets', p=assets_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=self.updateStepScrollList)
         assetsAddButton = cmds.symbolButton('assetsAddButton', p=assets_lay, ann=f'add asset', i='pickHandlesComp', height=icon_size, width=icon_size, command=self.addAsset)
         # Attach the assetsScrollList
-        cmds.formLayout(assets_lay, e=True, attachForm=[(assetsScrollList, "left", 0), (assetsScrollList, "top", 0)])
+        cmds.formLayout(assets_lay, e=True, attachForm=[(assetsScrollList, "left", 0), (assetsScrollList, "top", 0), (assetsScrollList, "bottom", 0)])
         # Attach the assetsAddButton
         cmds.formLayout(assets_lay, e=True, attachForm=[(assetsAddButton, "right", 0), (assetsAddButton, "top", 0)])
         cmds.formLayout(assets_lay, e=True, attachControl=[(assetsScrollList, "right", 0, assetsAddButton)])
@@ -44,6 +44,25 @@ class AssetUi():
         cmds.button(p=self.asset_lay, label="open", command=self.openLastEdit)
         cmds.button(p=self.asset_lay, label="publish", command=partial(publish.publish, self))
         cmds.button(p=self.asset_lay, label="import as reference", command=self.importAsReference)
+
+        # cmds.formLayout( self.asset_lay, edit=True,
+        #                 attachForm=[(self.assetTypeScrollList, 'top', 5),
+        #                             (self.assetTypeScrollList, 'left', 5),
+        #                             (self.assetTypeScrollList, 'right', 5),
+
+        #                             (self.search_field, 'left', 5),
+        #                             (self.search_field, 'right', 5),
+        #                             (column, 'top', 5),
+        #                             (column, 'right', 5) ],
+
+        #                 attachControl=[(self.search_field, 'top', 5, self.assetTypeScrollList),
+        #                                (column, 'bottom', 5, b2)],
+
+        #                 attachPosition=[(b1, 'right', 5, 75),
+        #                                 (column, 'left', 0, 75)],
+
+        #                 attachNone=(b2, 'top') )
+
 
         try:
             self.getAssetsDirectory()
