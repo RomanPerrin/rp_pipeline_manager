@@ -15,6 +15,8 @@ import install
 #files
 from asset import asset
 
+icon_size = 35
+row_size = 35
 
 #self.pipe_dir/self.selectedAssetType()/self.selectedAssets()/maya/scenes/edit/self.selectedStep()
 
