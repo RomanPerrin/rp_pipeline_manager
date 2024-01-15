@@ -20,7 +20,7 @@ class AssetUi():
         self.parent_layout = parent_layout
         self.pipe_dir = ""
 
-        self.asset_lay = cmds.columnLayout(p=self.parent_layout, adjustableColumn=1)
+        self.asset_lay = cmds.formLayout(p=self.parent_layout)
 
         #List asset type
         self.assetTypeScrollList = cmds.textScrollList('assetType', p=self.asset_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=self.search)
@@ -41,27 +41,34 @@ class AssetUi():
         #List working step
         self.stepScrollList = cmds.textScrollList('steps', p=self.asset_lay, numberOfRows=3, allowMultiSelection=False)
 
-        cmds.button(p=self.asset_lay, label="open", command=self.openLastEdit)
-        cmds.button(p=self.asset_lay, label="publish", command=partial(publish.publish, self))
-        cmds.button(p=self.asset_lay, label="import as reference", command=self.importAsReference)
+        self.openButton = cmds.button(p=self.asset_lay, label="open", command=self.openLastEdit)
+        self.publishButton = cmds.button(p=self.asset_lay, label="publish", command=partial(publish.publish, self))
+        self.importRefButton = cmds.button(p=self.asset_lay, label="import as reference", command=self.importAsReference)
 
-        # cmds.formLayout( self.asset_lay, edit=True,
-        #                 attachForm=[(self.assetTypeScrollList, 'top', 5),
-        #                             (self.assetTypeScrollList, 'left', 5),
-        #                             (self.assetTypeScrollList, 'right', 5),
+        cmds.formLayout( self.asset_lay, edit=True,
+                        attachForm=[(self.assetTypeScrollList, 'top', 5),
+                                    (self.assetTypeScrollList, 'left', 5),
+                                    (self.assetTypeScrollList, 'right', 5),
 
-        #                             (self.search_field, 'left', 5),
-        #                             (self.search_field, 'right', 5),
-        #                             (column, 'top', 5),
-        #                             (column, 'right', 5) ],
+                                    (self.search_field, 'left', 5),
+                                    (self.search_field, 'right', 5),
+                                    (assets_lay, 'left', 5),
+                                    (assets_lay, 'right', 5),
+                                    (self.stepScrollList, 'left', 5),
+                                    (self.stepScrollList, 'right', 5),
+                                    (self.openButton, 'left', 5),
+                                    (self.openButton, 'right', 5),
+                                    (self.publishButton, 'left', 5),
+                                    (self.publishButton, 'right', 5),
+                                    (self.importRefButton, 'left', 5),
+                                    (self.importRefButton, 'right', 5),
+                                    (self.importRefButton, 'bottom', 5) ],
 
-        #                 attachControl=[(self.search_field, 'top', 5, self.assetTypeScrollList),
-        #                                (column, 'bottom', 5, b2)],
-
-        #                 attachPosition=[(b1, 'right', 5, 75),
-        #                                 (column, 'left', 0, 75)],
-
-        #                 attachNone=(b2, 'top') )
+                        attachControl=[(self.search_field, 'top', 5, self.assetTypeScrollList),
+                                       (assets_lay, 'top', 5, self.search_field),
+                                       (self.publishButton, 'bottom', 5, self.importRefButton),
+                                       (self.openButton, 'bottom', 5, self.publishButton),
+                                       (assets_lay, 'bottom', 5, self.openButton)])
 
 
         try:
