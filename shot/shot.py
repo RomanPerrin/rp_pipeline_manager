@@ -39,7 +39,7 @@ class ShotUi():
         sh_text = cmds.text(label="Shot", p=self.layout)
 
         shot_lay = cmds.formLayout(p=self.layout)
-        self.shot_scrollList = cmds.textshot_scrollList("shot", p=shot_lay, numberOfRows=5, allowMultiSelection=False)
+        self.shot_scrollList = cmds.textScrollList("shot", p=shot_lay, numberOfRows=5, allowMultiSelection=False)
         addButton = cmds.symbolButton('shotAddButton', p=shot_lay, ann=f'add shot', i='pickHandlesComp', height=icon_size, width=icon_size, command=partial(self.addShot))
         # Attach the assetsshot_scrollList
         cmds.formLayout(shot_lay, e=True, attachForm=[(self.shot_scrollList, "left", 0), (self.shot_scrollList, "top", 0), (self.shot_scrollList, "bottom", 0)])
