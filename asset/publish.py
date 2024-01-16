@@ -18,11 +18,12 @@ def publish(self, *args):
                 path='please select an item and try again', button=['OK'], primary=['OK'])
         return
     current_scene = cmds.file(q=1, sn=1)
-    os.path.dirname(self.opened_scene)
+
     step = os.path.dirname(self.opened_scene).split('/')[-1]
     dir =  os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(self.opened_scene)))))
     asset = dir.split('/')[-1]
-    file_name = os.path.join(dir, "scenes", "publish", step, f"{asset}_publish_{step}")
+    assetType = os.path.dirname(dir).split('/')[-1]
+    file_name = os.path.join(dir, "scenes", "publish", step, f"{asset}_publish_{step}").replace(os.sep, "/")
     print(file_name)
     #saves scene
     if cmds.file(q=True, sceneName=True):
@@ -34,7 +35,7 @@ def publish(self, *args):
         
         print("deactivating smooth preview")
         cmds.displaySmoothness(polygonObject=0)
-        if self.selectedStep() == 'modeling':
+        if step == 'modeling':
             print('fixing non-manifold')
             cmds.delete(cmds.polyInfo(nmv=1, nuv=1, nue=1, nme=1))
             print('fixing lamina faces')
@@ -44,9 +45,9 @@ def publish(self, *args):
             cmds.makeIdentity(t=1, r=1, s=1)
             cmds.polyClean()
             sel = cmds.ls(geometry=True)
-            if self.selectedAssetType() == 'prop':
+            if assetType == 'prop':
                 print('creating set geo cache')
-                cmds.sets(cmds.listRelatives(sel, p=1), n=f'set_geo_cache {self.selectedAssets()}')
+                cmds.sets(cmds.listRelatives(sel, p=1), n=f'set_geo_cache {asset}')
             # cmds.unloadPlugin('RenderMan_for_Maya.py', force=True)
             # print('assigning Lambert')
             # for i in sel:
@@ -79,7 +80,7 @@ def publish(self, *args):
         deleteUnusedPlugins()
         print("deleting namespaces")
         deleteNamespaces()
-        if self.selectedStep() != 'rig':
+        if step != 'rig':
             print("deleting intermediate shapes")
             all_meshes = cmds.ls( type="mesh", ap=True )
             no_intermediate_meshes = cmds.ls( type="mesh", ap=True, noIntermediate=True )
