@@ -23,7 +23,7 @@ def publish(self, *args):
     dir =  os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(self.opened_scene)))))
     asset = dir.split('/')[-1]
     assetType = os.path.dirname(dir).split('/')[-1]
-    file_name = os.path.join(dir, "scenes", "publish", step, f"{asset}_publish_{step}").replace(os.sep, "/")
+    file_name = os.path.join(dir, "maya", "scenes", "publish", step, f"{asset}_publish_{step}").replace(os.sep, "/")
     print(file_name)
     #saves scene
     if cmds.file(q=True, sceneName=True):
