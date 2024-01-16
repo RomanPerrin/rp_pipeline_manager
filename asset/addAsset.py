@@ -3,9 +3,9 @@ __author__ = 'Roman PERRIN'
 #Author: Roman PERRIN
 
 #Libraries
-from rp_pipeline_manager import main_window
 import maya.cmds as cmds
 import os
+import shutil
 
 #files
 
