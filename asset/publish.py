@@ -61,8 +61,8 @@ def publish(self, *args):
                 cmds.delete(node)
             except:
                 print('Problem deleting unknown node "'+node+'"!')
-        print('deleting unused shading nodes')
-        deleteUnusedShadingNodes()
+        # print('deleting unused shading nodes')
+        # deleteUnusedShadingNodes()
     
         print('deleting display layers')
         deleteDisplayLayers()
