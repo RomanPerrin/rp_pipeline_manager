@@ -51,8 +51,8 @@ class ShotUi():
         openShLayoutButton = cmds.button(p=self.layout, label="open shot layout", command=self.openShLayout)
         createConformityLayoutButton = cmds.button(p=self.layout, label="create conformity layout", command=self.createConformityLayoutLayout)
         
-        openShotRenderButton = cmds.button(p=self.layout, label="open shot layout", command=self.openShotRender)
-        openShotAnimButton = cmds.button(p=self.layout, label="create conformity layout", command=self.openShotAnim)
+        openShotRenderButton = cmds.button(p=self.layout, label="open shot render", command=self.openShotRender)
+        openShotAnimButton = cmds.button(p=self.layout, label="open shot anim", command=self.openShotAnim)
 
         cmds.formLayout( self.layout, edit=True,
                         attachForm=[(sq_text, 'top', 5),
@@ -125,9 +125,8 @@ class ShotUi():
         cmds.file(rename=filename)
         cmds.file(f=True, type='mayaAscii', save=True )
         
-    
     def createShotLayoutLayout(self, *args):
-        print("creating shot layout")
+        # print("creating shot layout")
         sequence_name = cmds.textScrollList('sequence', q=True, si=True)[0]
         shot_list =self.getShotList(sequence_name)
         
@@ -137,10 +136,13 @@ class ShotUi():
 
         filename = os.path.join(self.sequence_dir, "_master_layout", f"{sequence_name}_master_layout", f"{sequence_name}_master_layout.ma").replace(os.sep, '/')
         for i in range(len(shot_list)):
-            destination = os.path.join(self.shot_dir, shot_list[i], "maya", "scenes", "layout", f"{shot_list[i]}_shot_layout").replace(os.sep, '/')
-            shutil.copy(filename, destination)
+            destination = os.path.join(self.shot_dir, shot_list[i], "maya", "scenes", "layout", f"{shot_list[i]}_shot_layout.ma").replace(os.sep, '/')
+            if not os.path.exists(destination):
+                shutil.copy(filename, destination)
+                print(f"creating shot layout for {shot_list[i]}")
+                pass
+            print(f"shot layout already exists for {shot_list[i]}")
         
-
     def getShotList(self, sequence, *args):
         shot_list = []
         if self.pipe_dir:
@@ -165,6 +167,13 @@ class ShotUi():
     
     def openShLayout(self, *args):
         print("opening shot layout")
+        shot_name = cmds.textScrollList('shot', q=True, si=True)[0]
+        filename = os.path.join(self.shot_dir, shot_name, "maya", "scenes", "layout", f"{shot_name}_shot_layout.ma").replace(os.sep, '/')
+        if not os.path.exists(filename):
+            cmds.warning(f"no shot layout found for {shot_name}")
+            return
+            
+        cmds.file(filename, open=True, force=True)
 
     def createConformityLayoutLayout(self, *args):
         print("creating conformity layout")
