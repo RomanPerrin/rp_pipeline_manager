@@ -39,10 +39,7 @@ def publish(self, *args):
             print('fixing non-manifold')
             cmds.delete(cmds.polyInfo(nmv=1, nuv=1, nue=1, nme=1))
             print('fixing lamina faces')
-            try:
-                cmds.delete(cmds.polyInfo(lf=1))
-            except Exception as error:
-                print(error)
+            cmds.delete(cmds.polyInfo(lf=1))
             cmds.makeIdentity(a=1)
             cmds.DeleteHistory(cmds.ls())
             cmds.makeIdentity(t=1, r=1, s=1)
