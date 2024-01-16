@@ -102,7 +102,7 @@ def publish(self, *args):
         print("publish scene saved")
     
     except Exception as error:
-        cmds.error("error during publish " + str(error))
+        cmds.error("error during publish ", error)
     
     cmds.file(current_scene, open=True , force=True)
 
