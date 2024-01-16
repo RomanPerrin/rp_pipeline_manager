@@ -3,7 +3,6 @@ __author__ = 'Roman PERRIN'
 #Author: Roman PERRIN
 
 #Libraries
-from importlib.resources import Package
 import maya.cmds as cmds
 import os
 import shutil
@@ -79,7 +78,7 @@ class addAssetUI():
         os.makedirs(os.path.join(project_dir, 'sound'), exist_ok=True)
         os.makedirs(os.path.join(project_dir, 'sourceimages'), exist_ok=True)
         
-        source = os.path.join(Package.__path__[0], 'workspace.mel')
+        source = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'workspace.mel')
         source = source.replace(os.sep, '/')
         destination = os.path.join(project_dir, 'workspace.mel')
         destination = destination.replace(os.sep, '/')
