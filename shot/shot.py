@@ -81,15 +81,15 @@ class ShotUi():
                                        (sh_text, 'top', 5, openSqLayoutButton),
                                        (shot_lay, 'top', 5, sh_text),
                                        (shot_lay, 'bottom', 5, openShLayoutButton),
-                                       (openShLayoutButton, 'bottom', 5, openConformityLayoutButton),
-                                       (createConformityLayoutButton, 'bottom', 5, openConformityLayoutButton),
+                                       (openShLayoutButton, 'bottom', 5, createConformityLayoutButton),
+                                       (createConformityLayoutButton, 'bottom', 5, openShotAnimButton),
                                        (openConformityLayoutButton, 'bottom', 5, openShotAnimButton),
                                        (openShotAnimButton, 'bottom', 5, openShotRenderButton)],
                         
                         attachPosition=[(openSqLayoutButton, 'right', 5, 50),
                                         (createShotLayoutButton, 'left', 5, 50),
-                                        (openShLayoutButton, 'right', 5, 50),
-                                        (createConformityLayoutButton, 'left', 5, 50)])
+                                        (createConformityLayoutButton, 'right', 5, 50),
+                                        (openConformityLayoutButton, 'left', 5, 50)])
     
         try:
             self.updateSequenceScrollList()
@@ -180,7 +180,7 @@ class ShotUi():
         cmds.file(filename, open=True, force=True)
 
     def createConformityLayoutLayout(self, *args):
-        print("creating conformity layout")
+        # print("creating conformity layout")
         shot_name = cmds.textScrollList('shot', q=True, si=True)[0]
         shot_layout = os.path.join(self.shot_dir, shot_name, "maya", "scenes", "layout", f"{shot_name}_shot_layout.ma")
         if not os.path.exists(shot_layout):
@@ -192,10 +192,17 @@ class ShotUi():
             shutil.copy(shot_layout, destination)
             print(f"creating conformity layout for {shot_name}")
             pass
-        print(f"conformity layout already exists for {shot_name}")
+        cmds.warning(f"conformity layout already exists for {shot_name}")
 
     def openConformityLayout(self, *args):
         print("opening conformity layout")
+        shot_name = cmds.textScrollList('shot', q=True, si=True)[0]
+        filename = os.path.join(self.shot_dir, shot_name, "maya", "scenes", "layout", f"{shot_name}_conformity_layout.ma")
+        if not os.path.exists(filename):
+            cmds.warning(f"no conformity layout found for {shot_name}")
+            return
+            
+        cmds.file(filename, open=True, force=True)
 
     def openShotAnim(self, *args):
         print("opening shot anim")
