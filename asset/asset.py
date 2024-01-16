@@ -218,6 +218,7 @@ class AssetUi():
 
         cmds.file(rename=os.path.join(edit_dir, f'{self.selectedAssets()}_edit_{self.selectedStep()}.ma'))
         cmds.file(f=True, type='mayaAscii', save=True )
+        self.opened_scene = os.path.join(edit_dir, f'{self.selectedAssets()}_edit_{self.selectedStep()}.ma')
 
         return
     

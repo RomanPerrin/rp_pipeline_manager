@@ -17,7 +17,11 @@ def publish(self, *args):
                 path='please select an item and try again', button=['OK'], primary=['OK'])
         return
     current_scene = cmds.file(q=1, sn=1)
-    file_name = os.path.join(self.getWorkingDirectory(), "scenes", "publish", self.selectedStep(), f"{self.selectedAssets()}_publish_{self.selectedStep()}")
+    os.path.dirname(self.opened_scene)
+    step = os.path.dirname(self.opened_scene).split('/')[-1]
+    dir =  os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(self.opened_scene)))))
+    asset = dir.split('/')[-1]
+    file_name = os.path.join(dir, "scenes", "publish", step, f"{asset}_publish_{step}")
     
     #saves scene
     if cmds.file(q=True, sceneName=True):
