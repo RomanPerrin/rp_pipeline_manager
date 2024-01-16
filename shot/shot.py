@@ -166,9 +166,9 @@ class ShotUi():
         addShotUI(self.shot_dir, self)
     
     def openShLayout(self, *args):
-        print("opening shot layout")
+        # print("opening shot layout")
         shot_name = cmds.textScrollList('shot', q=True, si=True)[0]
-        filename = os.path.join(self.shot_dir, shot_name, "maya", "scenes", "layout", f"{shot_name}_shot_layout.ma").replace(os.sep, '/')
+        filename = os.path.join(self.shot_dir, shot_name, "maya", "scenes", "layout", f"{shot_name}_shot_layout.ma")
         if not os.path.exists(filename):
             cmds.warning(f"no shot layout found for {shot_name}")
             return
@@ -177,6 +177,18 @@ class ShotUi():
 
     def createConformityLayoutLayout(self, *args):
         print("creating conformity layout")
+        shot_name = cmds.textScrollList('shot', q=True, si=True)[0]
+        shot_layout = os.path.join(self.shot_dir, shot_name, "maya", "scenes", "layout", f"{shot_name}_shot_layout.ma")
+        if not os.path.exists(shot_layout):
+           cmds.warning(f"no shot layout found for {shot_name}")
+           return
+
+        destination = os.path.join(self.shot_dir, shot_name, "maya", "scenes", "layout", f"{shot_name}_conformity_layout.ma")
+        if not os.path.exists(destination):
+            shutil.copy(shot_layout, destination)
+            print(f"creating conformity layout for {shot_name}")
+            pass
+        print(f"conformity layout already exists for {shot_name}")
 
     def openShotRender(self, *args):
         print("opening shot render")
