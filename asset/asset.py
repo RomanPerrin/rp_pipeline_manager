@@ -220,6 +220,7 @@ class AssetUi():
         cmds.file(f=True, type='mayaAscii', save=True )
 
         return
+    
     def importObjFromRef(self, *args):
         refs = cmds.ls(rf = True)
         for ref in refs:
