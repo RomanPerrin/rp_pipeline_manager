@@ -205,6 +205,7 @@ class AssetUi():
         #create new file
         if file_list:
             opened_file = cmds.file( edit_dir+'/'+file_list[-1], open=True , force=True)
+            self.opened_scene = edit_dir+'/'+file_list[-1]
             return
 
         cmds.file(f=True, new=True )
@@ -218,6 +219,7 @@ class AssetUi():
 
         cmds.file(rename=os.path.join(edit_dir, f'{self.selectedAssets()}_edit_{self.selectedStep()}.ma'))
         cmds.file(f=True, type='mayaAscii', save=True )
+        self.opened_scene = os.path.join(edit_dir, f'{self.selectedAssets()}_edit_{self.selectedStep()}.ma')
 
         return
     
