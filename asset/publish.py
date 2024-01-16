@@ -8,7 +8,7 @@ import maya.mel as mel
 import os
 
 #files
-from rp_pipeline_manager import cache_manager_v1_20
+from .. import cache_manager_v1_20
 
 def publish(self, *args):
     selection_export = cmds.ls(sl=1)
@@ -51,7 +51,7 @@ def publish(self, *args):
             print("renaming shapes")
             cache_manager_v1_20.rename_meshes(force=True, message=False)
         print("deleting volume aggregate")
-        self.deleteVolumAggregate()
+        deleteVolumAggregate()
         print("deleting unsused nodes")
         unknownNodes = cmds.ls(typ=('unknown','unknownDag'))
         print(unknownNodes)
@@ -62,18 +62,18 @@ def publish(self, *args):
             except:
                 print('Problem deleting unknown node "'+node+'"!')
         print('deleting unused shading nodes')
-        self.deleteUnusedShadingNodes()
+        deleteUnusedShadingNodes()
     
         print('deleting display layers')
-        self.deleteDisplayLayers()
+        deleteDisplayLayers()
         print('deleting empty sets')
-        self.deleteEmptySets()
+        deleteEmptySets()
         print('deleting render layer')
-        self.deleteRenderLayers()
+        deleteRenderLayers()
         print("remove unused plugins")
-        self.deleteUnusedPlugins()
+        deleteUnusedPlugins()
         print("deleting namespaces")
-        self.deleteNamespaces()
+        deleteNamespaces()
         if self.selectedStep() != 'rig':
             print("deleting intermediate shapes")
             all_meshes = cmds.ls( type="mesh", ap=True )
