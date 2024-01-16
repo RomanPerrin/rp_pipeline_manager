@@ -51,6 +51,7 @@ class ShotUi():
         openShLayoutButton = cmds.button(p=self.layout, label="open shot layout", command=self.openShLayout)
         createConformityLayoutButton = cmds.button(p=self.layout, label="create conformity layout", command=self.createConformityLayoutLayout)
         
+        openConformityLayoutButton = cmds.button(p=self.layout, label="open conformity layout", command=self.openConformityLayout)
         openShotRenderButton = cmds.button(p=self.layout, label="open shot render", command=self.openShotRender)
         openShotAnimButton = cmds.button(p=self.layout, label="open shot anim", command=self.openShotAnim)
 
@@ -66,26 +67,27 @@ class ShotUi():
                                     (shot_lay, 'right', 5),
                                     (openShLayoutButton, 'left', 5),
                                     (createConformityLayoutButton, 'right', 5),
-                                    (openShotRenderButton, 'left', 5),
+                                    (openConformityLayoutButton, 'left', 5),
+                                    (openConformityLayoutButton, 'right', 5),
+                                    (openShotAnimButton, 'left', 5),
                                     (openShotAnimButton, 'right', 5),
-                                    (openShotRenderButton, 'bottom', 5),
-                                    (openShotAnimButton, 'bottom', 5)],
+                                    (openShotRenderButton, 'left', 5),
+                                    (openShotRenderButton, 'right', 5),
+                                    (openShotRenderButton, 'bottom', 5)],
 
                         attachControl=[(sequence_lay, 'top', 5, sq_text),
                                        (openSqLayoutButton, 'top', 5, sequence_lay),
                                        (createShotLayoutButton, 'top', 5, sequence_lay),
                                        (sh_text, 'top', 5, openSqLayoutButton),
                                        (shot_lay, 'top', 5, sh_text),
-                                       (shot_lay, 'bottom', 5, openShLayoutButton),
-                                       (openShLayoutButton, 'bottom', 5, openShotRenderButton),
-                                       (createConformityLayoutButton, 'bottom', 5, openShotRenderButton)],
+                                       (shot_lay, 'bottom', 5, openConformityLayoutButton),
+                                       (openConformityLayoutButton, 'bottom', 5, openShotAnimButton),
+                                       (openShotAnimButton, 'bottom', 5, openShotRenderButton)],
                         
                         attachPosition=[(openSqLayoutButton, 'right', 5, 50),
                                         (createShotLayoutButton, 'left', 5, 50),
                                         (openShLayoutButton, 'right', 5, 50),
-                                        (createConformityLayoutButton, 'left', 5, 50),
-                                        (openShotRenderButton, 'right', 5, 50),
-                                        (openShotAnimButton, 'left', 5, 50)])
+                                        (createConformityLayoutButton, 'left', 5, 50)])
     
         try:
             self.updateSequenceScrollList()
