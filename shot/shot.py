@@ -7,6 +7,7 @@ import maya.cmds as cmds
 import maya.mel as mel
 import os
 from functools import partial
+import shutil
 
 #files
 from .. import main_window
@@ -127,15 +128,33 @@ class ShotUi():
     
     def createShotLayoutLayout(self, *args):
         print("creating shot layout")
+        sequence_name = cmds.textScrollList('sequence', q=True, si=True)[0]
+        shot_list =self.getShotList(sequence_name)
+        
+        if not f"{sequence_name}_master_layout" in os.listdir(os.path.join(self.sequence_dir, "_master_layout")):
+           cmds.warning(f"no sequence layout found for {sequence_name}")
+           return
 
-    def updateShotScrollList(self, *args):
-        # print("update shot")
+        filename = os.path.join(self.sequence_dir, "_master_layout", f"{sequence_name}_master_layout", f"{sequence_name}_master_layout.ma").replace(os.sep, '/')
+        for i in range(len(shot_list)):
+            destination = os.path.join(self.shot_dir, shot_list[i], "maya", "scenes", "layout", f"{shot_list[i]}_shot_layout").replace(os.sep, '/')
+            shutil.copy(filename, destination)
+        
+
+    def getShotList(self, sequence, *args):
         shot_list = []
         if self.pipe_dir:
-            self.shot_dir = os.path.join(self.pipe_dir, "05_shot", cmds.textScrollList('sequence', q=True, si=True)[0])
+            self.shot_dir = os.path.join(self.pipe_dir, "05_shot", sequence)
             for dir in os.listdir(self.shot_dir):
                 if os.path.isdir(os.path.join(self.shot_dir, dir)):
                     shot_list.append(dir)
+        
+        return shot_list
+
+    def updateShotScrollList(self, *args):
+        # print("update shot")
+        shot_list =self.getShotList(cmds.textScrollList('sequence', q=True, si=True)[0])
+
         # print(shot_list)
         cmds.textScrollList('shot', e=True, removeAll=True)
         cmds.textScrollList('shot', e=True, append=shot_list)

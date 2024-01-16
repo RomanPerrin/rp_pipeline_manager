@@ -40,7 +40,7 @@ class UI():
     
     def UI(self, *args):
         global pipe_dir
-        size = (300, 500)
+        size = (300, 600)
         
         self.window = f"rp_pipeline_manager"
         if install.getInstalledBranch() != 'main':
