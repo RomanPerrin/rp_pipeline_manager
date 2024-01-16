@@ -196,7 +196,7 @@ class ShotUi():
         cmds.warning(f"conformity layout already exists for {shot_name}")
 
     def openConformityLayout(self, *args):
-        print("opening conformity layout")
+        # print("opening conformity layout")
         shot_name = cmds.textScrollList('shot', q=True, si=True)[0]
         filename = os.path.join(self.shot_dir, shot_name, "maya", "scenes", "layout", f"{shot_name}_conformity_layout.ma")
         if not os.path.exists(filename):
@@ -206,7 +206,29 @@ class ShotUi():
         cmds.file(filename, open=True, force=True)
 
     def openShotAnim(self, *args):
-        print("opening shot anim")
+        # print("opening shot anim")
+        shot_name = cmds.textScrollList('shot', q=True, si=True)[0]
+        filename = os.path.join(self.shot_dir, shot_name, "maya", "scenes", "anim", f"{shot_name}_anim.ma")
+        
+        if not os.path.exists(filename):
+            source = os.path.join(self.shot_dir, shot_name, "maya", "scenes", "layout", f"{shot_name}_conformity_layout.ma")
+            shutil.copy(source, filename)
+            print(f"creating shot anim for {shot_name}")
+        
+        cmds.file(filename, open=True , f=True)
 
     def openShotRender(self, *args):
-        print("opening shot render")
+        # print("opening shot render")
+        shot_name = cmds.textScrollList('shot', q=True, si=True)[0]
+        filename = os.path.join(self.shot_dir, shot_name, "maya", "scenes", "render", f"{shot_name}_render.ma")
+        render_setup = ""
+        
+        if not os.path.exists(filename):
+            cmds.file(render_setup, open=True , f=True)
+            conformity_layout = os.path.join(self.shot_dir, shot_name, "maya", "scenes", "layout", f"{shot_name}_conformity_layout.ma")
+            cmds.file(conformity_layout, i=True , f=True)
+            print(f"creating shot render for {shot_name}")
+            cmds.file(f=True, type='mayaAscii', save=True )
+            return
+        
+        cmds.file(filename, open=True , force=True)
