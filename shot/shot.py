@@ -228,6 +228,7 @@ class ShotUi():
             conformity_layout = os.path.join(self.shot_dir, shot_name, "maya", "scenes", "layout", f"{shot_name}_conformity_layout.ma")
             cmds.file(conformity_layout, i=True , f=True)
             print(f"creating shot render for {shot_name}")
+            cmds.file(rename=filename)
             cmds.file(f=True, type='mayaAscii', save=True )
             return
         
