@@ -192,8 +192,11 @@ class ShotUi():
             pass
         print(f"conformity layout already exists for {shot_name}")
 
-    def openShotRender(self, *args):
-        print("opening shot render")
+    def openConformityLayout(self, *args):
+        print("opening conformity layout")
 
     def openShotAnim(self, *args):
         print("opening shot anim")
+
+    def openShotRender(self, *args):
+        print("opening shot render")
