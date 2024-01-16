@@ -3,6 +3,7 @@ __author__ = 'Roman PERRIN'
 #Author: Roman PERRIN
 
 #Libraries
+from fileinput import filename
 import maya.cmds as cmds
 import maya.mel as mel
 import os
@@ -22,7 +23,7 @@ def publish(self, *args):
     dir =  os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(self.opened_scene)))))
     asset = dir.split('/')[-1]
     file_name = os.path.join(dir, "scenes", "publish", step, f"{asset}_publish_{step}")
-    
+    print(file_name)
     #saves scene
     if cmds.file(q=True, sceneName=True):
         cmds.file(f=True, type='mayaAscii', save=True)
