@@ -19,8 +19,8 @@ def publish(self, *args):
         return
     current_scene = cmds.file(q=1, sn=1)
 
-    step = os.path.dirname(self.opened_scene).split('/')[-1]
-    dir =  os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(self.opened_scene)))))
+    step = os.path.dirname(current_scene).split('/')[-1]
+    dir =  os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(current_scene)))))
     asset = dir.split('/')[-1]
     assetType = os.path.dirname(dir).split('/')[-1]
     file_name = os.path.join(dir, "maya", "scenes", "publish", step, f"{asset}_publish_{step}").replace(os.sep, "/")
