@@ -79,12 +79,10 @@ class UI():
 
         try:
             pipe_dir = self.loadPipelineDirectory()
-            print(pipe_dir)
             cmds.textField(self.pipeline_dir, e=True, text=pipe_dir)
             self.getPipelineDirectory()
             self.assetUI.updateAssetTypeScrollList()
             self.shotUI.updateSequenceScrollList()
-            print(pipe_dir)
         except:
             pass
         
