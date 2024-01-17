@@ -19,12 +19,12 @@ def publish(self, *args):
         return
     current_scene = cmds.file(q=1, sn=1)
 
-    step = os.path.dirname(self.opened_scene).split('/')[-1]
-    dir =  os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(self.opened_scene)))))
+    step = os.path.dirname(current_scene).split('/')[-1]
+    dir =  os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(current_scene)))))
     asset = dir.split('/')[-1]
     assetType = os.path.dirname(dir).split('/')[-1]
     file_name = os.path.join(dir, "maya", "scenes", "publish", step, f"{asset}_publish_{step}").replace(os.sep, "/")
-    print(file_name)
+
     #saves scene
     if cmds.file(q=True, sceneName=True):
         cmds.file(f=True, type='mayaAscii', save=True)
@@ -99,7 +99,7 @@ def publish(self, *args):
         print(shaders + shadingGrps + sel)
         cmds.select(shaders + shadingGrps + sel, noExpand=True)
         cmds.file(file_name, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
-        print("publish scene saved")
+        print(f"publish scene saved at {file_name}")
     
     except Exception as error:
         print(error)
