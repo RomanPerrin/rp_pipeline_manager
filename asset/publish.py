@@ -88,6 +88,9 @@ def publish(self, *args):
                 cmds.delete(shape)
                 print("deleting", shape, "intermediate")
     	
+        if step == 'rig':
+            setIsHistoricallyInteresting(value=0)
+
         selection_export = [obj.split(':')[-1] for obj in selection_export]
         sel = cmds.ls(selection_export, dag=1, l=1)
         shadingGrps:List = cmds.listConnections(sel ,type='shadingEngine')
@@ -219,3 +222,32 @@ def deleteNamespaces(*args):
             if cmds.namespace(exists=namespace) is True:
                 cmds.namespace(removeNamespace=namespace, mergeNamespaceWithRoot=True)
                 print("deleting", namespace)
+
+def setIsHistoricallyInteresting(value=0):
+    '''
+    Set isHistoricallyInteresting attribute for all nodes in scene.
+
+    The historicallyInteresting attribute is 0 on nodes which are only interesting to programmers.
+    1 for the TDs, 2 for the users.
+
+    @param value        Set ihi to 0: off, 1:on, 2:also on
+
+    setIsHistoricallyInteresting(value=0)  # hide history from channelbox
+    setIsHistoricallyInteresting(value=2)  # show history (a bit more than Maya's default)
+    '''
+    # get all dependency nodes
+    cmds.select(r=True, allDependencyNodes=True)
+    allNodes = cmds.ls(sl=True)
+    # get all shapes
+    allNodes.extend(cmds.ls(shapes=True))
+
+    failed = []
+    for node in allNodes:
+        plug = '{}.ihi'.format(node)
+        if cmds.objExists(plug):
+            try:
+                cmds.setAttr(plug, value)
+            except:
+                failed.append(node)
+    if failed:
+        print("Skipped the following nodes {}".format(failed))
