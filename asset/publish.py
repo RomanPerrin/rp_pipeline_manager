@@ -23,7 +23,7 @@ def publish(self, *args):
     dir =  os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(current_scene)))))
     asset = dir.split('/')[-1]
     assetType = os.path.dirname(dir).split('/')[-1]
-    file_name = os.path.join(dir, "maya", "scenes", "publish", step, f"{asset}_publish_{step}").replace(os.sep, "/")
+    file_name = os.path.join(dir, "maya", "scenes", "publish", step, f"{asset}_publish_{step}.ma").replace(os.sep, "/")
 
     #saves scene
     if cmds.file(q=True, sceneName=True):
@@ -104,7 +104,7 @@ def publish(self, *args):
         cmds.file(file_name, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
         print(f"publish {step} scene saved at {file_name}")
         if step == 'modeling':
-            file_name_lookdev = os.path.join(dir, "maya", "scenes", "publish", 'lookdev', f"{asset}_publish_lookdev").replace(os.sep, "/")
+            file_name_lookdev = os.path.join(dir, "maya", "scenes", "publish", 'lookdev', f"{asset}_publish_lookdev.ma").replace(os.sep, "/")
             if not os.path.exists(file_name_lookdev):
                 cmds.file(file_name_lookdev, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
                 print(f"publish lookdev scene saved at {file_name_lookdev}")
