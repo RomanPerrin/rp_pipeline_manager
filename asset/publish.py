@@ -105,8 +105,9 @@ def publish(self, *args):
         print(f"publish {step} scene saved at {file_name}")
         if step == 'modeling':
             file_name_lookdev = os.path.join(dir, "maya", "scenes", "publish", 'lookdev', f"{asset}_publish_lookdev").replace(os.sep, "/")
-            cmds.file(file_name_lookdev, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
-            print(f"publish lookdev scene saved at {file_name_lookdev}")
+            if not os.path.exists(file_name_lookdev):
+                cmds.file(file_name_lookdev, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
+                print(f"publish lookdev scene saved at {file_name_lookdev}")
     
     except Exception as error:
         print(error)
