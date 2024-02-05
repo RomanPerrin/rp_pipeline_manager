@@ -177,7 +177,7 @@ class ShotUi():
         if not os.path.exists(filename):
             cmds.warning(f"no shot layout found for {shot_name}")
             return
-        
+        print(os.path.join(self.shot_dir, shot_name, "maya"))
         mel.eval(f'setProject "{os.path.join(self.shot_dir, shot_name, "maya")}"')
         cmds.file(filename, open=True, force=True)
 
