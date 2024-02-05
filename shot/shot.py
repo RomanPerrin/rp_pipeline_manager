@@ -177,7 +177,8 @@ class ShotUi():
         if not os.path.exists(filename):
             cmds.warning(f"no shot layout found for {shot_name}")
             return
-            
+        print(os.path.join(self.shot_dir, shot_name, "maya").replace(os.sep, "/"))
+        mel.eval(f'setProject "{os.path.join(self.shot_dir, shot_name, "maya").replace(os.sep, "/")}"')
         cmds.file(filename, open=True, force=True)
 
     def createConformityLayoutLayout(self, *args):
@@ -203,6 +204,7 @@ class ShotUi():
             cmds.warning(f"no conformity layout found for {shot_name}")
             return
             
+        mel.eval(f'setProject "{os.path.join(self.shot_dir, shot_name, "maya").replace(os.sep, "/")}"')
         cmds.file(filename, open=True, force=True)
 
     def openShotAnim(self, *args):
@@ -215,6 +217,7 @@ class ShotUi():
             shutil.copy(source, filename)
             print(f"creating shot anim for {shot_name}")
         
+        mel.eval(f'setProject "{os.path.join(self.shot_dir, shot_name, "maya").replace(os.sep, "/")}"')
         cmds.file(filename, open=True , f=True)
 
     def openShotRender(self, *args):
@@ -232,4 +235,5 @@ class ShotUi():
             cmds.file(f=True, type='mayaAscii', save=True )
             return
         
+        mel.eval(f'setProject "{os.path.join(self.shot_dir, shot_name, "maya").replace(os.sep, "/")}"')
         cmds.file(filename, open=True , force=True)
