@@ -102,7 +102,11 @@ def publish(self, *args):
         print(shaders + shadingGrps + sel)
         cmds.select(shaders + shadingGrps + sel, noExpand=True)
         cmds.file(file_name, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
-        print(f"publish scene saved at {file_name}")
+        print(f"publish {step} scene saved at {file_name}")
+        if step == 'modeling':
+            file_name_lookdev = os.path.join(dir, "maya", "scenes", "publish", 'lookdev', f"{asset}_publish_lookdev").replace(os.sep, "/")
+            cmds.file(file_name_lookdev, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
+            print(f"publish lookdev scene saved at {file_name}")
     
     except Exception as error:
         print(error)
