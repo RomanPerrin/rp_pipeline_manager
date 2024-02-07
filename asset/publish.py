@@ -102,8 +102,15 @@ def publish(self, *args):
         shaders = cmds.ls(cmds.listConnections(shadingGrps),materials=1)
         if not shaders:
             shaders = []
-        print(shaders + shadingGrps + sel)
-        cmds.select([f'set_geo_cache_{asset}'] + shaders + shadingGrps + sel + [f'set_geo_cache_{asset}'], noExpand=True)
+
+        geocacheList = []
+        sets = cmds.ls(sets=1)
+        for set in sets:
+            if 'set_geo_cache_' in set:
+                geocacheList.append(set)
+        
+        print(geocacheList + shaders + shadingGrps + sel)
+        cmds.select(geocacheList + shaders + shadingGrps + sel, noExpand=True)
         cmds.file(file_name, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
         print(f"publish {step} scene saved at {file_name}")
         if step == 'modeling':
