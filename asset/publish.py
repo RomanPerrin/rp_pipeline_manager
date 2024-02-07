@@ -83,7 +83,7 @@ def publish(self, *args):
             cache_manager_v1_20.rename_meshes(force=True, message=False)
         
         if assetType in ['prop', 'character']:
-            if not cmds.objExists(f'set_geocache_{asset}')
+            if not cmds.objExists(f'set_geocache_{asset}'):
                 print('creating set geo cache')
                 geocache = cmds.sets(cmds.listRelatives(sel, p=1), n=f'set_geocache_{asset}')
             
