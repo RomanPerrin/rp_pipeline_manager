@@ -107,10 +107,10 @@ def publish(self, *args):
 
         geocacheList = []
         sets = cmds.ls(sets=1)
-        for set in sets:
-            if 'set_geo_cache_' in set:
-                print(set)
-                geocacheList.append(set)
+        for i in sets:
+            if 'set_geo_cache_' in i:
+                print(i)
+                geocacheList.append(i)
         
         print(geocacheList + shaders + shadingGrps + sel)
         cmds.select(geocacheList + shaders + shadingGrps + sel, noExpand=True)
