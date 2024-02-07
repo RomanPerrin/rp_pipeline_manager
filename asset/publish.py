@@ -73,7 +73,7 @@ def publish(self, *args):
             sel = cmds.ls(geometry=True)
             if assetType in ['prop', 'character']:
                 print('creating set geo cache')
-                geocache = cmds.sets(cmds.listRelatives(sel, p=1), n=f'set_geo_cache {asset}')
+                geocache = cmds.sets(cmds.listRelatives(sel, p=1), n=f'set_geo_cache_{asset}')
             # cmds.unloadPlugin('RenderMan_for_Maya.py', force=True)
             # print('assigning Lambert')
             # for i in sel:
@@ -103,7 +103,7 @@ def publish(self, *args):
         if not shaders:
             shaders = []
         print(shaders + shadingGrps + sel)
-        cmds.select(shaders + shadingGrps + sel + [geocache], noExpand=True)
+        cmds.select([f'set_geo_cache_{asset}'] + shaders + shadingGrps + sel + [f'set_geo_cache_{asset}'], noExpand=True)
         cmds.file(file_name, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
         print(f"publish {step} scene saved at {file_name}")
         if step == 'modeling':
