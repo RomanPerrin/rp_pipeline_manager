@@ -73,9 +73,6 @@ def publish(self, *args):
             cmds.makeIdentity(t=1, r=1, s=1)
             cmds.polyClean()
             sel = cmds.ls(geometry=True)
-            if assetType in ['prop', 'character']:
-                print('creating set geo cache')
-                geocache = cmds.sets(cmds.listRelatives(sel, p=1), n=f'set_geo_cache_{asset}')
             # cmds.unloadPlugin('RenderMan_for_Maya.py', force=True)
             # print('assigning Lambert')
             # for i in sel:
@@ -84,6 +81,18 @@ def publish(self, *args):
             
             print("renaming shapes")
             cache_manager_v1_20.rename_meshes(force=True, message=False)
+        
+        if assetType in ['prop', 'character']:
+            if not cmds.objExists(f'set_geocache_{asset}')
+                print('creating set geo cache')
+                geocache = cmds.sets(cmds.listRelatives(sel, p=1), n=f'set_geocache_{asset}')
+            
+            geocacheList = []
+            sets = cmds.ls(sets=1)
+            for i in sets:
+                if 'set_geocache_' in i:
+                    print(i)
+                    geocacheList.append(i)
 
         if step != 'rig':
             print("deleting intermediate shapes")
@@ -105,13 +114,6 @@ def publish(self, *args):
         if not shaders:
             shaders = []
 
-        geocacheList = []
-        sets = cmds.ls(sets=1)
-        for i in sets:
-            if 'set_geo_cache_' in i:
-                print(i)
-                geocacheList.append(i)
-        
         print(geocacheList + shaders + shadingGrps + sel)
         cmds.select(geocacheList + shaders + shadingGrps + sel, noExpand=True)
         cmds.file(file_name, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
