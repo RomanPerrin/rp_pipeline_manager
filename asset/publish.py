@@ -35,27 +35,7 @@ def publish(self, *args):
         
         print("deactivating smooth preview")
         cmds.displaySmoothness(polygonObject=0)
-        if step == 'modeling':
-            print('fixing non-manifold')
-            cmds.delete(cmds.polyInfo(nmv=1, nuv=1, nue=1, nme=1))
-            print('fixing lamina faces')
-            cmds.delete(cmds.polyInfo(lf=1))
-            cmds.makeIdentity(a=1)
-            cmds.DeleteHistory(cmds.ls())
-            cmds.makeIdentity(t=1, r=1, s=1)
-            cmds.polyClean()
-            sel = cmds.ls(geometry=True)
-            if assetType in ['prop', 'character']:
-                print('creating set geo cache')
-                cmds.sets(cmds.listRelatives(sel, p=1), n=f'set_geo_cache {asset}')
-            # cmds.unloadPlugin('RenderMan_for_Maya.py', force=True)
-            # print('assigning Lambert')
-            # for i in sel:
-                # cmds.select(i, r=True)
-                # cmds.hyperShade(assign='lambert1')
-            
-            print("renaming shapes")
-            cache_manager_v1_20.rename_meshes(force=True, message=False)
+        
         print("deleting volume aggregate")
         deleteVolumAggregate()
         print("deleting unsused nodes")
@@ -80,6 +60,29 @@ def publish(self, *args):
         deleteUnusedPlugins()
         print("deleting namespaces")
         deleteNamespaces()
+
+        if step == 'modeling':
+            print('fixing non-manifold')
+            cmds.delete(cmds.polyInfo(nmv=1, nuv=1, nue=1, nme=1))
+            print('fixing lamina faces')
+            cmds.delete(cmds.polyInfo(lf=1))
+            cmds.makeIdentity(a=1)
+            cmds.DeleteHistory(cmds.ls())
+            cmds.makeIdentity(t=1, r=1, s=1)
+            cmds.polyClean()
+            sel = cmds.ls(geometry=True)
+            if assetType in ['prop', 'character']:
+                print('creating set geo cache')
+                cmds.sets(cmds.listRelatives(sel, p=1), n=f'set_geo_cache {asset}')
+            # cmds.unloadPlugin('RenderMan_for_Maya.py', force=True)
+            # print('assigning Lambert')
+            # for i in sel:
+                # cmds.select(i, r=True)
+                # cmds.hyperShade(assign='lambert1')
+            
+            print("renaming shapes")
+            cache_manager_v1_20.rename_meshes(force=True, message=False)
+
         if step != 'rig':
             print("deleting intermediate shapes")
             all_meshes = cmds.ls( type="mesh", ap=True )
