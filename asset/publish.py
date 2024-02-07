@@ -45,7 +45,7 @@ def publish(self, *args):
             cmds.makeIdentity(t=1, r=1, s=1)
             cmds.polyClean()
             sel = cmds.ls(geometry=True)
-            if assetType == 'prop':
+            if assetType in ['prop', 'character']:
                 print('creating set geo cache')
                 cmds.sets(cmds.listRelatives(sel, p=1), n=f'set_geo_cache {asset}')
             # cmds.unloadPlugin('RenderMan_for_Maya.py', force=True)
