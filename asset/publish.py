@@ -122,7 +122,7 @@ def publish(self, *args):
     
     except Exception as error:
         print(error)
-        cmds.error("error during publish ", error)
+        cmds.error("error during publish ", error.__traceback__)
     
     cmds.file(current_scene, open=True , force=True)
 
