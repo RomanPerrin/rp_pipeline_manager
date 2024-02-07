@@ -7,6 +7,8 @@ from fileinput import filename
 import maya.cmds as cmds
 import maya.mel as mel
 import os
+import sys
+import traceback
 
 #files
 from .. import cache_manager_v1_20
@@ -71,9 +73,6 @@ def publish(self, *args):
             cmds.makeIdentity(t=1, r=1, s=1)
             cmds.polyClean()
             sel = cmds.ls(geometry=True)
-            if assetType in ['prop', 'character']:
-                print('creating set geo cache')
-                geocache = cmds.sets(cmds.listRelatives(sel, p=1), n=f'set_geo_cache_{asset}')
             # cmds.unloadPlugin('RenderMan_for_Maya.py', force=True)
             # print('assigning Lambert')
             # for i in sel:
@@ -82,6 +81,18 @@ def publish(self, *args):
             
             print("renaming shapes")
             cache_manager_v1_20.rename_meshes(force=True, message=False)
+        
+        geocacheList = []
+        if assetType in ['prop', 'character']:
+            if not cmds.objExists(f'set_geocache_{asset}'):
+                print('creating set geo cache')
+                geocache = cmds.sets(cmds.listRelatives(sel, p=1), n=f'set_geocache_{asset}')
+            
+            sets = cmds.ls(sets=1)
+            for i in sets:
+                if 'set_geocache_' in i:
+                    print(i)
+                    geocacheList.append(i)
 
         if step != 'rig':
             print("deleting intermediate shapes")
@@ -102,8 +113,9 @@ def publish(self, *args):
         shaders = cmds.ls(cmds.listConnections(shadingGrps),materials=1)
         if not shaders:
             shaders = []
-        print(shaders + shadingGrps + sel)
-        cmds.select([f'set_geo_cache_{asset}'] + shaders + shadingGrps + sel + [f'set_geo_cache_{asset}'], noExpand=True)
+
+        print(geocacheList + shaders + shadingGrps + sel)
+        cmds.select(geocacheList + shaders + shadingGrps + sel, noExpand=True)
         cmds.file(file_name, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
         print(f"publish {step} scene saved at {file_name}")
         if step == 'modeling':
@@ -114,7 +126,9 @@ def publish(self, *args):
     
     except Exception as error:
         print(error)
-        cmds.error("error during publish ", error)
+        traceback.print_exception(*sys.exc_info())
+        cmds.error("error during publish ")
+        cmds.file(current_scene, open=True , force=True)
     
     cmds.file(current_scene, open=True , force=True)
 
