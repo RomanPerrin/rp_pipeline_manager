@@ -8,6 +8,7 @@ import maya.cmds as cmds
 import maya.mel as mel
 import os
 import sys
+import traceback
 
 #files
 from .. import cache_manager_v1_20
@@ -123,7 +124,8 @@ def publish(self, *args):
     
     except Exception as error:
         print(error)
-        cmds.error("error during publish ", sys.exc_info())
+        traceback.print_exception(*sys.exc_info())
+        cmds.error("error during publish ")
     
     cmds.file(current_scene, open=True , force=True)
 
