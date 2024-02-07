@@ -128,6 +128,7 @@ def publish(self, *args):
         print(error)
         traceback.print_exception(*sys.exc_info())
         cmds.error("error during publish ")
+        cmds.file(current_scene, open=True , force=True)
     
     cmds.file(current_scene, open=True , force=True)
 
