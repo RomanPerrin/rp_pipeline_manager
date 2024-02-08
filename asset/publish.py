@@ -79,8 +79,8 @@ def publish(self, *args):
                 # cmds.select(i, r=True)
                 # cmds.hyperShade(assign='lambert1')
             
-            print("renaming shapes")
-            cache_manager_v1_20.rename_meshes(force=True, message=False)
+        print("renaming shapes")
+        cache_manager_v1_20.rename_meshes(force=True, message=False)
         
         geocacheList = []
         if assetType in ['prop', 'character']:
