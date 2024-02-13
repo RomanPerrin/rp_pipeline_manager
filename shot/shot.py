@@ -191,7 +191,7 @@ class ShotUi():
         if not shot_name:
             return
         
-        dir = os.path.normpath(os.path.join(self.shot_dir, shot_name, "maya").replace(os.sep, "/"))
+        dir = os.path.normpath(os.path.join(self.shot_dir, shot_name).replace(os.sep, "/"))
         print(dir)
         os.popen(fr'explorer "{dir}"')
 
