@@ -142,7 +142,11 @@ class AssetUi():
         return assetType
 
     def selectedAssetType(self, *args):
-        return cmds.textScrollList('assetType', q=True, si=True)[0]
+        sel = cmds.textScrollList('assetType', q=True, si=True)
+        if not sel:
+            return
+        
+        return sel[0]
 
     def updateAssetsScrollList(self, *args):
         self.updateStepScrollList()
