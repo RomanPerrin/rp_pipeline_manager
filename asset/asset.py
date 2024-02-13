@@ -115,7 +115,12 @@ class AssetUi():
         return (os.path.join(self.getAssetsDirectory(), self.selectedAssetType())).replace(os.sep, '/')
 
     def getAssetDirectory(self, *args):
-        return (os.path.join(self.getAssetTypeDirectory(), self.selectedAssets())).replace(os.sep, '/')
+        assetTypeDir = self.getAssetTypeDirectory()
+        selectedAsset = self.selectedAssets()
+        if not assetTypeDir or not selectedAsset:
+            return
+        
+        return (os.path.join(assetTypeDir, selectedAsset)).replace(os.sep, '/')
 
     def updateAssetTypeScrollList(self, *args):
         self.pipe_dir = main_window.pipe_dir
