@@ -36,7 +36,7 @@ class UI():
         self.UI()
         cmds.optionVar(iv=('isIncrementalSaveEnabled', 1))
         cmds.optionVar(iv=('incrementalSaveLimitBackups', 1))
-        cmds.optionVar(iv=('incrementalSaveMaxBackups', 15))
+        cmds.optionVar(iv=('incrementalSaveMaxBackups', 10))
     
     def UI(self, *args):
         global pipe_dir

@@ -31,11 +31,16 @@ class AssetUi():
         assets_lay = cmds.formLayout(p=self.asset_lay)
         assetsScrollList = cmds.textScrollList('assets', p=assets_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=self.updateStepScrollList)
         assetsAddButton = cmds.symbolButton('assetsAddButton', p=assets_lay, ann=f'add asset', i='pickHandlesComp', height=icon_size, width=icon_size, command=self.addAsset)
+        assetsOpenDirectoryButton = cmds.symbolButton('assetsOpenDirectoryButton', p=assets_lay, ann=f'Open asset directory', i='fileOpen', height=icon_size, width=icon_size, command=self.openDirectory)
         # Attach the assetsScrollList
         cmds.formLayout(assets_lay, e=True, attachForm=[(assetsScrollList, "left", 0), (assetsScrollList, "top", 0), (assetsScrollList, "bottom", 0)])
-        # Attach the assetsAddButton
-        cmds.formLayout(assets_lay, e=True, attachForm=[(assetsAddButton, "right", 0), (assetsAddButton, "top", 0)])
-        cmds.formLayout(assets_lay, e=True, attachControl=[(assetsScrollList, "right", 0, assetsAddButton)])
+        # Attach the assets*Buttons
+        cmds.formLayout(assets_lay, e=True, attachForm=[(assetsAddButton, "right", 0),
+                                                        (assetsAddButton, "top", 0),
+                                                        (assetsOpenDirectoryButton, "right", 0)])
+        cmds.formLayout(assets_lay, e=True, attachControl=[(assetsScrollList, "right", 0, assetsAddButton),
+                                                           (assetsScrollList, "right", 0, assetsOpenDirectoryButton),
+                                                           (assetsOpenDirectoryButton, "top", 0, assetsAddButton)])
 
         #List working step
         self.stepScrollList = cmds.textScrollList('steps', p=self.asset_lay, numberOfRows=3, allowMultiSelection=False)
@@ -107,10 +112,19 @@ class AssetUi():
         return asset_dir
 
     def getAssetTypeDirectory(self, *args):
-        return (os.path.join(self.getAssetsDirectory(), self.selectedAssetType())).replace(os.sep, '/')
+        assetsDir = self.getAssetsDirectory()
+        selectedAssetType = self.selectedAssetType()
+        if not assetsDir or not selectedAssetType:
+            return
+        return (os.path.join(assetsDir, selectedAssetType)).replace(os.sep, '/')
 
     def getAssetDirectory(self, *args):
-        return (os.path.join(self.getAssetTypeDirectory(), self.selectedAssets())).replace(os.sep, '/')
+        assetTypeDir = self.getAssetTypeDirectory()
+        selectedAsset = self.selectedAssets()
+        if not assetTypeDir or not selectedAsset:
+            return
+        
+        return (os.path.join(assetTypeDir, selectedAsset)).replace(os.sep, '/')
 
     def updateAssetTypeScrollList(self, *args):
         self.pipe_dir = main_window.pipe_dir
@@ -137,7 +151,11 @@ class AssetUi():
         return assetType
 
     def selectedAssetType(self, *args):
-        return cmds.textScrollList('assetType', q=True, si=True)[0]
+        sel = cmds.textScrollList('assetType', q=True, si=True)
+        if not sel:
+            return
+        
+        return sel[0]
 
     def updateAssetsScrollList(self, *args):
         self.updateStepScrollList()
@@ -156,7 +174,11 @@ class AssetUi():
         return assets
 
     def selectedAssets(self, *args):
-        return cmds.textScrollList('assets', q=True, si=True)[0]
+        sel = cmds.textScrollList('assets', q=True, si=True)
+        if not sel:
+            return
+        
+        return sel[0]
 
     def updateStepScrollList(self, *args):
         #steps = self.getWorkingStep()
@@ -182,8 +204,12 @@ class AssetUi():
         return step
 
     def getWorkingDirectory(self, *args):
-        print(os.path.normpath(os.path.join(self.getAssetDirectory(), 'maya')))
-        return os.path.normpath(os.path.join(self.getAssetDirectory(), 'maya'))
+        assetDir = self.getAssetDirectory()
+        if not assetDir:
+            return
+        
+        print(os.path.normpath(os.path.join(assetDir, 'maya')))
+        return os.path.normpath(os.path.join(assetDir, 'maya'))
 
     def openLastEdit(self, *args):
         if cmds.file(q=True, sceneName=True):
@@ -252,3 +278,10 @@ class AssetUi():
 
         addAsset.addAssetUI(self.getAssetsDirectory(), self.selectedAssetType(), self)
         return
+    
+    def openDirectory(self, *args):
+        dir = self.getWorkingDirectory()
+        if not dir:
+            return
+        
+        os.popen(fr'explorer "{dir}"')

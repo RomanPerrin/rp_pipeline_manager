@@ -42,11 +42,16 @@ class ShotUi():
         shot_lay = cmds.formLayout(p=self.layout)
         self.shot_scrollList = cmds.textScrollList("shot", p=shot_lay, numberOfRows=5, allowMultiSelection=False)
         addButton = cmds.symbolButton('shotAddButton', p=shot_lay, ann=f'add shot', i='pickHandlesComp', height=icon_size, width=icon_size, command=partial(self.addShot))
-        # Attach the assetsshot_scrollList
+        openShotDirectoryButton = cmds.symbolButton('openShotDirectoryButton', p=shot_lay, ann=f'Open shot directory', i='fileOpen', height=icon_size, width=icon_size, command=partial(self.openShotDirectory))
+        # Attach the shot_scrollList
         cmds.formLayout(shot_lay, e=True, attachForm=[(self.shot_scrollList, "left", 0), (self.shot_scrollList, "top", 0), (self.shot_scrollList, "bottom", 0)])
-        # Attach the assetsAddButton
-        cmds.formLayout(shot_lay, e=True, attachForm=[(addButton, "right", 0), (addButton, "top", 0)])
-        cmds.formLayout(shot_lay, e=True, attachControl=[(self.shot_scrollList, "right", 0, addButton)])
+        # Attach the shots*Button
+        cmds.formLayout(shot_lay, e=True, attachForm=[(addButton, "right", 0),
+                                                      (addButton, "top", 0),
+                                                      (openShotDirectoryButton, "right", 0)])
+        cmds.formLayout(shot_lay, e=True, attachControl=[(self.shot_scrollList, "right", 0, addButton),
+                                                         (self.shot_scrollList, "right", 0, openShotDirectoryButton),
+                                                         (openShotDirectoryButton, "top", 0, addButton)])
 
         openShLayoutButton = cmds.button(p=self.layout, label="open shot layout", command=self.openShLayout)
         createConformityLayoutButton = cmds.button(p=self.layout, label="create conformity layout", command=self.createConformityLayoutLayout)
@@ -181,6 +186,15 @@ class ShotUi():
     def addShot(self, *args):
         addShotUI(self.shot_dir, self)
     
+    def openShotDirectory(self, *args):
+        shot_name = cmds.textScrollList('shot', q=True, si=True)[0]
+        if not shot_name:
+            return
+        
+        dir = os.path.normpath(os.path.join(self.shot_dir, shot_name).replace(os.sep, "/"))
+        print(dir)
+        os.popen(fr'explorer "{dir}"')
+
     def openShLayout(self, *args):
         # print("opening shot layout")
         shot_name = cmds.textScrollList('shot', q=True, si=True)[0]
@@ -191,6 +205,7 @@ class ShotUi():
         if not os.path.exists(filename):
             cmds.warning(f"no shot layout found for {shot_name}")
             return
+        
         print(os.path.join(self.shot_dir, shot_name, "maya").replace(os.sep, "/"))
         mel.eval(f'setProject "{os.path.join(self.shot_dir, shot_name, "maya").replace(os.sep, "/")}"')
         cmds.file(filename, open=True, force=True)
@@ -277,11 +292,21 @@ class replaceShotLayout():
             cmds.deleteUI(self.window)
         self.window = cmds.window(self.window, wh=self.size, minimizeButton=False, maximizeButton=False)
         
-        self.mainLayout = cmds.columnLayout()
-        sh_text = cmds.text(label="Select the shots to overwrite", p=self.mainLayout)
-        self.shot_scrollList = cmds.textScrollList("shot", p=self.mainLayout, append=[i['name'] for i in self.existingShotList], numberOfRows=8, allowMultiSelection=True)
-        self.overwriteButton  =cmds.button(p=self.mainLayout, label="Overwrite", command=self.confirmWindow)
+        mainLayout = cmds.formLayout()
+        sh_text = cmds.text(label="Select the shots to overwrite", p=mainLayout)
+        self.shot_scrollList = cmds.textScrollList("shot", p=mainLayout, append=[i['name'] for i in self.existingShotList], numberOfRows=8, allowMultiSelection=True)
+        self.overwriteButton  =cmds.button(p=mainLayout, label="Overwrite", command=self.confirmWindow)
         
+        # Attach 
+        cmds.formLayout(mainLayout, e=True, attachForm=[(sh_text, "left", 0),
+                                                        (sh_text, "top", 0),
+                                                        (self.shot_scrollList, "left", 0),
+                                                        (self.shot_scrollList, "right", 0),
+                                                        (self.overwriteButton, "left", 0),
+                                                        (self.overwriteButton, "bottom", 0)])
+        cmds.formLayout(mainLayout, e=True, attachControl=[(self.shot_scrollList, "top", 0, sh_text),
+                                                           (self.shot_scrollList, "bottom", 0, self.overwriteButton)])
+
         cmds.showWindow(self.window)
         
     def confirmWindow(self, *args):
@@ -301,11 +326,17 @@ class replaceShotLayout():
             pass
     
     def overwrite(self):
+        cmds.waitCursor(state=True)
         shotList = cmds.textScrollList(self.shot_scrollList, q=1, si=1)
 
         shotList = [i for i in self.existingShotList if i['name'] in shotList]
         
         for i in range(len(shotList)):
-            destination = shotList[i]['path']
-            shutil.copy(self.filename, destination)
-            print(f"overwriting shot layout for {shotList[i]['name']}")
+            try:    
+                destination = shotList[i]['path']
+                shutil.copy(self.filename, destination)
+                print(f"overwriting shot layout for {shotList[i]['name']}")
+            except:
+                print(f'error overwriting shot layout for {shotList[i]["name"]}')
+        
+        cmds.waitCursor(state=False)
