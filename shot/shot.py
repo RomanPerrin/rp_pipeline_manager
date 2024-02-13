@@ -271,7 +271,11 @@ class replaceShotLayout():
             pass
     
     def overwrite(self):
-        for i in range(len(self.existingShotList)):
+        shotList = cmds.textScrollList(self.shot_scrollList, q=1, si=1)
+
+        shotList = [i for i in self.shot_scrollList if i['name'] in shotList]
+        print(shotList)
+        for i in range(len(shotList)):
             destination = self.existingShotList[i]['path']
             shutil.copy(self.filename, destination)
-            print(f"creating shot layout for {self.existingShotList[i]['name']}")
+            print(f"creating shot layout for {shotList[i]['name']}")
