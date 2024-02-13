@@ -276,6 +276,6 @@ class replaceShotLayout():
         shotList = [i for i in self.existingShotList if i['name'] in shotList]
         print(shotList)
         for i in range(len(shotList)):
-            destination = self.existingShotList[i]['path']
+            destination = shotList[i]['path']
             shutil.copy(self.filename, destination)
             print(f"creating shot layout for {shotList[i]['name']}")
