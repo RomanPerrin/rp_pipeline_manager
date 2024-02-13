@@ -260,4 +260,7 @@ class AssetUi():
     
     def openDirectory(self, *args):
         dir = self.getWorkingDirectory()
+        if not dir:
+            return
+        
         os.popen(fr'explorer "{dir}"')
