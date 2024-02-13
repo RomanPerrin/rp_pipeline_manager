@@ -244,6 +244,7 @@ class ShotUi():
 class replaceShotLayout():
     def __init__(self, existingShotList) -> None:
         self.UI()
+        self.window = 'shotLayout'
         self.size = (300, 600)
         self.existingShotList = existingShotList
 
