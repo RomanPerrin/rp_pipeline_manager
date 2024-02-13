@@ -147,8 +147,9 @@ class ShotUi():
                 shutil.copy(filename, destination)
                 print(f"creating shot layout for {shot_list[i]}")
                 pass
-            print(f"shot layout already exists for {shot_list[i]}")
-            existingShotList.append(shot_list[i])
+            else:   
+                print(f"shot layout already exists for {shot_list[i]}")
+                existingShotList.append(shot_list[i])
         overwriteWindow = replaceShotLayout(existingShotList)
         
     def getShotList(self, sequence, *args):
