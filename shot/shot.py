@@ -273,7 +273,7 @@ class replaceShotLayout():
     def overwrite(self):
         shotList = cmds.textScrollList(self.shot_scrollList, q=1, si=1)
 
-        shotList = [i for i in self.shot_scrollList if i['name'] in shotList]
+        shotList = [i for i in self.existingShotList if i['name'] in shotList]
         print(shotList)
         for i in range(len(shotList)):
             destination = self.existingShotList[i]['path']
