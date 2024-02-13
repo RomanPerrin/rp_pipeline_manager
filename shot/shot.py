@@ -131,6 +131,8 @@ class ShotUi():
             return
         
         cmds.file(rename=filename)
+        cmds.setAttr("defaultResolution.width", 2048)
+        cmds.setAttr("defaultResolution.height", 858)
         cmds.file(f=True, type='mayaAscii', save=True )
         
     def createShotLayout(self, *args):
