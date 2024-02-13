@@ -192,6 +192,7 @@ class ShotUi():
             return
         
         dir = os.path.join(self.shot_dir, shot_name, "maya").replace(os.sep, "/")
+        print(dir)
         os.popen(fr'explorer "{dir}"')
 
     def openShLayout(self, *args):
@@ -204,6 +205,7 @@ class ShotUi():
         if not os.path.exists(filename):
             cmds.warning(f"no shot layout found for {shot_name}")
             return
+        
         print(os.path.join(self.shot_dir, shot_name, "maya").replace(os.sep, "/"))
         mel.eval(f'setProject "{os.path.join(self.shot_dir, shot_name, "maya").replace(os.sep, "/")}"')
         cmds.file(filename, open=True, force=True)
