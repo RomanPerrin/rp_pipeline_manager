@@ -249,11 +249,10 @@ class replaceShotLayout():
         self.UI()
 
     def UI(self):
-        print('hello')
         if cmds.window(self.window, q=True,exists=True):
             cmds.deleteUI(self.window)
         self.window = cmds.window(self.window, wh=self.size, minimizeButton=False, maximizeButton=False)
-
+        print('hello')
         self.mainLayout = cmds.columnLayout()
         sh_text = cmds.text(label="Select the shots to overwrite", p=self.mainLayout)
         self.shot_scrollList = cmds.textScrollList("shot", p=self.mainLayout, numberOfRows=8, allowMultiSelection=True)
