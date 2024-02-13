@@ -119,6 +119,9 @@ class ShotUi():
     def openSqLayout(self, *args):
         print("opening sequence layout")
         sequence_name = cmds.textScrollList('sequence', q=True, si=True)[0]
+        if not sequence_name:
+            return
+        
         if not f"{sequence_name}_master_layout" in os.listdir(os.path.join(self.sequence_dir, "_master_layout")):
             os.makedirs(os.path.join(self.sequence_dir, "_master_layout", f"{sequence_name}_master_layout"), exist_ok=True)
 
@@ -133,6 +136,8 @@ class ShotUi():
     def createShotLayout(self, *args):
         # print("creating shot layout")
         sequence_name = cmds.textScrollList('sequence', q=True, si=True)[0]
+        if not sequence_name:
+            return
         shot_list =self.getShotList(sequence_name)
         
         if not f"{sequence_name}_master_layout" in os.listdir(os.path.join(self.sequence_dir, "_master_layout")):
@@ -177,6 +182,9 @@ class ShotUi():
     def openShLayout(self, *args):
         # print("opening shot layout")
         shot_name = cmds.textScrollList('shot', q=True, si=True)[0]
+        if not shot_name:
+            return
+        
         filename = os.path.join(self.shot_dir, shot_name, "maya", "scenes", "layout", f"{shot_name}_shot_layout.ma")
         if not os.path.exists(filename):
             cmds.warning(f"no shot layout found for {shot_name}")
@@ -188,6 +196,9 @@ class ShotUi():
     def createConformityLayoutLayout(self, *args):
         # print("creating conformity layout")
         shot_name = cmds.textScrollList('shot', q=True, si=True)[0]
+        if not shot_name:
+            return
+        
         shot_layout = os.path.join(self.shot_dir, shot_name, "maya", "scenes", "layout", f"{shot_name}_shot_layout.ma")
         if not os.path.exists(shot_layout):
            cmds.warning(f"no shot layout found for {shot_name}")
@@ -203,6 +214,9 @@ class ShotUi():
     def openConformityLayout(self, *args):
         # print("opening conformity layout")
         shot_name = cmds.textScrollList('shot', q=True, si=True)[0]
+        if not shot_name:
+            return
+        
         filename = os.path.join(self.shot_dir, shot_name, "maya", "scenes", "layout", f"{shot_name}_conformity_layout.ma")
         if not os.path.exists(filename):
             cmds.warning(f"no conformity layout found for {shot_name}")
@@ -214,6 +228,9 @@ class ShotUi():
     def openShotAnim(self, *args):
         # print("opening shot anim")
         shot_name = cmds.textScrollList('shot', q=True, si=True)[0]
+        if not shot_name:
+            return
+        
         filename = os.path.join(self.shot_dir, shot_name, "maya", "scenes", "anim", f"{shot_name}_anim.ma")
         
         if not os.path.exists(filename):
@@ -227,6 +244,9 @@ class ShotUi():
     def openShotRender(self, *args):
         # print("opening shot render")
         shot_name = cmds.textScrollList('shot', q=True, si=True)[0]
+        if not shot_name:
+            return
+        
         filename = os.path.join(self.shot_dir, shot_name, "maya", "scenes", "render", f"{shot_name}_render.ma")
         render_setup = ""
         
@@ -263,7 +283,15 @@ class replaceShotLayout():
         cmds.showWindow(self.window)
         
     def confirmWindow(self, *args):
-        self.answer = cmds.confirmDialog(t='Confirm', m='Do you really want to replace the selected Shots?', b=['Replace', 'Cancel'], db='Cancel', cb='Cancel', p=self.window)
+        if not cmds.textScrollList(self.shot_scrollList, q=1, si=1):
+            return
+        
+        self.answer = cmds.confirmDialog(t='Confirm',
+                                         m='Do you really want to replace the selected Shots?',
+                                         b=['Replace', 'Cancel'],
+                                         db='Cancel',
+                                         cb='Cancel',
+                                         p=self.window)
         if self.answer == 'Replace':
             self.overwrite()
 
@@ -274,8 +302,8 @@ class replaceShotLayout():
         shotList = cmds.textScrollList(self.shot_scrollList, q=1, si=1)
 
         shotList = [i for i in self.existingShotList if i['name'] in shotList]
-        print(shotList)
+        
         for i in range(len(shotList)):
             destination = shotList[i]['path']
             shutil.copy(self.filename, destination)
-            print(f"creating shot layout for {shotList[i]['name']}")
+            print(f"overwriting shot layout for {shotList[i]['name']}")
