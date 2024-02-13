@@ -277,11 +277,21 @@ class replaceShotLayout():
             cmds.deleteUI(self.window)
         self.window = cmds.window(self.window, wh=self.size, minimizeButton=False, maximizeButton=False)
         
-        self.mainLayout = cmds.columnLayout()
-        sh_text = cmds.text(label="Select the shots to overwrite", p=self.mainLayout)
-        self.shot_scrollList = cmds.textScrollList("shot", p=self.mainLayout, append=[i['name'] for i in self.existingShotList], numberOfRows=8, allowMultiSelection=True)
-        self.overwriteButton  =cmds.button(p=self.mainLayout, label="Overwrite", command=self.confirmWindow)
+        mainLayout = cmds.formLayout()
+        sh_text = cmds.text(label="Select the shots to overwrite", p=mainLayout)
+        self.shot_scrollList = cmds.textScrollList("shot", p=mainLayout, append=[i['name'] for i in self.existingShotList], numberOfRows=8, allowMultiSelection=True)
+        self.overwriteButton  =cmds.button(p=mainLayout, label="Overwrite", command=self.confirmWindow)
         
+        # Attach 
+        cmds.formLayout(mainLayout, e=True, attachForm=[(sh_text, "left", 0),
+                                                        (sh_text, "top", 0),
+                                                        (self.shot_scrollList, "left", 0),
+                                                        (self.shot_scrollList, "right", 0),
+                                                        (self.overwriteButton, "left", 0),
+                                                        (self.overwriteButton, "bottom", 0)])
+        cmds.formLayout(mainLayout, e=True, attachControl=[(self.shot_scrollList, "top", 0, sh_text),
+                                                           (self.shot_scrollList, "bottom", 0, self.overwriteButton)])
+
         cmds.showWindow(self.window)
         
     def confirmWindow(self, *args):
