@@ -52,6 +52,8 @@ class UI():
         menuBarLayout = cmds.menuBarLayout()
         menu = cmds.menu(l='File', p=menuBarLayout)
         cmds.menuItem(l='Open pipeline directory', p=menu, c=self.openDirectory)
+        menu = cmds.menu(l='Tools', p=menuBarLayout)
+        cmds.menuItem(l='Change Cameras Clip Plane', p=menu, c=self.changeCamerasClipPlane)
         menu = cmds.menu(l='About', p=menuBarLayout)
         cmds.menuItem(l='Update', p=menu, c=self.update)
 
@@ -88,6 +90,12 @@ class UI():
         
         cmds.showWindow(self.window)
     
+    def changeCamerasClipPlane(self, *args):
+        cameras = cmds.ls(cameras=1)
+        for camera in cameras:
+            cmds.setAttr(f'{camera}.nearClipPlane', 10)
+            cmds.setAttr(f'{camera}.farClipPlane', 100000)
+
     def update(self, *args):
         install.updater()
         cmds.deleteUI(self.window)
