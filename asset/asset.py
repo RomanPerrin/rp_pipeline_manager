@@ -40,7 +40,7 @@ class AssetUi():
                                                         (assetsOpenDirectoryButton, "right", 0)])
         cmds.formLayout(assets_lay, e=True, attachControl=[(assetsScrollList, "right", 0, assetsAddButton),
                                                            (assetsScrollList, "right", 0, assetsOpenDirectoryButton),
-                                                           (assetsAddButton, "top", 0, assetsOpenDirectoryButton)])
+                                                           (assetsOpenDirectoryButton, "top", 0, assetsAddButton)])
 
         #List working step
         self.stepScrollList = cmds.textScrollList('steps', p=self.asset_lay, numberOfRows=3, allowMultiSelection=False)
