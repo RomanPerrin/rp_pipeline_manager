@@ -249,6 +249,7 @@ class replaceShotLayout():
         self.UI()
 
     def UI(self):
+        print('hello')
         if cmds.window(self.window, q=True,exists=True):
             cmds.deleteUI(self.window)
         self.window = cmds.window(self.window, wh=self.size, minimizeButton=False, maximizeButton=False)
