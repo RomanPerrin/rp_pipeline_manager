@@ -149,8 +149,8 @@ class ShotUi():
                 pass
             else:   
                 print(f"shot layout already exists for {shot_list[i]}")
-                existingShotList.append(shot_list[i])
-        overwriteWindow = replaceShotLayout(existingShotList)
+                existingShotList.append({'name':shot_list[i], 'path':destination})
+        overwriteWindow = replaceShotLayout(existingShotList, filename)
         
     def getShotList(self, sequence, *args):
         shot_list = []
@@ -243,10 +243,11 @@ class ShotUi():
         cmds.file(filename, open=True , force=True)
 
 class replaceShotLayout():
-    def __init__(self, existingShotList) -> None:
+    def __init__(self, existingShotList, filename) -> None:
         self.window = 'shotLayout'
-        self.size = (200, 300)
+        self.size = (100, 200)
         self.existingShotList = existingShotList
+        self.filename = filename
         self.UI()
 
     def UI(self):
@@ -256,7 +257,7 @@ class replaceShotLayout():
         
         self.mainLayout = cmds.columnLayout()
         sh_text = cmds.text(label="Select the shots to overwrite", p=self.mainLayout)
-        self.shot_scrollList = cmds.textScrollList("shot", p=self.mainLayout, append=self.existingShotList, numberOfRows=8, allowMultiSelection=True)
+        self.shot_scrollList = cmds.textScrollList("shot", p=self.mainLayout, append=[i['name'] for i in self.existingShotList], numberOfRows=8, allowMultiSelection=True)
         self.overwriteButton  =cmds.button(p=self.mainLayout, label="Overwrite", command=self.confirmWindow)
         
         cmds.showWindow(self.window)
@@ -264,10 +265,13 @@ class replaceShotLayout():
     def confirmWindow(self, *args):
         self.answer = cmds.confirmDialog(t='Confirm', m='Do you really want to replace the selected Shots?', b=['Replace', 'Cancel'], db='Cancel', cb='Cancel', p=self.window)
         if self.answer == 'Replace':
-            pass
+            self.overwrite()
 
         if self.answer == 'Cancel':
             pass
     
     def overwrite(self):
-        pass
+        for i in range(len(self.existingShotList)):
+            destination = self.existingShotList[i]['path']
+            shutil.copy(self.filename, destination)
+            print(f"creating shot layout for {self.existingShotList[i]['name']}")
