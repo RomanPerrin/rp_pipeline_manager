@@ -112,7 +112,11 @@ class AssetUi():
         return asset_dir
 
     def getAssetTypeDirectory(self, *args):
-        return (os.path.join(self.getAssetsDirectory(), self.selectedAssetType())).replace(os.sep, '/')
+        assetsDir = self.getAssetsDirectory()
+        selectedAssetType = self.selectedAssetType()
+        if not assetsDir or not selectedAssetType:
+            return
+        return (os.path.join(assetsDir, selectedAssetType)).replace(os.sep, '/')
 
     def getAssetDirectory(self, *args):
         assetTypeDir = self.getAssetTypeDirectory()
