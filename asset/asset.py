@@ -200,8 +200,12 @@ class AssetUi():
         return step
 
     def getWorkingDirectory(self, *args):
-        print(os.path.normpath(os.path.join(self.getAssetDirectory(), 'maya')))
-        return os.path.normpath(os.path.join(self.getAssetDirectory(), 'maya'))
+        assetDir = self.getAssetDirectory()
+        if not assetDir:
+            return
+        
+        print(os.path.normpath(os.path.join(assetDir, 'maya')))
+        return os.path.normpath(os.path.join(assetDir, 'maya'))
 
     def openLastEdit(self, *args):
         if cmds.file(q=True, sceneName=True):
