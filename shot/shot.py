@@ -42,11 +42,16 @@ class ShotUi():
         shot_lay = cmds.formLayout(p=self.layout)
         self.shot_scrollList = cmds.textScrollList("shot", p=shot_lay, numberOfRows=5, allowMultiSelection=False)
         addButton = cmds.symbolButton('shotAddButton', p=shot_lay, ann=f'add shot', i='pickHandlesComp', height=icon_size, width=icon_size, command=partial(self.addShot))
-        # Attach the assetsshot_scrollList
+        openShotDirectoryButton = cmds.symbolButton('openShotDirectoryButton', p=shot_lay, ann=f'Open shot directory', i='fileOpen', height=icon_size, width=icon_size, command=partial(self.openShotDirectory))
+        # Attach the shot_scrollList
         cmds.formLayout(shot_lay, e=True, attachForm=[(self.shot_scrollList, "left", 0), (self.shot_scrollList, "top", 0), (self.shot_scrollList, "bottom", 0)])
-        # Attach the assetsAddButton
-        cmds.formLayout(shot_lay, e=True, attachForm=[(addButton, "right", 0), (addButton, "top", 0)])
-        cmds.formLayout(shot_lay, e=True, attachControl=[(self.shot_scrollList, "right", 0, addButton)])
+        # Attach the shots*Button
+        cmds.formLayout(shot_lay, e=True, attachForm=[(addButton, "right", 0),
+                                                      (addButton, "top", 0),
+                                                      (openShotDirectoryButton, "right", 0)])
+        cmds.formLayout(shot_lay, e=True, attachControl=[(self.shot_scrollList, "right", 0, addButton),
+                                                         (self.shot_scrollList, "right", 0, openShotDirectoryButton),
+                                                         (openShotDirectoryButton, "top", 0, addButton)])
 
         openShLayoutButton = cmds.button(p=self.layout, label="open shot layout", command=self.openShLayout)
         createConformityLayoutButton = cmds.button(p=self.layout, label="create conformity layout", command=self.createConformityLayoutLayout)
@@ -181,6 +186,14 @@ class ShotUi():
     def addShot(self, *args):
         addShotUI(self.shot_dir, self)
     
+    def openShotDirectory(self, *args):
+        shot_name = cmds.textScrollList('shot', q=True, si=True)[0]
+        if not shot_name:
+            return
+        
+        dir = os.path.join(self.shot_dir, shot_name, "maya").replace(os.sep, "/")
+        os.popen(fr'explorer "{dir}"')
+
     def openShLayout(self, *args):
         # print("opening shot layout")
         shot_name = cmds.textScrollList('shot', q=True, si=True)[0]
