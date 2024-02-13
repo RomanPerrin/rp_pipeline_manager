@@ -244,7 +244,7 @@ class ShotUi():
 class replaceShotLayout():
     def __init__(self, existingShotList) -> None:
         self.window = 'shotLayout'
-        self.size = (300, 600)
+        self.size = (200, 300)
         self.existingShotList = existingShotList
         self.UI()
 
@@ -255,12 +255,12 @@ class replaceShotLayout():
         
         self.mainLayout = cmds.columnLayout()
         sh_text = cmds.text(label="Select the shots to overwrite", p=self.mainLayout)
-        self.shot_scrollList = cmds.textScrollList("shot", p=self.mainLayout, numberOfRows=8, allowMultiSelection=True)
+        self.shot_scrollList = cmds.textScrollList("shot", p=self.mainLayout, append=self.existingShotList, numberOfRows=8, allowMultiSelection=True)
         self.overwriteButton  =cmds.button(p=self.mainLayout, label="Overwrite", command=self.confirmWindow)
         
         cmds.showWindow(self.window)
         
-    def confirmWindow(self):
+    def confirmWindow(self, *args):
         self.answer = cmds.confirmDialog(t='Confirm', m='Do you really want to replace the selected Shots?', b=['Replace', 'Cancel'], db='Cancel', cb='Cancel', p=self.window)
         if self.answer == 'Replace':
             pass
