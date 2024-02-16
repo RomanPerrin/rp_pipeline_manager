@@ -14,3 +14,9 @@ reload(install)
 
 from . import main_window
 reload(main_window)
+
+from . import asset
+reload(asset)
+
+from . import shot
+reload(shot)
