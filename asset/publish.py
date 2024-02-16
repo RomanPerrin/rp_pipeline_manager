@@ -98,7 +98,6 @@ def publish(self, *args):
             print("deleting intermediate shapes")
             all_meshes = cmds.ls( type="mesh", ap=True )
             no_intermediate_meshes = cmds.ls( type="mesh", ap=True, noIntermediate=True )
-            print(list(set(all_meshes)-set(no_intermediate_meshes)))
             for shape in list(set(all_meshes)-set(no_intermediate_meshes)):
                 cmds.delete(shape)
                 print("deleting", shape, "intermediate")
@@ -106,12 +105,17 @@ def publish(self, *args):
         if step == 'rig':
             setIsHistoricallyInteresting(value=0)
 
+        print(selection_export)
         selection_export = [obj.split(':')[-1] for obj in selection_export]
+        print(selection_export)
         sel = cmds.ls(selection_export, dag=1, l=1)
+        print(sel)
         shadingGrps:List = cmds.listConnections(sel ,type='shadingEngine')
+        print(shadingGrps)
         if not shadingGrps:
             shadingGrps = []
         shaders = cmds.ls(cmds.listConnections(shadingGrps),materials=1)
+        print(shaders)
         if not shaders:
             shaders = []
 
