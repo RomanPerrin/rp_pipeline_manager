@@ -106,13 +106,14 @@ def publish(self, *args):
             setIsHistoricallyInteresting(value=0)
 
         selection_export = [obj.split(':')[-1] for obj in selection_export]
+
         sel = cmds.ls(selection_export, dag=1, l=1)
-        shadingGrps:List = cmds.listConnections(sel ,type='shadingEngine')
-        if not shadingGrps:
-            shadingGrps = []
+        
+        shadingGrps = []
+        shadingGrps = cmds.listConnections(sel ,type='shadingEngine')
+
+        shaders = []
         shaders = cmds.ls(cmds.listConnections(shadingGrps),materials=1)
-        if not shaders:
-            shaders = []
 
         print(geocacheList + shaders + shadingGrps + sel)
         cmds.select(geocacheList + shaders + shadingGrps + sel, noExpand=True)
