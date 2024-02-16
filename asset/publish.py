@@ -98,6 +98,7 @@ def publish(self, *args):
             print("deleting intermediate shapes")
             all_meshes = cmds.ls( type="mesh", ap=True )
             no_intermediate_meshes = cmds.ls( type="mesh", ap=True, noIntermediate=True )
+            print(list(set(all_meshes)-set(no_intermediate_meshes)))
             for shape in list(set(all_meshes)-set(no_intermediate_meshes)):
                 cmds.delete(shape)
                 print("deleting", shape, "intermediate")
