@@ -105,20 +105,15 @@ def publish(self, *args):
         if step == 'rig':
             setIsHistoricallyInteresting(value=0)
 
-        print(selection_export)
         selection_export = [obj.split(':')[-1] for obj in selection_export]
-        print(selection_export)
 
         sel = cmds.ls(selection_export, dag=1, l=1)
-        print(sel)
         
         shadingGrps = []
         shadingGrps = cmds.listConnections(sel ,type='shadingEngine')
-        print(shadingGrps)
 
         shaders = []
         shaders = cmds.ls(cmds.listConnections(shadingGrps),materials=1)
-        print(shaders)
 
         print(geocacheList + shaders + shadingGrps + sel)
         cmds.select(geocacheList + shaders + shadingGrps + sel, noExpand=True)
