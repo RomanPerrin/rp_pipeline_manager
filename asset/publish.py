@@ -111,9 +111,9 @@ def publish(self, *args):
 
         sel = cmds.ls(selection_export, dag=1, l=1)
         print(sel)
-        return
+        
         shadingGrps = []
-        shadingGrps:List = cmds.listConnections(sel ,type='shadingEngine')
+        shadingGrps = cmds.listConnections(sel ,type='shadingEngine')
         print(shadingGrps)
 
         shaders = []
