@@ -162,7 +162,9 @@ class ShotUi():
             else:   
                 print(f"shot layout already exists for {shot_list[i]}")
                 existingShotList.append({'name':shot_list[i], 'path':destination})
-        overwriteWindow = replaceLayout(existingShotList, filename, 'shot')
+        
+        if existingShotList:
+            overwriteWindow = replaceLayout(existingShotList, filename, 'shot')
         
     def getShotList(self, sequence, *args):
         shot_list = []
@@ -229,7 +231,9 @@ class ShotUi():
         else:    
             cmds.warning(f"conformity layout already exists for {shot_name}")
             existingShotList.append({'name':shot_name, 'path':destination})
-        overwriteWindow = replaceLayout(existingShotList, shot_layout, 'conformity')
+        
+        if existingShotList:
+            overwriteWindow = replaceLayout(existingShotList, shot_layout, 'conformity')
         
         mel.eval(f'setProject "{os.path.join(self.shot_dir, shot_name, "maya").replace(os.sep, "/")}"')
         cmds.file(destination, open=True, force=True)
