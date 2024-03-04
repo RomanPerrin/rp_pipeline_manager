@@ -225,8 +225,11 @@ class ShotUi():
         if not os.path.exists(destination):
             shutil.copy(shot_layout, destination)
             print(f"creating conformity layout for {shot_name}")
-            pass
-        cmds.warning(f"conformity layout already exists for {shot_name}")
+        else:    
+            cmds.warning(f"conformity layout already exists for {shot_name}")
+        
+        mel.eval(f'setProject "{os.path.join(self.shot_dir, shot_name, "maya").replace(os.sep, "/")}"')
+        cmds.file(destination, open=True, force=True)
 
     def openConformityLayout(self, *args):
         # print("opening conformity layout")
@@ -265,7 +268,7 @@ class ShotUi():
             return
         
         filename = os.path.join(self.shot_dir, shot_name, "maya", "scenes", "render", f"{shot_name}_render.ma")
-        render_setup = ""
+        render_setup = os.path.join(self.pipe_dir, "02_ressource/Templates/Render_settings/render_setup.ma").replace(os.sep, "/")
         
         if not os.path.exists(filename):
             cmds.file(render_setup, open=True , f=True)
