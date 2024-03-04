@@ -291,6 +291,7 @@ class replaceLayout():
         self.size = (200, 300)
         self.existingShotList = existingShotList
         self.filename = filename
+        self.layoutName = layoutName
         self.UI()
 
     def UI(self):
@@ -299,7 +300,7 @@ class replaceLayout():
         self.window = cmds.window(self.window, wh=self.size, minimizeButton=False, maximizeButton=False)
         
         mainLayout = cmds.formLayout()
-        sh_text = cmds.text(label=f"Select the {layoutName}s to overwrite", p=mainLayout)
+        sh_text = cmds.text(label=f"Select the {self.layoutName}s to overwrite", p=mainLayout)
         self.shot_scrollList = cmds.textScrollList("shot", p=mainLayout, append=[i['name'] for i in self.existingShotList], numberOfRows=8, allowMultiSelection=True)
         self.overwriteButton  =cmds.button(p=mainLayout, label="Overwrite", command=self.confirmWindow)
         
@@ -320,7 +321,7 @@ class replaceLayout():
             return
         
         self.answer = cmds.confirmDialog(t='Confirm',
-                                         m=f'Do you really want to replace the selected {layoutName}s?',
+                                         m=f'Do you really want to replace the selected {self.layoutName}s?',
                                          b=['Replace', 'Cancel'],
                                          db='Cancel',
                                          cb='Cancel',
@@ -341,8 +342,8 @@ class replaceLayout():
             try:    
                 destination = shotList[i]['path']
                 shutil.copy(self.filename, destination)
-                print(f"overwriting {layoutName} layout for {shotList[i]['name']}")
+                print(f"overwriting {self.layoutName} layout for {shotList[i]['name']}")
             except:
-                print(f'error overwriting {layoutName} layout for {shotList[i]["name"]}')
+                print(f'error overwriting {self.layoutName} layout for {shotList[i]["name"]}')
         
         cmds.waitCursor(state=False)
