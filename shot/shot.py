@@ -54,7 +54,7 @@ class ShotUi():
                                                          (openShotDirectoryButton, "top", 0, addButton)])
 
         openShLayoutButton = cmds.button(p=self.layout, label="open shot layout", command=self.openShLayout)
-        createConformityLayoutButton = cmds.button(p=self.layout, label="create conformity layout", command=self.createConformityLayoutLayout)
+        createConformityLayoutButton = cmds.button(p=self.layout, label="create conformity layout", command=self.createConformityLayout)
         
         openConformityLayoutButton = cmds.button(p=self.layout, label="open conformity layout", command=self.openConformityLayout)
         openShotRenderButton = cmds.button(p=self.layout, label="open shot render", command=self.openShotRender)
@@ -162,7 +162,7 @@ class ShotUi():
             else:   
                 print(f"shot layout already exists for {shot_list[i]}")
                 existingShotList.append({'name':shot_list[i], 'path':destination})
-        overwriteWindow = replaceShotLayout(existingShotList, filename)
+        overwriteWindow = replaceLayout(existingShotList, filename, 'shot')
         
     def getShotList(self, sequence, *args):
         shot_list = []
@@ -210,7 +210,7 @@ class ShotUi():
         mel.eval(f'setProject "{os.path.join(self.shot_dir, shot_name, "maya").replace(os.sep, "/")}"')
         cmds.file(filename, open=True, force=True)
 
-    def createConformityLayoutLayout(self, *args):
+    def createConformityLayout(self, *args):
         # print("creating conformity layout")
         shot_name = cmds.textScrollList('shot', q=True, si=True)[0]
         if not shot_name:
@@ -221,12 +221,15 @@ class ShotUi():
            cmds.warning(f"no shot layout found for {shot_name}")
            return
 
+        existingShotList = []
         destination = os.path.join(self.shot_dir, shot_name, "maya", "scenes", "layout", f"{shot_name}_conformity_layout.ma")
         if not os.path.exists(destination):
             shutil.copy(shot_layout, destination)
             print(f"creating conformity layout for {shot_name}")
         else:    
             cmds.warning(f"conformity layout already exists for {shot_name}")
+            existingShotList.append({'name':shot_name, 'path':destination})
+        overwriteWindow = replaceLayout(existingShotList, shot_layout, 'conformity')
         
         mel.eval(f'setProject "{os.path.join(self.shot_dir, shot_name, "maya").replace(os.sep, "/")}"')
         cmds.file(destination, open=True, force=True)
@@ -282,9 +285,9 @@ class ShotUi():
         mel.eval(f'setProject "{os.path.join(self.shot_dir, shot_name, "maya").replace(os.sep, "/")}"')
         cmds.file(filename, open=True , force=True)
 
-class replaceShotLayout():
-    def __init__(self, existingShotList, filename) -> None:
-        self.window = 'shotLayout'
+class replaceLayout():
+    def __init__(self, existingShotList, filename, layoutName) -> None:
+        self.window = f'{layoutName}Layout'
         self.size = (200, 300)
         self.existingShotList = existingShotList
         self.filename = filename
@@ -296,7 +299,7 @@ class replaceShotLayout():
         self.window = cmds.window(self.window, wh=self.size, minimizeButton=False, maximizeButton=False)
         
         mainLayout = cmds.formLayout()
-        sh_text = cmds.text(label="Select the shots to overwrite", p=mainLayout)
+        sh_text = cmds.text(label=f"Select the {layoutName}s to overwrite", p=mainLayout)
         self.shot_scrollList = cmds.textScrollList("shot", p=mainLayout, append=[i['name'] for i in self.existingShotList], numberOfRows=8, allowMultiSelection=True)
         self.overwriteButton  =cmds.button(p=mainLayout, label="Overwrite", command=self.confirmWindow)
         
@@ -317,7 +320,7 @@ class replaceShotLayout():
             return
         
         self.answer = cmds.confirmDialog(t='Confirm',
-                                         m='Do you really want to replace the selected Shots?',
+                                         m=f'Do you really want to replace the selected {layoutName}s?',
                                          b=['Replace', 'Cancel'],
                                          db='Cancel',
                                          cb='Cancel',
@@ -338,8 +341,8 @@ class replaceShotLayout():
             try:    
                 destination = shotList[i]['path']
                 shutil.copy(self.filename, destination)
-                print(f"overwriting shot layout for {shotList[i]['name']}")
+                print(f"overwriting {layoutName} layout for {shotList[i]['name']}")
             except:
-                print(f'error overwriting shot layout for {shotList[i]["name"]}')
+                print(f'error overwriting {layoutName} layout for {shotList[i]["name"]}')
         
         cmds.waitCursor(state=False)
