@@ -232,7 +232,8 @@ def importObjFromRef(*args):
         rFile = cmds.referenceQuery(ref, f=True)
         if not rFile:
             print(rFile + "reference node without associated file")
-            pass
+            cmds.lockNode(ref, l=0)
+            cmds.delete(ref)
         cmds.file(rFile, importReference=True)
 
 def deleteNamespaces(*args):
