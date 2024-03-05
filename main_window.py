@@ -135,6 +135,8 @@ class UI():
     def getPipelineDirectory(self, *args):
         global pipe_dir
         pipe_dir = cmds.textField(self.pipeline_dir, q=True, text=True)
+        self.assetUI.updateAssetTypeScrollList()
+        self.shotUI.updateSequenceScrollList()
         return cmds.textField(self.pipeline_dir, q=True, text=True)
     
     
