@@ -103,7 +103,7 @@ def publish(self, *args):
                     cmds.delete(shape)
                     print("deleting", shape, "intermediate")
                 except:
-                    print("Problem deleting intermediate shape :", shape)
+                    print("Problem deleting intermediate shape:", shape)
     	
         if step == 'rig':
             setIsHistoricallyInteresting(value=0)
