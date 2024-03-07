@@ -146,6 +146,11 @@ def autoInstance(*args):
     
     for i in range(len(toInstance)):
         shapeParent = [cmds.listRelatives(node, p=1, pa=1)[0] for node in toInstance[i]['node']]
+    
+        if not toInstance[i]['node'] or not toInstance[i]['source'] or len(toInstance[i]['source']) != len(shapeParent):
+            print('issue ' + toInstance[i])
+            pass
+        
         cmds.file(toInstance[i]['filename'], importReference=True)
         for j in range(len(shapeParent)):
             delete_shapes(toInstance[i]['node'][j])
