@@ -235,8 +235,8 @@ class ShotUi():
         if existingShotList:
             overwriteWindow = replaceLayout(existingShotList, shot_layout, 'conformity')
         
-        mel.eval(f'setProject "{os.path.join(self.shot_dir, shot_name, "maya").replace(os.sep, "/")}"')
-        cmds.file(destination, open=True, force=True)
+        # mel.eval(f'setProject "{os.path.join(self.shot_dir, shot_name, "maya").replace(os.sep, "/")}"')
+        # cmds.file(destination, open=True, force=True)
 
     def openConformityLayout(self, *args):
         # print("opening conformity layout")
