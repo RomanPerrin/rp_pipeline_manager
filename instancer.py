@@ -137,15 +137,12 @@ def autoInstance(*args):
         else:
             ref.append(dict)
     
-    print(ref)
-    print(toInstance)
     
     for i in range(len(toInstance)):
         for j in range(len(ref)):
             if toInstance[i]['filename'].split('{')[0] == ref[j]['filename']:
                 toInstance[i]['source'] = ref[j]['node']
     
-    print(toInstance)
     
     for i in range(len(toInstance)):
         shapeParent = [cmds.listRelatives(node, p=1, pa=1)[0] for node in toInstance[i]['node']]
@@ -153,3 +150,5 @@ def autoInstance(*args):
         for j in range(len(shapeParent)):
             delete_shapes(toInstance[i]['node'][j])
             instance_shapes([toInstance[i]['source'][j], shapeParent[j]])
+        
+        print(toInstance[i]['refNode'] + 'Done')
