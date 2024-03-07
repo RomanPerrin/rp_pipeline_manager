@@ -119,7 +119,7 @@ def autoInstance(*args):
         dict['filename'] = cmds.referenceQuery(referenceNode, f=1)
         
         children = []
-        nodes = cmds.referenceQuery(referenceNode, nodes=1)
+        nodes = cmds.referenceQuery(referenceNode, nodes=1, dagPath=1)
         nodes = [node for node in nodes if cmds.nodeType(node) == 'mesh']
         
         #for node in nodes:
