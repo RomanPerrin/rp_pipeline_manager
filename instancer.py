@@ -109,7 +109,7 @@ def delete_shapes( sel=[] ):
     shapes = filter_shapes( sel )
     cmds.delete( shapes )
 
-def autoInstance():
+def autoInstance(*args):
     referenceNodeList = cmds.ls(rf=1)
     filenameList = []
     
