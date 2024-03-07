@@ -20,3 +20,6 @@ reload(asset)
 
 from . import shot
 reload(shot)
+
+from . import instancer
+reload(instancer)
