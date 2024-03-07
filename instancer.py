@@ -151,4 +151,4 @@ def autoInstance(*args):
             delete_shapes(toInstance[i]['node'][j])
             instance_shapes([toInstance[i]['source'][j], shapeParent[j]])
         
-        print(toInstance[i]['refNode'] + 'Done')
+        print(toInstance[i]['refNode'] + ' Done')
