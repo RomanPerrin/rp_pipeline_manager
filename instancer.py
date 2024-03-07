@@ -142,7 +142,9 @@ def autoInstance(*args):
         for j in range(len(ref)):
             if toInstance[i]['filename'].split('{')[0] == ref[j]['filename']:
                 toInstance[i]['source'] = ref[j]['node']
-    
+                break
+        else:
+            toInstance.remove(toInstance[i])
     
     for i in range(len(toInstance)):
         shapeParent = [cmds.listRelatives(node, p=1, pa=1)[0] for node in toInstance[i]['node']]
