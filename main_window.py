@@ -91,6 +91,11 @@ class UI():
             pass
         
         cmds.showWindow(self.window)
+
+        cmds.pluginInfo( 'RenderMan_for_Maya.py', edit=True, autoload=False )
+        if cmds.pluginInfo('RenderMan_for_Maya.py', q=1, l=1):
+            dismissed = cmds.framelessDialog( title='Renderman', message='Renderman is LOADED!!!!!! Please restart maya'
+                                             , button=['OK'], primary=['OK'])
     
     def changeCamerasClipPlane(self, *args):
         cameras = cmds.ls(cameras=1)

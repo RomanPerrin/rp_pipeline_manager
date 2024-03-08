@@ -16,8 +16,8 @@ from .. import cache_manager_v1_20
 def publish(self, *args):
     selection_export = cmds.ls(sl=1)
     if not selection_export:
-        dismissed = cmds.framelessDialog( title='Publish error', message='No selection found', 
-                path='please select an item and try again', button=['OK'], primary=['OK'])
+        dismissed = cmds.framelessDialog( title='Publish error', message='No selection found'
+                                         , button=['OK'], primary=['OK'])
         return
     current_scene = cmds.file(q=1, sn=1)
 
