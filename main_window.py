@@ -91,8 +91,10 @@ class UI():
             pass
         
         cmds.showWindow(self.window)
-
-        cmds.pluginInfo( 'RenderMan_for_Maya.py', edit=True, autoload=False )
+        
+        if cmds.pluginInfo('RenderMan_for_Maya.py', q=True, autoload=1):
+            cmds.pluginInfo('RenderMan_for_Maya.py', e=True, autoload=0)
+        
         if cmds.pluginInfo('RenderMan_for_Maya.py', q=1, l=1):
             dismissed = cmds.framelessDialog( title='Renderman', message='Renderman is LOADED!!!!!! Please restart maya'
                                              , button=['OK'], primary=['OK'])
