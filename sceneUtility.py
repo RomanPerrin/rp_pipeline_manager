@@ -12,7 +12,7 @@ import sys
 #files
 from . import pluginUtility
 
-print(__path__)
+print(globals(__path__))
 def saveScene(*args):
     if cmds.file(q=True, sceneName=True):
         cmds.file(f=True, type='mayaAscii', save=True)
