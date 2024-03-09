@@ -23,6 +23,8 @@ icon_size = 35
 row_size = 35
 pipe_dir = ""
 
+__path__ = os.path.dirname(__file__)
+
 #self.pipe_dir/self.selectedAssetType()/self.selectedAssets()/maya/scenes/edit/self.selectedStep()
 
 def createRmanUserToken(indexToken, userTokenKeys, userTokenValues, type, *args):
