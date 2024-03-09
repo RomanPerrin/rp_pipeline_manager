@@ -2,6 +2,10 @@
     "pluginsToAvoid":["RenderMan_for_Maya",
                     "rfm_volume_aggregate_set",
                     "xgenToolkit",
-                    "xgSplineDataToXpd"]
+                    "xgSplineDataToXpd",
+                    "OpenVDB",
+                    "rfm",
+                    "rfm_manipulators",
+                    "rfm_volume_aggregate_set"]
 
 }
