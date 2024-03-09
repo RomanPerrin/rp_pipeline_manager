@@ -32,7 +32,8 @@ def warningLoaded(plugins, autoDisable=True):
 
     dismissed = ''
     loaded, failed = checkIfLoaded(plugins)
-    print('failed to check loaded status\n', formatListToStr(failed))
+    if failed:
+        print('failed to check loaded status\n', formatListToStr(failed))
     if loaded:
         dismissed = cmds.framelessDialog(title='Plugin Loaded',
                                          message=f"{formatListToStr(loaded)} is LOADED!!!!!! Please restart maya",
