@@ -37,6 +37,7 @@ def readSetting(setting):
     with open(file, 'r') as j:
         content = json.loads(j.read())[setting]
     
+    print(content)
     if not content:
         raise NameError(f'{setting} setting not found')
     
