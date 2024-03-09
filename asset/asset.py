@@ -210,8 +210,9 @@ class AssetUi():
         if not assetDir:
             return
         
-        print(os.path.normpath(os.path.join(assetDir, 'maya')))
-        return os.path.normpath(os.path.join(assetDir, 'maya'))
+        # print(os.path.normpath(os.path.join(assetDir, 'maya')))
+        return os.path.normpath(os.path.join(assetDir, 'maya')).replace(os.sep, '/')
+
 
     def openLastEdit(self, *args):
         sceneUtility.saveScene()
