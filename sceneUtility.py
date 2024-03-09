@@ -3,17 +3,18 @@ __author__ = 'Roman PERRIN'
 #Author: Roman PERRIN
 
 #Libraries
-import json
 import maya.cmds as cmds
 import maya.mel as mel
 import os
+import json
+import sys
 
 #files
 from . import pluginUtility
 
 print(__package__)
 print(__name__)
-print(__package__.__path__)
+print(getattr(sys.modules[__package__], __package__))
 
 def saveScene(*args):
     if cmds.file(q=True, sceneName=True):
