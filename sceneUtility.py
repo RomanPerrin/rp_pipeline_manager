@@ -12,10 +12,7 @@ import sys
 #files
 from . import pluginUtility
 
-print(__package__)
-print(__name__)
-print(sys.__package__)
-# print(getattr(sys.__package__, __package__))
+print(sys.path)
 
 def saveScene(*args):
     if cmds.file(q=True, sceneName=True):
