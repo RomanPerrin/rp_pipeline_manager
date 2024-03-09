@@ -25,6 +25,7 @@ def disableAutoload(plugins):
     return failed
 
 def warningLoaded(plugins, autoDisable=True):
+    print('warningLoaded')
     if type(plugins) != list:
         plugins  = [plugins]
     if autoDisable:
