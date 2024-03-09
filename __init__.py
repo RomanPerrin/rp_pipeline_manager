@@ -20,12 +20,12 @@ reload(asset)
 from . import shot
 reload(shot)
 
-print("1 init rp")
 from . import instancer
 reload(instancer)
 
 from . import sceneUtility
 reload(sceneUtility)
+print("1 init rp")
 
 from . import pluginUtility
 reload(pluginUtility)
