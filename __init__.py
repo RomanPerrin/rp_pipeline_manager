@@ -4,7 +4,7 @@ __author__ = 'Roman PERRIN'
 
 #Libraries
 from importlib import reload
-
+print("1 init rp")
 #files
 from . import setup
 reload(setup)
