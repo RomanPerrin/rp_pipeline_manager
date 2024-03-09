@@ -13,7 +13,7 @@ from . import pluginUtility
 
 print(__package__)
 print(__name__)
-print(eval(__package__).__path__)
+print(__package__.__path__)
 
 def saveScene(*args):
     if cmds.file(q=True, sceneName=True):
