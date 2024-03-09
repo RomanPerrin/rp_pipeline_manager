@@ -4,7 +4,6 @@ __author__ = 'Roman PERRIN'
 
 #Libraries
 from importlib import reload
-import os
 
 #files
 from . import setup

@@ -3,6 +3,7 @@ __author__ = 'Roman PERRIN'
 #Author: Roman PERRIN
 
 #Libraries
+import sys
 from typing import Callable
 import maya.cmds as cmds
 import maya.mel as mel
@@ -22,8 +23,6 @@ from . import pluginUtility
 icon_size = 35
 row_size = 35
 pipe_dir = ""
-
-__path__ = os.path.dirname(__file__)
 
 #self.pipe_dir/self.selectedAssetType()/self.selectedAssets()/maya/scenes/edit/self.selectedStep()
 

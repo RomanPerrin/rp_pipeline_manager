@@ -12,8 +12,6 @@ import sys
 #files
 from . import pluginUtility
 
-print(sys.modules[__package__].__path__)
-
 def saveScene(*args):
     if cmds.file(q=True, sceneName=True):
         cmds.file(f=True, type='mayaAscii', save=True)
@@ -28,5 +26,9 @@ def openScene(dir, *args):
         return
 
 def readSetting(setting):
-    os.path.join(__path__, )
-    # json.loads()
+    file = os.path.join(sys.modules[__package__].__path__[0], 'settings.json')
+    content = json.loads(file)
+    print(content[setting])
+
+
+print(readSetting('pluginsToAvoid'))
