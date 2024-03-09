@@ -19,6 +19,7 @@ def saveScene(*args):
 def openScene(dir, *args):
     try:
         plugins = readSetting('pluginsToAvoid')
+        print(plugins)
         cancelled = pluginUtility.warningLoaded(plugins, autoDisable=True)
         if cancelled:
             return
