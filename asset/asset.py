@@ -3,6 +3,7 @@ __author__ = 'Roman PERRIN'
 #Author: Roman PERRIN
 
 #Libraries
+from fileinput import filename
 import maya.cmds as cmds
 import maya.mel as mel
 import os
@@ -225,7 +226,9 @@ class AssetUi():
 
         #open file
         if file_list:
-            sceneUtility.openScene(file_list[-1])
+            filename = edit_dir+'/'+file_list[-1]
+            sceneUtility.openScene(filename)
+            return
 
         #create new file
         cmds.file(f=True, new=True )
