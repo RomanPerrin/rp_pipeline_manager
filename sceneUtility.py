@@ -14,7 +14,8 @@ from . import pluginUtility
 
 print(__package__)
 print(__name__)
-print(getattr(sys.modules[__name__], __package__))
+print(sys.__package__)
+# print(getattr(sys.__package__, __package__))
 
 def saveScene(*args):
     if cmds.file(q=True, sceneName=True):
