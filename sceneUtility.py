@@ -1,8 +1,8 @@
+print("sceneUtility")
 # coding : utf-8
 __author__ = 'Roman PERRIN'
 #Author: Roman PERRIN
 
-print("sceneUtility")
 #Libraries
 import maya.cmds as cmds
 import maya.mel as mel
