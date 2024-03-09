@@ -16,14 +16,21 @@ def saveScene(*args):
     if cmds.file(q=True, sceneName=True):
         cmds.file(f=True, type='mayaAscii', save=True)
 
-def openScene(dir, *args):
+def openScene(dir, projectDir='', *args):
     cancelled = pluginUtility.checkPlugin()
     if cancelled:
         return
 
-    if os.path.exists(dir):
+    if projectDir:
+        try:
+            mel.eval(f'setProject "{projectDir}"')
+        except:
+            raise RuntimeError(f'error setting project: {projectDir}')
+
+    try:
         opened_file = cmds.file(dir, open=True , force=True)
-        return
+    except:
+        raise IOError('error opening file: ' dir)
 
 def readSetting(setting):
     file = os.path.join(sys.modules[__package__].__path__[0], 'settings.json')

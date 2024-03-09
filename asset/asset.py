@@ -4,6 +4,7 @@ __author__ = 'Roman PERRIN'
 
 #Libraries
 from fileinput import filename
+from typing_extensions import runtime
 import maya.cmds as cmds
 import maya.mel as mel
 import os
@@ -205,7 +206,7 @@ class AssetUi():
 
         return step
 
-    def getWorkingDirectory(self, *args):
+    def getProjectDirectory(self, *args):
         assetDir = self.getAssetDirectory()
         if not assetDir:
             return
@@ -216,11 +217,10 @@ class AssetUi():
 
     def openLastEdit(self, *args):
         sceneUtility.saveScene()
-        working_dir = self.getWorkingDirectory().replace(os.sep, '/')
+        projectDir = self.getProjectDirectory().replace(os.sep, '/')
 
         #set project
-        mel.eval(f'setProject "{working_dir}"')
-        edit_dir = os.path.join(working_dir, 'scenes', 'edit', self.selectedStep()).replace(os.sep, '/')
+        edit_dir = os.path.join(projectDir, 'scenes', 'edit', self.selectedStep()).replace(os.sep, '/')
 
         file_list = cmds.getFileList( folder=edit_dir, filespec='*.ma' )
         file_list.sort()
@@ -228,15 +228,23 @@ class AssetUi():
         #open file
         if file_list:
             filename = edit_dir+'/'+file_list[-1]
-            sceneUtility.openScene(filename)
+            try:
+                sceneUtility.openScene(filename, projectDir)
+                return
+            except IOError as e:
+                print(e)
+            except RuntimeError as e:
+                print(e)
+            
             return
+            
 
         #create new file
         cmds.file(f=True, new=True )
         print('import mode?', self.selectedStep(), not self.selectedStep() in ['modeling', 'dressing'])
         if not self.selectedStep() in ['modeling', 'dressing']:
             if not os.path.isdir(os.path.join(edit_dir, 'incrementalSave')):
-                mode_file = os.path.join(working_dir, 'scenes', 'publish', 'modeling', f"{self.selectedAssets()}_publish_modeling.ma")
+                mode_file = os.path.join(projectDir, 'scenes', 'publish', 'modeling', f"{self.selectedAssets()}_publish_modeling.ma")
                 cmds.file(mode_file, reference=True, ns=f"{self.selectedAssets()}_{self.selectedStep()}")
 
         if self.selectedStep() == 'lookdev':
@@ -270,7 +278,7 @@ class AssetUi():
     
     def importAsReference(self, *args):
         #cmds.file( save=True, type='mayaAscii' )
-        cmds.file(os.path.join(self.getWorkingDirectory(), 'scenes', 'publish', self.selectedStep(), f"{self.selectedAssets()}_publish_{self.selectedStep()}.ma"), reference=True, ns=f"{self.selectedAssets()}_{self.selectedStep()}")
+        cmds.file(os.path.join(self.getProjectDirectory(), 'scenes', 'publish', self.selectedStep(), f"{self.selectedAssets()}_publish_{self.selectedStep()}.ma"), reference=True, ns=f"{self.selectedAssets()}_{self.selectedStep()}")
 
     def addAsset(self, *args):
         if not self.selectedAssetType():
@@ -280,7 +288,7 @@ class AssetUi():
         return
     
     def openDirectory(self, *args):
-        dir = self.getWorkingDirectory()
+        dir = self.getProjectDirectory()
         if not dir:
             return
         

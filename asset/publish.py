@@ -40,6 +40,7 @@ def publish(self, *args):
         
         print("deleting volume aggregate")
         deleteVolumAggregate()
+        
         print("deleting unsused nodes")
         unknownNodes = cmds.ls(typ=('unknown','unknownDag'))
         print(unknownNodes)
@@ -48,18 +49,23 @@ def publish(self, *args):
                 cmds.lockNode(node,l=False)
                 cmds.delete(node)
             except:
-                print('Problem deleting unknown node "'+node+'"!')
-        # print('deleting unused shading nodes')
-        # deleteUnusedShadingNodes()
+                print(f'Problem deleting unknown node {node}!')
+        
+        print('deleting unused shading nodes')
+        deleteUnusedShadingNodes()
     
         print('deleting display layers')
         deleteDisplayLayers()
+
         print('deleting empty sets')
         deleteEmptySets()
+
         print('deleting render layer')
         deleteRenderLayers()
+
         print("remove unused plugins")
         deleteUnusedPlugins()
+
         print("deleting namespaces")
         deleteNamespaces()
 
@@ -69,12 +75,12 @@ def publish(self, *args):
             print('fixing lamina faces')
             cmds.delete(cmds.polyInfo(lf=1))
             cmds.makeIdentity(a=1)
-            cmds.DeleteHistory(cmds.ls())
             cmds.makeIdentity(t=1, r=1, s=1)
+            cmds.DeleteHistory(cmds.ls())
             cmds.polyClean()
-            sel = cmds.ls(geometry=True)
-            # cmds.unloadPlugin('RenderMan_for_Maya.py', force=True)
+
             # print('assigning Lambert')
+            # sel = cmds.ls(geometry=True)
             # for i in sel:
                 # cmds.select(i, r=True)
                 # cmds.hyperShade(assign='lambert1')
@@ -132,7 +138,8 @@ def publish(self, *args):
     except Exception as error:
         print(error)
         traceback.print_exception(*sys.exc_info())
-        cmds.error("error during publish ")
+        cmds.error("error during publish")
+        cmds.file(f=True, new=True )
         cmds.file(current_scene, open=True , force=True)
     
     cmds.file(current_scene, open=True , force=True)
@@ -231,13 +238,18 @@ def deleteUnusedPlugins(*args):
 
 def importObjFromRef(*args):
     refs = cmds.ls(rf = True)
+    
     for ref in refs:
-        rFile = cmds.referenceQuery(ref, f=True)
-        if not rFile:
-            print(rFile + "reference node without associated file")
-            cmds.lockNode(ref, l=0)
-            cmds.delete(ref)
-        cmds.file(rFile, importReference=True)
+        try:
+            rFile = cmds.referenceQuery(ref, f=True)
+            cmds.file(rFile, importReference=True)
+        except RuntimeError as e:
+            print(e)
+            try:
+                cmds.lockNode(ref, l=False)
+                cmds.delete(ref)
+            except:
+                raise RuntimeError(f'error deleting {ref}')
 
 def deleteNamespaces(*args):
     # Set root namespace
