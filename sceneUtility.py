@@ -1,4 +1,3 @@
-print("sceneUtility")
 # coding : utf-8
 __author__ = 'Roman PERRIN'
 #Author: Roman PERRIN
@@ -31,7 +30,7 @@ def openScene(dir, projectDir='', *args):
     try:
         opened_file = cmds.file(dir, open=True , force=True)
     except:
-        raise IOError('error opening file: ' dir)
+        raise IOError(f'error opening file: {dir}')
 
 def readSetting(setting):
     file = os.path.join(sys.modules[__package__].__path__[0], 'settings.json')
