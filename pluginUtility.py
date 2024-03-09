@@ -49,7 +49,7 @@ def checkPlugin():
 
     unloaded, failed = forceUnload(plugins, autoDisable=True)
     print('successfully unloaded: ', formatListToStr(unloaded))
-
+    print(failed)
     cancelled = None
     if failed:
         cancelled = warningLoaded(failed, autoDisable=True)
