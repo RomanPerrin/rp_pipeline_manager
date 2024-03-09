@@ -17,10 +17,10 @@ reload(main_window)
 from . import asset
 reload(asset)
 
-print("1 init rp")
 from . import shot
 reload(shot)
 
+print("1 init rp")
 from . import instancer
 reload(instancer)
 
