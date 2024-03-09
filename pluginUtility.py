@@ -49,7 +49,7 @@ def checkPlugin():
 
     unloaded, failed = forceUnload(plugins, autoDisable=True)
     print('successfully unloaded: ', formatListToStr(unloaded))
-    print(failed)
+    
     cancelled = None
     if failed:
         cancelled = warningLoaded(failed, autoDisable=True)
@@ -82,8 +82,10 @@ def forceUnload(plugins, autoDisable=True):
     failed = []
     for plugin in plugins:
         try:
-            cmds.unloadPlugin(plugin, f=True)
-            unloaded.append(plugin)
+            loaded, fail = checkIfLoaded(plugin)
+            if loaded or fail:
+                cmds.unloadPlugin(plugin, f=True)
+                unloaded.append(plugin)
         except:
             failed.append(plugin)
     
