@@ -12,6 +12,7 @@ import os
 from . import pluginUtility
 
 print(__package__)
+print(__name__)
 
 def saveScene(*args):
     if cmds.file(q=True, sceneName=True):
@@ -27,5 +28,5 @@ def openScene(dir, *args):
         return
 
 def readSetting(setting):
-    os.path.join(__package__)
+    os.path.join(exec(__package__).__path__)
     # json.loads()
