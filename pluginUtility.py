@@ -48,7 +48,8 @@ def checkPlugin():
     plugins = sceneUtility.readSetting('pluginsToAvoid')
 
     unloaded, failed = forceUnload(plugins, autoDisable=True)
-    print('successfully unloaded: ', formatListToStr(unloaded))
+    if unloaded:
+        print('successfully unloaded: ', formatListToStr(unloaded))
     
     cancelled = None
     if failed:
