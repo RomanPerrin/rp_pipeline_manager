@@ -8,7 +8,7 @@ import maya.mel as mel
 import os
 
 #files
-import pluginUtility
+from . import pluginUtility
 
 def saveScene(*args):
     if cmds.file(q=True, sceneName=True):
