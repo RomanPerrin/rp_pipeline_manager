@@ -23,3 +23,9 @@ reload(shot)
 
 from . import instancer
 reload(instancer)
+
+from . import sceneUtility
+reload(sceneUtility)
+
+from . import pluginUtility
+reload(pluginUtility)

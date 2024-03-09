@@ -12,6 +12,7 @@ from functools import partial
 from . import publish
 from . import addAsset
 from .. import main_window
+from .. import scene
 
 icon_size = 35
 row_size = 35
@@ -212,10 +213,8 @@ class AssetUi():
         return os.path.normpath(os.path.join(assetDir, 'maya'))
 
     def openLastEdit(self, *args):
-        if cmds.file(q=True, sceneName=True):
-            cmds.file(f=True, type='mayaAscii', save=True)
-        working_dir = self.getWorkingDirectory()
-        working_dir = working_dir.replace(os.sep, '/')
+        scene.saveScene()
+        working_dir = self.getWorkingDirectory().replace(os.sep, '/')
 
         #cmds.unloadPlugin('rfm_volume_aggregate_set.py', force=True)
         #cmds.unloadPlugin('rfm_manipulators.py', force=True)

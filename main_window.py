@@ -11,22 +11,19 @@ from functools import partial
 import shutil
 import json
 from importlib import reload
-from rp_pipeline_manager import install
 
 #files
-from rp_pipeline_manager.asset import asset
-from rp_pipeline_manager.shot import shot
+from .asset import asset
+from .shot import shot
 from . import instancer
+from . import install
+import pluginUtility
 
 icon_size = 35
 row_size = 35
 pipe_dir = ""
 
 #self.pipe_dir/self.selectedAssetType()/self.selectedAssets()/maya/scenes/edit/self.selectedStep()
-
-def saveScene(*args):
-    if cmds.file(q=True, sceneName=True):
-        cmds.file(f=True, type='mayaAscii', save=True)
 
 def createRmanUserToken(indexToken, userTokenKeys, userTokenValues, type, *args):
     cmds.setAttr(f'rmanGlobals.UserTokens[{indexToken}].userTokenKeys', userTokenKeys, type='string')
@@ -92,13 +89,9 @@ class UI():
         
         cmds.showWindow(self.window)
         
-        if cmds.pluginInfo('RenderMan_for_Maya.py', q=True, autoload=1):
-            cmds.pluginInfo('RenderMan_for_Maya.py', e=True, autoload=0)
-        
-        if cmds.pluginInfo('RenderMan_for_Maya.py', q=1, l=1):
-            dismissed = cmds.framelessDialog( title='Renderman', message='Renderman is LOADED!!!!!! Please restart maya'
-                                             , button=['OK'], primary=['OK'])
-    
+        pluginUtility.warningLoaded('RenderMan_for_Maya.py', autoDisable=True)
+
+
     def changeCamerasClipPlane(self, *args):
         cameras = cmds.ls(cameras=1)
         for camera in cameras:
