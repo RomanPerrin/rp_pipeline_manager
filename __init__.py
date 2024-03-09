@@ -14,10 +14,10 @@ reload(install)
 from . import main_window
 reload(main_window)
 
-print("1 init rp")
 from . import asset
 reload(asset)
 
+print("1 init rp")
 from . import shot
 reload(shot)
 
