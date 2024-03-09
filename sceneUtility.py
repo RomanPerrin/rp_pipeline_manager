@@ -18,7 +18,6 @@ def saveScene(*args):
         cmds.file(f=True, type='mayaAscii', save=True)
 
 def openScene(dir, *args):
-    print('openScene')
     cancelled = pluginUtility.warningLoaded('RenderMan_for_Maya.py', autoDisable=True)
     if cancelled:
         return
