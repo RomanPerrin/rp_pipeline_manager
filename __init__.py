@@ -4,7 +4,6 @@ __author__ = 'Roman PERRIN'
 
 #Libraries
 from importlib import reload
-print("1 init rp")
 #files
 from . import setup
 reload(setup)
@@ -29,3 +28,5 @@ reload(sceneUtility)
 
 from . import pluginUtility
 reload(pluginUtility)
+
+print("1 init rp")
