@@ -23,7 +23,6 @@ reload(shot)
 from . import instancer
 reload(instancer)
 
-print("1 init rp")
 from . import sceneUtility
 reload(sceneUtility)
 
