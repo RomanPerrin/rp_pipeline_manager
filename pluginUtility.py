@@ -7,6 +7,7 @@ import maya.cmds as cmds
 import maya.mel as mel
 
 #files
+from . import sceneUtility
 
 
 def disableAutoload(plugins):
@@ -30,18 +31,30 @@ def warningLoaded(plugins, autoDisable=True):
     if autoDisable:
         disableAutoload(plugins)
 
-    dismissed = ''
+    cancelled = ''
     loaded, failed = checkIfLoaded(plugins)
     if failed:
-        print('failed to check loaded status\n', formatListToStr(failed))
+        print('failed to check loaded status on:\n', formatListToStr(failed))
     if loaded:
-        dismissed = cmds.framelessDialog(title='Plugin Loaded',
+        cancelled = cmds.framelessDialog(title='Plugin Loaded',
                                          message=f"{formatListToStr(loaded)} is LOADED!!!!!! Please restart maya",
                                          path='autoload got disabled' if autoDisable else '',
                                          button=['CANCEL'],
                                          primary=['CANCEL'])
     
-    return dismissed if dismissed == 'CANCEL' else None
+    return cancelled if cancelled == 'CANCEL' else None
+
+def checkPlugin():
+    plugins = sceneUtility.readSetting('pluginsToAvoid')
+
+    unloaded, failed = forceUnload(plugins, autoDisable=True)
+    print('successfully unloaded: ', formatListToStr(unloaded))
+
+    cancelled = None
+    if failed:
+        cancelled = warningLoaded(failed, autoDisable=True)
+    
+    return cancelled
 
 def checkIfLoaded(plugins):
     if type(plugins) != list:
@@ -51,12 +64,30 @@ def checkIfLoaded(plugins):
     failed = []
     for plugin in plugins:
         try:
-            if cmds.pluginInfo(plugin, q=1, l=1):
+            if cmds.pluginInfo(plugin, q=True, l=True):
                 loaded.append(plugin)
         except:
             failed.append(plugin)
     
     return loaded, failed
+
+def forceUnload(plugins, autoDisable=True):
+    if type(plugins) != list:
+        plugins  = [plugins]
+    
+    if autoDisable:
+        disableAutoload(plugins)
+
+    unloaded = []
+    failed = []
+    for plugin in plugins:
+        try:
+            cmds.unloadPlugin(plugin, f=True)
+            unloaded.append(plugin)
+        except:
+            failed.append(plugin)
+    
+    return unloaded, failed
 
 def formatListToStr(list:list):
     string = ''

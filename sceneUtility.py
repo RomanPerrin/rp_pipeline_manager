@@ -17,13 +17,9 @@ def saveScene(*args):
         cmds.file(f=True, type='mayaAscii', save=True)
 
 def openScene(dir, *args):
-    try:
-        plugins = readSetting('pluginsToAvoid')
-        cancelled = pluginUtility.warningLoaded(plugins, autoDisable=True)
-        if cancelled:
-            return
-    except NameError as e:
-        print(e)
+    cancelled = pluginUtility.checkPlugin()
+    if cancelled:
+        return
 
     if os.path.exists(dir):
         opened_file = cmds.file(dir, open=True , force=True)
