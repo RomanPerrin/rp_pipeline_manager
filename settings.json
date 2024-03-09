@@ -1,0 +1,4 @@
+{
+    "pluginsToAvoid":["RenderMan_for_Maya.py", "xgm"]
+
+}
