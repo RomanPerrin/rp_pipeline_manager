@@ -12,9 +12,7 @@ import sys
 #files
 from . import pluginUtility
 
-print(__package__)
-# print(__path__)
-
+print(__path__)
 def saveScene(*args):
     if cmds.file(q=True, sceneName=True):
         cmds.file(f=True, type='mayaAscii', save=True)
@@ -29,5 +27,5 @@ def openScene(dir, *args):
         return
 
 def readSetting(setting):
-    os.path.join(eval(__package__).__path__)
+    os.path.join(__path__, )
     # json.loads()
