@@ -12,7 +12,7 @@ from functools import partial
 from . import publish
 from . import addAsset
 from .. import main_window
-from .. import scene
+from .. import sceneUtility
 
 icon_size = 35
 row_size = 35
@@ -213,12 +213,8 @@ class AssetUi():
         return os.path.normpath(os.path.join(assetDir, 'maya'))
 
     def openLastEdit(self, *args):
-        scene.saveScene()
+        sceneUtility.saveScene()
         working_dir = self.getWorkingDirectory().replace(os.sep, '/')
-
-        #cmds.unloadPlugin('rfm_volume_aggregate_set.py', force=True)
-        #cmds.unloadPlugin('rfm_manipulators.py', force=True)
-        #cmds.unloadPlugin('rfm.py', force=True)
 
         #set project
         mel.eval(f'setProject "{working_dir}"')
@@ -227,16 +223,18 @@ class AssetUi():
         file_list = cmds.getFileList( folder=edit_dir, filespec='*.ma' )
         file_list.sort()
 
-        #create new file
+        #open file
         if file_list:
             opened_file = cmds.file( edit_dir+'/'+file_list[-1], open=True , force=True)
             return
 
+        #create new file
         cmds.file(f=True, new=True )
         print('import mode?', self.selectedStep(), not self.selectedStep() in ['modeling', 'dressing'])
         if not self.selectedStep() in ['modeling', 'dressing']:
             if not os.path.isdir(os.path.join(edit_dir, 'incrementalSave')):
-                cmds.file(os.path.join(working_dir, 'scenes', 'publish', 'modeling', f"{self.selectedAssets()}_publish_modeling.ma"), reference=True, ns=f"{self.selectedAssets()}_{self.selectedStep()}")
+                mode_file = os.path.join(working_dir, 'scenes', 'publish', 'modeling', f"{self.selectedAssets()}_publish_modeling.ma")
+                cmds.file(mode_file, reference=True, ns=f"{self.selectedAssets()}_{self.selectedStep()}")
 
         if self.selectedStep() == 'lookdev':
             cmds.loadPlugin('mtoa')
