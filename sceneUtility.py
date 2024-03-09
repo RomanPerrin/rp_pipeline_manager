@@ -19,7 +19,6 @@ def saveScene(*args):
 def openScene(dir, *args):
     try:
         plugins = readSetting('pluginsToAvoid')
-        print(plugins)
         cancelled = pluginUtility.warningLoaded(plugins, autoDisable=True)
         if cancelled:
             return
@@ -37,7 +36,7 @@ def readSetting(setting):
     with open(file, 'r') as j:
         content = json.loads(j.read())[setting]
     
-    print(content)
     if not content:
         raise NameError(f'{setting} setting not found')
     
+    return content    
