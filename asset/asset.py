@@ -225,8 +225,7 @@ class AssetUi():
 
         #open file
         if file_list:
-            opened_file = cmds.file( edit_dir+'/'+file_list[-1], open=True , force=True)
-            return
+            sceneUtility.openScene(file_list[-1])
 
         #create new file
         cmds.file(f=True, new=True )
