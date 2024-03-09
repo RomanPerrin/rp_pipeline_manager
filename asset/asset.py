@@ -3,8 +3,6 @@ __author__ = 'Roman PERRIN'
 #Author: Roman PERRIN
 
 #Libraries
-from fileinput import filename
-from typing_extensions import runtime
 import maya.cmds as cmds
 import maya.mel as mel
 import os
