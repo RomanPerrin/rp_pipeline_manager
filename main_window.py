@@ -23,8 +23,10 @@ icon_size = 35
 row_size = 35
 pipe_dir = ""
 
+print(__file__)
+print(__package__)
+print(__name__)
 print(__path__)
-__path__ = __path__
 
 #self.pipe_dir/self.selectedAssetType()/self.selectedAssets()/maya/scenes/edit/self.selectedStep()
 
