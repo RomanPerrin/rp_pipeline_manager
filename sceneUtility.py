@@ -17,9 +17,13 @@ def saveScene(*args):
         cmds.file(f=True, type='mayaAscii', save=True)
 
 def openScene(dir, *args):
-    cancelled = pluginUtility.warningLoaded('RenderMan_for_Maya.py', autoDisable=True)
-    if cancelled:
-        return
+    try:
+        plugins = readSetting('pluginsToAvoid')
+        cancelled = pluginUtility.warningLoaded(plugins, autoDisable=True)
+        if cancelled:
+            return
+    except NameError as e:
+        print(e)
 
     if os.path.exists(dir):
         opened_file = cmds.file(dir, open=True , force=True)
@@ -27,10 +31,11 @@ def openScene(dir, *args):
 
 def readSetting(setting):
     file = os.path.join(sys.modules[__package__].__path__[0], 'settings.json')
+
+    content = []
     with open(file, 'r') as j:
-        content = json.loads(j.read())
-    print(content)
-    print(content[setting])
-
-
-print(readSetting('pluginsToAvoid'))
+        content = json.loads(j.read())[setting]
+    
+    if not content:
+        raise NameError(f'{setting} setting not found')
+    
