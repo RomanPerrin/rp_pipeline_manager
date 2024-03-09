@@ -17,7 +17,7 @@ from .asset import asset
 from .shot import shot
 from . import instancer
 from . import install
-import pluginUtility
+from . import pluginUtility
 
 icon_size = 35
 row_size = 35
