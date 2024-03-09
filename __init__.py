@@ -14,6 +14,7 @@ reload(install)
 from . import main_window
 reload(main_window)
 
+print("1 init rp")
 from . import asset
 reload(asset)
 
@@ -28,5 +29,3 @@ reload(sceneUtility)
 
 from . import pluginUtility
 reload(pluginUtility)
-
-print("1 init rp")
