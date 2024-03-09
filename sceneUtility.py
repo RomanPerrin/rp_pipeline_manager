@@ -27,7 +27,9 @@ def openScene(dir, *args):
 
 def readSetting(setting):
     file = os.path.join(sys.modules[__package__].__path__[0], 'settings.json')
+    print(file)
     content = json.loads(file)
+    print(content)
     print(content[setting])
 
 
