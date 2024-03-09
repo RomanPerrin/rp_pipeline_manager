@@ -2,6 +2,7 @@
 __author__ = 'Roman PERRIN'
 #Author: Roman PERRIN
 
+print("sceneUtility")
 #Libraries
 import maya.cmds as cmds
 import maya.mel as mel
@@ -9,7 +10,6 @@ import os
 import json
 import sys
 
-print("sceneUtility")
 #files
 from . import pluginUtility
 
