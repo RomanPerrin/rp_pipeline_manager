@@ -6,7 +6,7 @@ __author__ = 'Roman PERRIN'
 from importlib import reload
 import os
 
-# __path__ = os.path.dirname(__file__)
+__path__ = os.path.dirname(__file__)
 
 #files
 from . import setup
