@@ -142,7 +142,7 @@ def publish(self, *args):
         # cmds.error("error during publish")
         dismissed = cmds.framelessDialog( title='Publish error',
                                          message='error during publish',
-                                         path='the edit scene will reopen\nsee the script editor for details',
+                                         path='\nthe edit scene will reopen\nsee the script editor for details',
                                          button=['OK'],
                                          primary=['OK'])
         cmds.file(f=True, new=True )
