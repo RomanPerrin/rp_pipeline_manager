@@ -54,6 +54,7 @@ class UI():
         menu = cmds.menu(l='Tools', p=menuBarLayout)
         cmds.menuItem(l='Change Cameras Clip Plane', p=menu, c=self.changeCamerasClipPlane)
         cmds.menuItem(l='Auto Instancer', p=menu, c=instancer.autoInstance)
+        cmds.menuItem(l='create set instance for current selection', p=menu, c=self.createSetInstance)
         menu = cmds.menu(l='About', p=menuBarLayout)
         cmds.menuItem(l='Update', p=menu, c=self.update)
 
@@ -98,6 +99,19 @@ class UI():
         for camera in cameras:
             cmds.setAttr(f'{camera}.nearClipPlane', 10)
             cmds.setAttr(f'{camera}.farClipPlane', 100000)
+
+    def createSetInstance(self, *args):
+        sel = cmds.ls(sl=1, l=1)
+        if not sel:
+            print('no selection')
+            return
+        shapes = set(cmds.listRelatives(sel, ad=1, type='mesh', f=1))
+        if not shapes:
+            print('no mesh found')
+            return
+        setName = cmds.sets(cmds.listRelatives(shapes, p=1, pa=1), n='enviro')
+        print(f'created {setName}')
+        return
 
     def update(self, *args):
         install.updater()
