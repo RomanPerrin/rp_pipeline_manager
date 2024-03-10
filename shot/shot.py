@@ -73,7 +73,7 @@ class ShotUi():
                                     (shot_lay, 'right', 5),
                                     (openShLayoutButton, 'left', 5),
                                     (openShLayoutButton, 'right', 5),
-                                    (createConformityLayoutButton, 'right', 5),
+                                    (createConformityLayoutButton, 'left', 5),
                                     (openConformityLayoutButton, 'left', 5),
                                     (openConformityLayoutButton, 'right', 5),
                                     (openShotAnimButton, 'left', 5),
