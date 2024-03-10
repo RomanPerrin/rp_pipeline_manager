@@ -138,7 +138,7 @@ def publish(self, *args):
     
     except Exception as error:
         traceback.print_exception(*sys.exc_info())
-        cmds.error("error during publish")
+        cmds.warning("error during publish")
         dismissed = cmds.framelessDialog( title='Publish error',
                                          message='error during publish',
                                          path='\nthe edit scene will reopen\nsee the script editor for details',
