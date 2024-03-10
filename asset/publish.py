@@ -137,9 +137,8 @@ def publish(self, *args):
                 print(f"publish lookdev scene saved at {publish_filename_lookdev}")
     
     except Exception as error:
-        print(error)
-        # traceback.print_exception(*sys.exc_info())
-        # cmds.error("error during publish")
+        traceback.print_exception(*sys.exc_info())
+        cmds.error("error during publish")
         dismissed = cmds.framelessDialog( title='Publish error',
                                          message='error during publish',
                                          path='\nthe edit scene will reopen\nsee the script editor for details',
