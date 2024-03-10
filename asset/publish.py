@@ -129,12 +129,18 @@ def publish(self, *args):
         cmds.select(geocacheList + shaders + shadingGrps + sel, noExpand=True)
         cmds.file(file_name, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
         print(f"publish {step} scene saved at {file_name}")
+        
         if step == 'modeling':
             edit_filename_lookdev = os.path.join(dir, "maya", "scenes", "edit", 'lookdev', f"{asset}_edit_lookdev.ma").replace(os.sep, "/")
             publish_filename_lookdev = os.path.join(dir, "maya", "scenes", "publish", 'lookdev', f"{asset}_publish_lookdev.ma").replace(os.sep, "/")
             if not os.path.exists(edit_filename_lookdev):
                 cmds.file(publish_filename_lookdev, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
                 print(f"publish lookdev scene saved at {publish_filename_lookdev}")
+        
+        dismissed = cmds.framelessDialog( title='Publish Successful',
+                                         message=f"publish {step} scene saved at {file_name}",
+                                         button=['OK'],
+                                         primary=['OK'])
     
     except Exception:
         traceback.print_exception(*sys.exc_info())
