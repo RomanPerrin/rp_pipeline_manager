@@ -4,7 +4,6 @@ __author__ = 'Roman PERRIN'
 
 #Libraries
 from importlib import reload
-
 #files
 from . import setup
 reload(setup)
@@ -23,3 +22,9 @@ reload(shot)
 
 from . import instancer
 reload(instancer)
+
+from . import sceneUtility
+reload(sceneUtility)
+
+from . import pluginUtility
+reload(pluginUtility)

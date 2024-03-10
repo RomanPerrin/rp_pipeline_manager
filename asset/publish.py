@@ -33,13 +33,14 @@ def publish(self, *args):
     
     try:
         print("importing object from reference")
-        self.importObjFromRef()
+        importObjFromRef()
         
         print("deactivating smooth preview")
         cmds.displaySmoothness(polygonObject=0)
         
         print("deleting volume aggregate")
         deleteVolumAggregate()
+        
         print("deleting unsused nodes")
         unknownNodes = cmds.ls(typ=('unknown','unknownDag'))
         print(unknownNodes)
@@ -48,18 +49,23 @@ def publish(self, *args):
                 cmds.lockNode(node,l=False)
                 cmds.delete(node)
             except:
-                print('Problem deleting unknown node "'+node+'"!')
-        # print('deleting unused shading nodes')
-        # deleteUnusedShadingNodes()
+                print(f'Problem deleting unknown node {node}!')
+        
+        print('deleting unused shading nodes')
+        deleteUnusedShadingNodes()
     
         print('deleting display layers')
         deleteDisplayLayers()
+
         print('deleting empty sets')
         deleteEmptySets()
+
         print('deleting render layer')
         deleteRenderLayers()
+
         print("remove unused plugins")
         deleteUnusedPlugins()
+
         print("deleting namespaces")
         deleteNamespaces()
 
@@ -69,16 +75,27 @@ def publish(self, *args):
             print('fixing lamina faces')
             cmds.delete(cmds.polyInfo(lf=1))
             cmds.makeIdentity(a=1)
-            cmds.DeleteHistory(cmds.ls())
             cmds.makeIdentity(t=1, r=1, s=1)
+            cmds.DeleteHistory(cmds.ls())
             cmds.polyClean()
-            sel = cmds.ls(geometry=True)
-            # cmds.unloadPlugin('RenderMan_for_Maya.py', force=True)
+
             # print('assigning Lambert')
+            # sel = cmds.ls(geometry=True)
             # for i in sel:
                 # cmds.select(i, r=True)
                 # cmds.hyperShade(assign='lambert1')
             
+        if step != 'rig':
+            print("deleting intermediate shapes")
+            all_meshes = cmds.ls( type="mesh", ap=True )
+            no_intermediate_meshes = cmds.ls( type="mesh", ap=True, noIntermediate=True )
+            for shape in list(set(all_meshes)-set(no_intermediate_meshes)):
+                try:
+                    cmds.delete(shape)
+                    print("deleting", shape, "intermediate")
+                except:
+                    print("Problem deleting intermediate shape:", shape)
+
         print("renaming shapes")
         cache_manager_v1_20.rename_meshes(force=True, message=False)
         
@@ -94,16 +111,6 @@ def publish(self, *args):
                     print(i)
                     geocacheList.append(i)
 
-        if step != 'rig':
-            print("deleting intermediate shapes")
-            all_meshes = cmds.ls( type="mesh", ap=True )
-            no_intermediate_meshes = cmds.ls( type="mesh", ap=True, noIntermediate=True )
-            for shape in list(set(all_meshes)-set(no_intermediate_meshes)):
-                try:
-                    cmds.delete(shape)
-                    print("deleting", shape, "intermediate")
-                except:
-                    print("Problem deleting intermediate shape:", shape)
     	
         if step == 'rig':
             setIsHistoricallyInteresting(value=0)
@@ -117,7 +124,7 @@ def publish(self, *args):
 
         shaders = []
         shaders = cmds.ls(cmds.listConnections(shadingGrps),materials=1)
-
+        
         print(geocacheList + shaders + shadingGrps + sel)
         cmds.select(geocacheList + shaders + shadingGrps + sel, noExpand=True)
         cmds.file(file_name, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
@@ -129,10 +136,15 @@ def publish(self, *args):
                 cmds.file(publish_filename_lookdev, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
                 print(f"publish lookdev scene saved at {publish_filename_lookdev}")
     
-    except Exception as error:
-        print(error)
+    except Exception:
         traceback.print_exception(*sys.exc_info())
-        cmds.error("error during publish ")
+        cmds.warning("error during publish")
+        dismissed = cmds.framelessDialog( title='Publish error',
+                                         message='error during publish',
+                                         path='\nthe edit scene will reopen\nsee the script editor for details',
+                                         button=['OK'],
+                                         primary=['OK'])
+        cmds.file(f=True, new=True )
         cmds.file(current_scene, open=True , force=True)
     
     cmds.file(current_scene, open=True , force=True)
@@ -231,13 +243,18 @@ def deleteUnusedPlugins(*args):
 
 def importObjFromRef(*args):
     refs = cmds.ls(rf = True)
+    
     for ref in refs:
-        rFile = cmds.referenceQuery(ref, f=True)
-        if not rFile:
-            print(rFile + "reference node without associated file")
-            cmds.lockNode(ref, l=0)
-            cmds.delete(ref)
-        cmds.file(rFile, importReference=True)
+        try:
+            rFile = cmds.referenceQuery(ref, f=True)
+            cmds.file(rFile, importReference=True)
+        except RuntimeError as e:
+            print(e)
+            try:
+                cmds.lockNode(ref, l=False)
+                cmds.delete(ref)
+            except:
+                raise RuntimeError(f'error deleting {ref}')
 
 def deleteNamespaces(*args):
     # Set root namespace

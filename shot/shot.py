@@ -13,6 +13,7 @@ import shutil
 from .. import main_window
 from .addSqSh import addSequenceUI
 from .addSqSh import addShotUI
+from .. import sceneUtility
 
 icon_size = 35
 row_size = 35
@@ -72,7 +73,7 @@ class ShotUi():
                                     (shot_lay, 'right', 5),
                                     (openShLayoutButton, 'left', 5),
                                     (openShLayoutButton, 'right', 5),
-                                    (createConformityLayoutButton, 'right', 5),
+                                    (createConformityLayoutButton, 'left', 5),
                                     (openConformityLayoutButton, 'left', 5),
                                     (openConformityLayoutButton, 'right', 5),
                                     (openShotAnimButton, 'left', 5),
@@ -131,14 +132,17 @@ class ShotUi():
             os.makedirs(os.path.join(self.sequence_dir, "_master_layout", f"{sequence_name}_master_layout"), exist_ok=True)
 
         filename = os.path.join(self.sequence_dir, "_master_layout", f"{sequence_name}_master_layout", f"{sequence_name}_master_layout.ma")
-        if os.path.exists(filename):
-            cmds.file(filename, open=True , force=True)
+        try:
+            sceneUtility.openScene(filename)
             return
+        except IOError as e:
+            print(e)
         
+        cmds.file(f=True, new=True)
         cmds.file(rename=filename)
         cmds.setAttr("defaultResolution.width", 2048)
         cmds.setAttr("defaultResolution.height", 858)
-        cmds.file(f=True, type='mayaAscii', save=True )
+        cmds.file(f=True, type='mayaAscii', save=True)
         
     def createShotLayout(self, *args):
         # print("creating shot layout")
@@ -204,13 +208,19 @@ class ShotUi():
             return
         
         filename = os.path.join(self.shot_dir, shot_name, "maya", "scenes", "layout", f"{shot_name}_shot_layout.ma")
+        projectDir = os.path.join(self.shot_dir, shot_name, "maya").replace(os.sep, "/")
+        
         if not os.path.exists(filename):
             cmds.warning(f"no shot layout found for {shot_name}")
             return
         
-        print(os.path.join(self.shot_dir, shot_name, "maya").replace(os.sep, "/"))
-        mel.eval(f'setProject "{os.path.join(self.shot_dir, shot_name, "maya").replace(os.sep, "/")}"')
-        cmds.file(filename, open=True, force=True)
+        try:
+            sceneUtility.openScene(filename, projectDir)
+            return
+        except IOError as e:
+            print(e)
+        except RuntimeError as e:
+            print(e)
 
     def createConformityLayout(self, *args):
         # print("creating conformity layout")

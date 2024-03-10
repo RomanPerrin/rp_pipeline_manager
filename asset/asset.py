@@ -12,6 +12,7 @@ from functools import partial
 from . import publish
 from . import addAsset
 from .. import main_window
+from .. import sceneUtility
 
 icon_size = 35
 row_size = 35
@@ -203,41 +204,45 @@ class AssetUi():
 
         return step
 
-    def getWorkingDirectory(self, *args):
+    def getProjectDirectory(self, *args):
         assetDir = self.getAssetDirectory()
         if not assetDir:
             return
         
-        print(os.path.normpath(os.path.join(assetDir, 'maya')))
-        return os.path.normpath(os.path.join(assetDir, 'maya'))
+        # print(os.path.normpath(os.path.join(assetDir, 'maya')))
+        return os.path.normpath(os.path.join(assetDir, 'maya')).replace(os.sep, '/')
+
 
     def openLastEdit(self, *args):
-        if cmds.file(q=True, sceneName=True):
-            cmds.file(f=True, type='mayaAscii', save=True)
-        working_dir = self.getWorkingDirectory()
-        working_dir = working_dir.replace(os.sep, '/')
-
-        #cmds.unloadPlugin('rfm_volume_aggregate_set.py', force=True)
-        #cmds.unloadPlugin('rfm_manipulators.py', force=True)
-        #cmds.unloadPlugin('rfm.py', force=True)
+        sceneUtility.saveScene()
+        projectDir = self.getProjectDirectory().replace(os.sep, '/')
 
         #set project
-        mel.eval(f'setProject "{working_dir}"')
-        edit_dir = os.path.join(working_dir, 'scenes', 'edit', self.selectedStep()).replace(os.sep, '/')
+        edit_dir = os.path.join(projectDir, 'scenes', 'edit', self.selectedStep()).replace(os.sep, '/')
 
         file_list = cmds.getFileList( folder=edit_dir, filespec='*.ma' )
         file_list.sort()
 
-        #create new file
+        #open file
         if file_list:
-            opened_file = cmds.file( edit_dir+'/'+file_list[-1], open=True , force=True)
+            filename = edit_dir+'/'+file_list[-1]
+            try:
+                sceneUtility.openScene(filename, projectDir)
+            except IOError as e:
+                print(e)
+            except RuntimeError as e:
+                print(e)
+            
             return
+            
 
+        #create new file
         cmds.file(f=True, new=True )
         print('import mode?', self.selectedStep(), not self.selectedStep() in ['modeling', 'dressing'])
         if not self.selectedStep() in ['modeling', 'dressing']:
             if not os.path.isdir(os.path.join(edit_dir, 'incrementalSave')):
-                cmds.file(os.path.join(working_dir, 'scenes', 'publish', 'modeling', f"{self.selectedAssets()}_publish_modeling.ma"), reference=True, ns=f"{self.selectedAssets()}_{self.selectedStep()}")
+                mode_file = os.path.join(projectDir, 'scenes', 'publish', 'modeling', f"{self.selectedAssets()}_publish_modeling.ma")
+                cmds.file(mode_file, reference=True, ns=f"{self.selectedAssets()}_{self.selectedStep()}")
 
         if self.selectedStep() == 'lookdev':
             cmds.loadPlugin('mtoa')
@@ -246,31 +251,10 @@ class AssetUi():
         cmds.file(f=True, type='mayaAscii', save=True )
 
         return
-    
-    def importObjFromRef(self, *args):
-        refs = cmds.ls(rf = True)
-        for ref in refs:
-            rFile = cmds.referenceQuery(ref, f=True)
-            cmds.file(rFile, importReference=True)
-    
-    def deleteNamespaces(self, *args):
-        # Set root namespace
-        cmds.namespace(setNamespace=':')
-        # Collect all namespaces except for the Maya built ins.
-        all_namespaces = [x for x in cmds.namespaceInfo(listOnlyNamespaces=True, recurse=True) if x != "UI" and x != "shared"]
-
-        if all_namespaces:
-            # Sort by hierarchy, deepest first.
-            all_namespaces.sort(key=len, reverse=True)
-            for namespace in all_namespaces:
-                # When a deep namespace is removed, it also removes the root. So check here to see if these still exist.
-                if cmds.namespace(exists=namespace) is True:
-                    cmds.namespace(removeNamespace=namespace, mergeNamespaceWithRoot=True)
-                    print("deleting", namespace)
-    
+ 
     def importAsReference(self, *args):
         #cmds.file( save=True, type='mayaAscii' )
-        cmds.file(os.path.join(self.getWorkingDirectory(), 'scenes', 'publish', self.selectedStep(), f"{self.selectedAssets()}_publish_{self.selectedStep()}.ma"), reference=True, ns=f"{self.selectedAssets()}_{self.selectedStep()}")
+        cmds.file(os.path.join(self.getProjectDirectory(), 'scenes', 'publish', self.selectedStep(), f"{self.selectedAssets()}_publish_{self.selectedStep()}.ma"), reference=True, ns=f"{self.selectedAssets()}_{self.selectedStep()}")
 
     def addAsset(self, *args):
         if not self.selectedAssetType():
@@ -280,7 +264,7 @@ class AssetUi():
         return
     
     def openDirectory(self, *args):
-        dir = self.getWorkingDirectory()
+        dir = self.getProjectDirectory()
         if not dir:
             return
         
