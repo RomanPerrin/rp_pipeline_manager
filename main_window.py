@@ -102,6 +102,9 @@ class UI():
 
     def createSetInstance(self, *args):
         shapes = set(cmds.listRelatives(cmds.ls(sl=1, l=1), ad=1, type='mesh', f=1))
+        if not shapes:
+            print('no mesh found')
+            return
         setName = cmds.sets(cmds.listRelatives(shapes, p=1, pa=1), n='enviro')
         print(f'created {setName}')
         return
