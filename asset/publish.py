@@ -85,6 +85,17 @@ def publish(self, *args):
                 # cmds.select(i, r=True)
                 # cmds.hyperShade(assign='lambert1')
             
+        if step != 'rig':
+            print("deleting intermediate shapes")
+            all_meshes = cmds.ls( type="mesh", ap=True )
+            no_intermediate_meshes = cmds.ls( type="mesh", ap=True, noIntermediate=True )
+            for shape in list(set(all_meshes)-set(no_intermediate_meshes)):
+                try:
+                    cmds.delete(shape)
+                    print("deleting", shape, "intermediate")
+                except:
+                    print("Problem deleting intermediate shape:", shape)
+
         print("renaming shapes")
         cache_manager_v1_20.rename_meshes(force=True, message=False)
         
@@ -100,16 +111,6 @@ def publish(self, *args):
                     print(i)
                     geocacheList.append(i)
 
-        if step != 'rig':
-            print("deleting intermediate shapes")
-            all_meshes = cmds.ls( type="mesh", ap=True )
-            no_intermediate_meshes = cmds.ls( type="mesh", ap=True, noIntermediate=True )
-            for shape in list(set(all_meshes)-set(no_intermediate_meshes)):
-                try:
-                    cmds.delete(shape)
-                    print("deleting", shape, "intermediate")
-                except:
-                    print("Problem deleting intermediate shape:", shape)
     	
         if step == 'rig':
             setIsHistoricallyInteresting(value=0)
@@ -136,9 +137,9 @@ def publish(self, *args):
                 print(f"publish lookdev scene saved at {publish_filename_lookdev}")
     
     except Exception as error:
-        print(error)
-        traceback.print_exception(*sys.exc_info())
-        cmds.error("error during publish")
+        # print(error)
+        # traceback.print_exception(*sys.exc_info())
+        # cmds.error("error during publish")
         dismissed = cmds.framelessDialog( title='Publish error',
                                          message='error during publish',
                                          path='the edit scene will reopen\nsee the script editor for details',
