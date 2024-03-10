@@ -33,7 +33,7 @@ def publish(self, *args):
     
     try:
         print("importing object from reference")
-        self.importObjFromRef()
+        importObjFromRef()
         
         print("deactivating smooth preview")
         cmds.displaySmoothness(polygonObject=0)
