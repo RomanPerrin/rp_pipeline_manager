@@ -136,7 +136,7 @@ def publish(self, *args):
                 cmds.file(publish_filename_lookdev, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
                 print(f"publish lookdev scene saved at {publish_filename_lookdev}")
     
-    except Exception as error:
+    except Exception:
         traceback.print_exception(*sys.exc_info())
         cmds.warning("error during publish")
         dismissed = cmds.framelessDialog( title='Publish error',
