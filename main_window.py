@@ -101,7 +101,11 @@ class UI():
             cmds.setAttr(f'{camera}.farClipPlane', 100000)
 
     def createSetInstance(self, *args):
-        shapes = set(cmds.listRelatives(cmds.ls(sl=1, l=1), ad=1, type='mesh', f=1))
+        sel = cmds.ls(sl=1, l=1)
+        if not sel:
+            print('no selection')
+            return
+        shapes = set(cmds.listRelatives(sel, ad=1, type='mesh', f=1))
         if not shapes:
             print('no mesh found')
             return
