@@ -228,7 +228,6 @@ class AssetUi():
             filename = edit_dir+'/'+file_list[-1]
             try:
                 sceneUtility.openScene(filename, projectDir)
-                return
             except IOError as e:
                 print(e)
             except RuntimeError as e:
@@ -252,28 +251,7 @@ class AssetUi():
         cmds.file(f=True, type='mayaAscii', save=True )
 
         return
-    
-    def importObjFromRef(self, *args):
-        refs = cmds.ls(rf = True)
-        for ref in refs:
-            rFile = cmds.referenceQuery(ref, f=True)
-            cmds.file(rFile, importReference=True)
-    
-    def deleteNamespaces(self, *args):
-        # Set root namespace
-        cmds.namespace(setNamespace=':')
-        # Collect all namespaces except for the Maya built ins.
-        all_namespaces = [x for x in cmds.namespaceInfo(listOnlyNamespaces=True, recurse=True) if x != "UI" and x != "shared"]
-
-        if all_namespaces:
-            # Sort by hierarchy, deepest first.
-            all_namespaces.sort(key=len, reverse=True)
-            for namespace in all_namespaces:
-                # When a deep namespace is removed, it also removes the root. So check here to see if these still exist.
-                if cmds.namespace(exists=namespace) is True:
-                    cmds.namespace(removeNamespace=namespace, mergeNamespaceWithRoot=True)
-                    print("deleting", namespace)
-    
+ 
     def importAsReference(self, *args):
         #cmds.file( save=True, type='mayaAscii' )
         cmds.file(os.path.join(self.getProjectDirectory(), 'scenes', 'publish', self.selectedStep(), f"{self.selectedAssets()}_publish_{self.selectedStep()}.ma"), reference=True, ns=f"{self.selectedAssets()}_{self.selectedStep()}")
