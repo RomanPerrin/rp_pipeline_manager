@@ -143,18 +143,20 @@ def publish(self, *args):
                                          primary=['OK'])
     
     except Exception:
-        test = traceback.print_exception(*sys.exc_info())
+        traceback.print_exception(*sys.exc_info())
+        stackTrace = traceback.format_exception(*sys.exc_info())
+        error = ''
+        for i in stackTrace:
+            error += i
         cmds.warning("error during publish")
         dismissed = cmds.framelessDialog( title='Publish error',
                                          message='error during publish',
-                                         path='\nthe edit scene will reopen\nsee the script editor for details',
+                                         path=f'\nthe edit scene will reopen\nsee the script editor for details\n{error}',
                                          button=['OK'],
                                          primary=['OK'])
         cmds.file(f=True, new=True )
         cmds.file(current_scene, open=True , force=True)
-        print(test)
-        print(traceback.extract_stack())
-        print(traceback.format_exception(*sys.exc_info()))
+        print()
     
     cmds.file(current_scene, open=True , force=True)
 
