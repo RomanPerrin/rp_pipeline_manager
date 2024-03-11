@@ -153,6 +153,8 @@ def publish(self, *args):
         cmds.file(f=True, new=True )
         cmds.file(current_scene, open=True , force=True)
         print(test)
+        print(traceback.extract_stack())
+        print(traceback.format_exception(*sys.exc_info()))
     
     cmds.file(current_scene, open=True , force=True)
 
