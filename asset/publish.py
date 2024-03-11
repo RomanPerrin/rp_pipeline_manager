@@ -146,7 +146,6 @@ def publish(self, *args):
         traceback.print_exception(*sys.exc_info())
         stackTrace = traceback.format_exception(*sys.exc_info())
         error = ''
-        print(stackTrace)
         for i in stackTrace:
             error += i
         cmds.warning("error during publish")
@@ -157,7 +156,6 @@ def publish(self, *args):
                                          primary=['OK'])
         cmds.file(f=True, new=True )
         cmds.file(current_scene, open=True , force=True)
-        print()
     
     cmds.file(current_scene, open=True , force=True)
 
