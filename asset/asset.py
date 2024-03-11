@@ -242,7 +242,7 @@ class AssetUi():
         if not self.selectedStep() in ['modeling', 'dressing']:
             if not os.path.isdir(os.path.join(edit_dir, 'incrementalSave')):
                 mode_file = os.path.join(projectDir, 'scenes', 'publish', 'modeling', f"{self.selectedAssets()}_publish_modeling.ma")
-                cmds.file(mode_file, reference=True, ns=f"{self.selectedAssets()}_{self.selectedStep()}")
+                cmds.file(mode_file, reference=True, ns=f"{self.selectedAssets()}_modeling")
 
         if self.selectedStep() == 'lookdev':
             cmds.loadPlugin('mtoa')
