@@ -129,7 +129,7 @@ def publish(self, *args):
         cmds.select(geocacheList + shaders + shadingGrps + sel, noExpand=True)
         cmds.file(file_name, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
         print(f"publish {step} scene saved at {file_name}")
-        
+        raise Exception
         if step == 'modeling':
             edit_filename_lookdev = os.path.join(dir, "maya", "scenes", "edit", 'lookdev', f"{asset}_edit_lookdev.ma").replace(os.sep, "/")
             publish_filename_lookdev = os.path.join(dir, "maya", "scenes", "publish", 'lookdev', f"{asset}_publish_lookdev.ma").replace(os.sep, "/")
@@ -143,7 +143,7 @@ def publish(self, *args):
                                          primary=['OK'])
     
     except Exception:
-        traceback.print_exception(*sys.exc_info())
+        test = traceback.print_exception(*sys.exc_info())
         cmds.warning("error during publish")
         dismissed = cmds.framelessDialog( title='Publish error',
                                          message='error during publish',
@@ -152,6 +152,7 @@ def publish(self, *args):
                                          primary=['OK'])
         cmds.file(f=True, new=True )
         cmds.file(current_scene, open=True , force=True)
+        print(test)
     
     cmds.file(current_scene, open=True , force=True)
 
