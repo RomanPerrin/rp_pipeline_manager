@@ -53,7 +53,6 @@ class UI():
         cmds.menuItem(l='Open pipeline directory', p=menu, c=self.openDirectory)
         menu = cmds.menu(l='Tools', p=menuBarLayout)
         cmds.menuItem(l='Change Cameras Clip Plane', p=menu, c=self.changeCamerasClipPlane)
-        cmds.menuItem(l='Auto Instancer', p=menu, c=instancer.duplicateSpecialInstancer)
         cmds.menuItem(l='Auto Instancer', p=menu, c=instancer.autoInstance)
         cmds.menuItem(l='create set instance for current selection', p=menu, c=self.createSetInstance)
         menu = cmds.menu(l='About', p=menuBarLayout)

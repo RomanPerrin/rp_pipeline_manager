@@ -81,7 +81,7 @@ def filter_shapes( sel=[] ):
         if obj_type in ["objectSet"]:
             continue
         if obj_type in ["transform", "joint"]:
-            obj_shapes = cmds.listRelatives( obj, s=True, path=True )
+            obj_shapes = cmds.listRelatives( obj, s=True, pa=True )
             if obj_shapes:
                 shapes += obj_shapes
         else:
@@ -112,72 +112,17 @@ def delete_shapes( sel=[] ):
 def autoInstance(*args):
     referenceNodeList = cmds.ls(rf=1)
     filenameList = []
-    
     for referenceNode in referenceNodeList:
+        shapeNode = []
         dict = {}
         dict['refNode'] = referenceNode
         dict['filename'] = cmds.referenceQuery(referenceNode, f=1)
-        
-        children = []
-        nodes = cmds.referenceQuery(referenceNode, nodes=1, dagPath=1)
-        nodes = [node for node in nodes if cmds.nodeType(node) == 'mesh']
-        
-        #for node in nodes:
-        #    children.extend(cmds.listRelatives(node, ad=1))
-        #nodes = [node for node in nodes if node not in children]
-        dict['node'] = nodes
-        
-        filenameList.append(dict)
-    
-    ref = []
-    toInstance = []
-    for dict in filenameList:
-        if "{" in dict['filename']:
-            toInstance.append(dict)
-        else:
-            ref.append(dict)
-    
-    
-    for i in range(len(toInstance)):
-        for j in range(len(ref)):
-            if toInstance[i]['filename'].split('{')[0] == ref[j]['filename']:
-                toInstance[i]['source'] = ref[j]['node']
-                break
-        else:
-            toInstance.remove(toInstance[i])
-    
-    for i in range(len(toInstance)):
-        shapeParent = [cmds.listRelatives(node, p=1, pa=1)[0] for node in toInstance[i]['node']]
-    
-        if not toInstance[i]['node'] or not toInstance[i]['source'] or len(toInstance[i]['source']) != len(shapeParent):
-            print('issue ' + toInstance[i])
-            pass
-        
-        cmds.file(toInstance[i]['filename'], importReference=True)
-        for j in range(len(shapeParent)):
-            delete_shapes(toInstance[i]['node'][j])
-            instance_shapes([toInstance[i]['source'][j], shapeParent[j]])
-        
-        print(toInstance[i]['refNode'] + ' Done')
-
-def duplicateSpecialInstancer(*args):
-    referenceNodeList = cmds.ls(rf=1)
-    filenameList = []
-
-    for referenceNode in referenceNodeList:
-        dict = {}
-        dict['refNode'] = referenceNode
-        dict['filename'] = cmds.referenceQuery(referenceNode, f=1)
-
-        children = []
         nodes = cmds.referenceQuery(referenceNode, nodes=1, dp=1)
         nodes = [node for node in nodes if cmds.nodeType(node) == 'transform']
-        
         for node in nodes:
-           children.extend(cmds.listRelatives(node, ad=1))
-        nodes = [node for node in nodes if node not in children]
-        dict['node'] = nodes
-
+            if cmds.nodeType(cmds.listRelatives(node, c=1, f=1)[0])=='mesh':
+                shapeNode.append(node)
+        dict['node'] = cmds.filterInstances(shapeNode)
         filenameList.append(dict)
 
     ref = []
@@ -194,11 +139,11 @@ def duplicateSpecialInstancer(*args):
                 toInstance[i]['source'] = ref[j]['node']
 
     for i in range(len(toInstance)):
-        newNode = []
-
-        transform = [cmds.xform(node, q=1, m=1, ws=1) for node in toInstance[i]['node']]
-        cmds.file(toInstance[i]['filename'], removeReference=True)
-        for i in range(len(toInstance[i]['node'])):
-            newNode = cmds.duplicate(toInstance[i]['source'][i], ilf=True)
-            cmds.xform(newNode[0], m=transform[i], ws=True)
-
+        cmds.file(toInstance[i]['filename'], importReference=True)
+        for j in range(len(toInstance[i]['node'])):
+            try:
+                children = cmds.listRelatives(toInstance[i]['node'][j], c=1, type='mesh', f=1)
+                delete_shapes(children)
+                instance_shapes([toInstance[i]['source'][j], toInstance[i]['node'][j]])
+            except:
+                print('error', toInstance[i]['node'][j], children)
