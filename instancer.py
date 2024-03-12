@@ -170,7 +170,7 @@ def duplicateSpecialInstancer(*args):
         dict['filename'] = cmds.referenceQuery(referenceNode, f=1)
 
         children = []
-        nodes = cmds.referenceQuery(referenceNode, nodes=1)
+        nodes = cmds.referenceQuery(referenceNode, nodes=1, dp=1)
         nodes = [node for node in nodes if cmds.nodeType(node) == 'transform']
         
         for node in nodes:
