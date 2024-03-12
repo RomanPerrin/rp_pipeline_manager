@@ -30,7 +30,7 @@ class AssetUi():
 
         #List assets
         assets_lay = cmds.formLayout(p=self.asset_lay)
-        assetsScrollList = cmds.textScrollList('assets', p=assets_lay, numberOfRows=5, allowMultiSelection=False, selectCommand=self.updateStepScrollList)
+        assetsScrollList = cmds.textScrollList('assets', p=assets_lay, numberOfRows=5, allowMultiSelection=False) #, selectCommand=self.updateStepScrollList)
         assetsAddButton = cmds.symbolButton('assetsAddButton', p=assets_lay, ann=f'add asset', i='pickHandlesComp', height=icon_size, width=icon_size, command=self.addAsset)
         assetsOpenDirectoryButton = cmds.symbolButton('assetsOpenDirectoryButton', p=assets_lay, ann=f'Open asset directory', i='fileOpen', height=icon_size, width=icon_size, command=self.openDirectory)
         # Attach the assetsScrollList
@@ -84,7 +84,7 @@ class AssetUi():
             pass
 
     def search(self, *args):
-        self.updateStepScrollList()
+        # self.updateStepScrollList()
         search_text = cmds.textField(self.search_field, q=1, tx=1)
 
         assetList = []
@@ -159,7 +159,7 @@ class AssetUi():
         return sel[0]
 
     def updateAssetsScrollList(self, *args):
-        self.updateStepScrollList()
+        # self.updateStepScrollList()
         assets = self.getAssets()
         cmds.textScrollList('assets', e=True, removeAll=True)
         cmds.textScrollList('assets', e=True, append=assets)
