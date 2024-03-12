@@ -103,7 +103,7 @@ def publish(self, *args):
         if assetType in ['prop', 'character']:
             if not cmds.objExists(f'set_geocache_{asset}'):
                 print('creating set geo cache')
-                geocache = cmds.sets(cmds.listRelatives(cmds.ls(geometry=True), p=1, pa=1), n=f'set_geocache_{asset}')
+                geocache = cmds.sets(cmds.listRelatives(cmds.ls(geometry=True), p=1), n=f'set_geocache_{asset}')
             
             sets = cmds.ls(sets=1)
             for i in sets:
