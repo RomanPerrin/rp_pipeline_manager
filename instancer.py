@@ -172,9 +172,9 @@ def duplicateSpecialInstancer():
         children = []
         nodes = cmds.referenceQuery(referenceNode, nodes=1)
         nodes = [node for node in nodes if cmds.nodeType(node) == 'transform']
-
+        
         for node in nodes:
-            children.extend(cmds.listRelatives(node, ad=1))
+           children.extend(cmds.listRelatives(node, ad=1))
         nodes = [node for node in nodes if node not in children]
         dict['node'] = nodes
 
@@ -188,19 +188,17 @@ def duplicateSpecialInstancer():
         else:
             ref.append(dict)
 
-    print(ref)
-    print(toInstance)
-
     for i in range(len(toInstance)):
         for j in range(len(ref)):
             if toInstance[i]['filename'].split('{')[0] == ref[j]['filename']:
                 toInstance[i]['source'] = ref[j]['node']
 
-    print(toInstance)
-
     for i in range(len(toInstance)):
+        newNode = []
+
         transform = [cmds.xform(node, q=1, m=1, ws=1) for node in toInstance[i]['node']]
         cmds.file(toInstance[i]['filename'], removeReference=True)
         for i in range(len(toInstance[i]['node'])):
-            newNode = cmds.duplicate(toInstance[i]['source'][i], ilf=1)
-            cmds.xform(newNode[0], m=transform[i], ws=1)
+            newNode = cmds.duplicate(toInstance[i]['source'][i], ilf=True)
+            cmds.xform(newNode[0], m=transform[i], ws=True)
+
