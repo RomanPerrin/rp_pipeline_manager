@@ -109,7 +109,7 @@ def publish(self, *args):
             else:
                 copyName.append(i)
         if copyName:
-            raise ValueError(f'more than one objects matches name: {copyName}')
+            raise ValueError(f'more than one objects matches name: {list(set(copyName))}')
 
         geocacheList = []
         if assetType in ['prop', 'character']:
