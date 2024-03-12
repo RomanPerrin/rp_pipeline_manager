@@ -158,6 +158,7 @@ def publish(self, *args):
         traceback.print_exception(*sys.exc_info())
         stackTrace = traceback.format_exception(*sys.exc_info())
         error = ''
+        stackTrace[1] = stackTrace[1].split(',')[1:]
         for i in stackTrace[1:]:
             error += i[:69]
         cmds.warning("error during publish")
