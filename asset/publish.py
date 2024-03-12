@@ -161,7 +161,8 @@ def publish(self, *args):
         if len(stackTrace[-1]) > 50:
             stackTrace[-1] = stackTrace[-1][:50]
         for i in stackTrace:
-            error += i
+            if i != stackTrace[-2]:
+                error += i
         cmds.warning("error during publish")
         dismissed = cmds.framelessDialog( title='Publish error',
                                          message='error during publish',
