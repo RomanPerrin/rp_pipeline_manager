@@ -159,7 +159,7 @@ def publish(self, *args):
         stackTrace = traceback.format_exception(*sys.exc_info())
         error = ''
         for i in stackTrace[1:]:
-            error += i[:]
+            error += i[:69]
         cmds.warning("error during publish")
         dismissed = cmds.framelessDialog( title='Publish error',
                                          message='error during publish',
