@@ -80,6 +80,7 @@ class AssetUi():
         try:
             self.getAssetsDirectory()
             self.updateAssetTypeScrollList()
+            self.updateStepScrollList()
         except:
             pass
 
