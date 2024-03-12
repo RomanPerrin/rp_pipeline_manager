@@ -10,7 +10,7 @@ import os
 import sys
 import traceback
 
-import pluginUtility
+from .. import pluginUtility
 
 #files
 from .. import cache_manager_v1_20
