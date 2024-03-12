@@ -162,7 +162,7 @@ def publish(self, *args):
         error = ''
         stackTrace[1] = pluginUtility.formatListToStr(stackTrace[1].split(', ')[1:])
         for i in stackTrace[1:]:
-            error += i[:71] + '\n'
+            error += i + '\n'
         cmds.warning("error during publish")
         dismissed = cmds.framelessDialog( title='Publish error',
                                          message='error during publish',
