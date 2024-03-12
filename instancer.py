@@ -119,6 +119,7 @@ def autoInstance(*args):
         dict['filename'] = cmds.referenceQuery(referenceNode, f=1)
         nodes = cmds.referenceQuery(referenceNode, nodes=1, dp=1)
         nodes = [node for node in nodes if cmds.nodeType(node) == 'transform']
+        print(nodes)
         for node in nodes:
             if cmds.nodeType(cmds.listRelatives(node, c=1, f=1)[0])=='mesh':
                 shapeNode.append(node)
