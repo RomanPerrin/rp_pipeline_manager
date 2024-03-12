@@ -162,14 +162,14 @@ def publish(self, *args):
         error = ''
         stackTrace[1] = pluginUtility.formatListToStr(stackTrace[1].split(', ')[1:])
         for i in stackTrace[1:]:
-            error += i[:71]
+            error += i[:71] + '\n'
         cmds.warning("error during publish")
         dismissed = cmds.framelessDialog( title='Publish error',
                                          message='error during publish',
                                          path=f'\nthe edit scene will reopen\n\n{error}',
                                          button=['OK'],
                                          primary=['OK'])
-        # cmds.file(f=True, new=True )
+        cmds.file(f=True, new=True )
         cmds.file(current_scene, open=True , force=True)
     
     cmds.file(current_scene, open=True , force=True)
