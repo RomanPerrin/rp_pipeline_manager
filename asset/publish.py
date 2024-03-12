@@ -10,6 +10,8 @@ import os
 import sys
 import traceback
 
+from .. import pluginUtility
+
 #files
 from .. import cache_manager_v1_20
 
@@ -100,16 +102,17 @@ def publish(self, *args):
         cache_manager_v1_20.rename_meshes(force=True, message=False)
         
         print('object with same name')
-        baseName = []
-        copyName = []
-        obj = cmds.listRelatives(cmds.ls(geometry=True), p=1)
-        for i in obj:
-            if not i in baseName:
-                baseName.append(i)
-            else:
-                copyName.append(i)
-        if copyName:
-            raise ValueError(f'more than one objects matches name: {list(set(copyName))}')
+        if assetType in ['prop', 'character']:
+            baseName = []
+            copyName = []
+            obj = cmds.listRelatives(cmds.ls(geometry=True), p=1)
+            for i in obj:
+                if not i in baseName:
+                    baseName.append(i)
+                else:
+                    copyName.append(i)
+            if copyName:
+                raise ValueError(f'more than one objects matches name: {list(set(copyName))}')
 
         geocacheList = []
         if assetType in ['prop', 'character']:
@@ -158,8 +161,9 @@ def publish(self, *args):
         traceback.print_exception(*sys.exc_info())
         stackTrace = traceback.format_exception(*sys.exc_info())
         error = ''
-        for i in stackTrace:
-            error += i
+        stackTrace[1] = pluginUtility.formatListToStr(stackTrace[1].split(', ')[1:])
+        for i in stackTrace[1:]:
+            error += i[:85] + '\n'
         cmds.warning("error during publish")
         dismissed = cmds.framelessDialog( title='Publish error',
                                          message='error during publish',
