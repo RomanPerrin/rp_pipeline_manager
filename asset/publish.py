@@ -169,7 +169,7 @@ def publish(self, *args):
                                          path=f'\nthe edit scene will reopen\n\n{error}',
                                          button=['OK'],
                                          primary=['OK'])
-        cmds.file(f=True, new=True )
+        # cmds.file(f=True, new=True )
         cmds.file(current_scene, open=True , force=True)
     
     cmds.file(current_scene, open=True , force=True)
