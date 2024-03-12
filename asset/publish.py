@@ -10,6 +10,8 @@ import os
 import sys
 import traceback
 
+import pluginUtility
+
 #files
 from .. import cache_manager_v1_20
 
@@ -158,9 +160,9 @@ def publish(self, *args):
         traceback.print_exception(*sys.exc_info())
         stackTrace = traceback.format_exception(*sys.exc_info())
         error = ''
-        stackTrace[1] = stackTrace[1].split(',')[1:]
+        stackTrace[1] = pluginUtility.formatListToStr(stackTrace[1].split(', ')[1:])
         for i in stackTrace[1:]:
-            error += i[:69]
+            error += i
         cmds.warning("error during publish")
         dismissed = cmds.framelessDialog( title='Publish error',
                                          message='error during publish',
