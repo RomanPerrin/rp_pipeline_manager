@@ -1,7 +1,6 @@
 # coding : utf-8
 
 # Maya's Libraries
-from networkx import contracted_edge
 import maya.cmds as cmds
 import maya.mel as mel
 
