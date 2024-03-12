@@ -160,7 +160,7 @@ def autoInstance(*args):
         
         print(toInstance[i]['refNode'] + ' Done')
 
-def duplicateSpecialInstancer():
+def duplicateSpecialInstancer(*args):
     referenceNodeList = cmds.ls(rf=1)
     filenameList = []
 
