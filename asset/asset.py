@@ -80,9 +80,10 @@ class AssetUi():
         try:
             self.getAssetsDirectory()
             self.updateAssetTypeScrollList()
-            self.updateStepScrollList()
         except:
             pass
+        
+        self.updateStepScrollList()
 
     def search(self, *args):
         # self.updateStepScrollList()
