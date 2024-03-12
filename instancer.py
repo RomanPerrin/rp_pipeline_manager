@@ -1,6 +1,7 @@
 # coding : utf-8
 
 # Maya's Libraries
+from networkx import contracted_edge
 import maya.cmds as cmds
 import maya.mel as mel
 
@@ -121,7 +122,10 @@ def autoInstance(*args):
         nodes = [node for node in nodes if cmds.nodeType(node) == 'transform']
         print(nodes)
         for node in nodes:
-            if cmds.nodeType(cmds.listRelatives(node, c=1, f=1)[0])=='mesh':
+            children = cmds.listRelatives(node, c=1, f=1)
+            if not children:
+                continue
+            if cmds.nodeType(children[0])=='mesh':
                 shapeNode.append(node)
         dict['node'] = cmds.filterInstances(shapeNode)
         filenameList.append(dict)
