@@ -168,3 +168,6 @@ def toggleSwitch(value=None, *args):
                 
             except:
                 continue
+
+def selectSamplerDiv(*args):
+    cmds.select('sampler_DIV')

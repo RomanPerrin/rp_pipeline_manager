@@ -57,6 +57,7 @@ class UI():
         cmds.menuItem(l='Auto Instancer', p=menu, c=instancer.autoInstance)
         cmds.menuItem(l='Create Line Width Setup', p=menu, c=lookdev_line.CreatelineWidthSetup)
         cmds.menuItem(l='Connect Sampler To Line Width Setup', p=menu, c=lookdev_line.ConnectSamplerToLineWidthSetup)
+        cmds.menuItem(l='Select SamplerDiv Node', p=menu, c=lookdev_line.selectSamplerDiv)
         menu = cmds.menu(l='About', p=menuBarLayout)
         cmds.menuItem(l='Update', p=menu, c=self.update)
 
