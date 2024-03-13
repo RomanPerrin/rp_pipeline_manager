@@ -19,6 +19,7 @@ from .shot import shot
 from . import instancer
 from . import install
 from . import pluginUtility
+from . import lookdev_line
 
 icon_size = 35
 row_size = 35
@@ -54,7 +55,8 @@ class UI():
         menu = cmds.menu(l='Tools', p=menuBarLayout)
         cmds.menuItem(l='Change Cameras Clip Plane', p=menu, c=self.changeCamerasClipPlane)
         cmds.menuItem(l='Auto Instancer', p=menu, c=instancer.autoInstance)
-        #cmds.menuItem(l='create set instance for current selection', p=menu, c=self.createSetInstance)
+        cmds.menuItem(l='Create Line Width Setup', p=menu, c=lookdev_line.CreatelineWidthSetup)
+        cmds.menuItem(l='Connect Sampler To Line Width Setup', p=menu, c=lookdev_line.ConnectSamplerToLineWidthSetup)
         menu = cmds.menu(l='About', p=menuBarLayout)
         cmds.menuItem(l='Update', p=menu, c=self.update)
 
