@@ -76,8 +76,11 @@ def publish(self, *args):
             cmds.delete(cmds.polyInfo(nmv=1, nuv=1, nue=1, nme=1))
             print('fixing lamina faces')
             cmds.delete(cmds.polyInfo(lf=1))
-            cmds.makeIdentity(a=1)
-            cmds.makeIdentity(t=1, r=1, s=1)
+            try:
+                cmds.makeIdentity(a=1)
+                cmds.makeIdentity(t=1, r=1, s=1)
+            except:
+                pass
             cmds.DeleteHistory(cmds.ls())
             cmds.polyClean()
 
