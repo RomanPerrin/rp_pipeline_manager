@@ -113,20 +113,14 @@ def autoInstance(*args):
     referenceNodeList = cmds.ls(rf=1)
     filenameList = []
     for referenceNode in referenceNodeList:
-        shapeNode = []
         dict = {}
         dict['refNode'] = referenceNode
         dict['filename'] = cmds.referenceQuery(referenceNode, f=1)
-        nodes = cmds.referenceQuery(referenceNode, nodes=1, dp=1)
-        nodes = [node for node in nodes if cmds.nodeType(node) == 'transform']
-        print(nodes)
-        for node in nodes:
-            children = cmds.listRelatives(node, c=1, f=1)
-            if not children:
-                continue
-            if cmds.nodeType(children[0])=='mesh':
-                shapeNode.append(node)
-        dict['node'] = cmds.filterInstances(shapeNode)
+
+        nodes = cmds.referenceQuery(referenceNode, nodes=1, dagPath=1)
+        nodes = [node for node in nodes if cmds.nodeType(node) == 'mesh']
+        dict['node'] = nodes
+
         filenameList.append(dict)
 
     ref = []
@@ -137,17 +131,26 @@ def autoInstance(*args):
         else:
             ref.append(dict)
 
+
     for i in range(len(toInstance)):
         for j in range(len(ref)):
             if toInstance[i]['filename'].split('{')[0] == ref[j]['filename']:
                 toInstance[i]['source'] = ref[j]['node']
+                break
+        else:
+            toInstance.remove(toInstance[i])
 
     for i in range(len(toInstance)):
-        cmds.file(toInstance[i]['filename'], importReference=True)
         for j in range(len(toInstance[i]['node'])):
+            shapeParent = cmds.listRelatives(toInstance[i]['node'][j], ap=1, pa=1, f=1)
+
             try:
-                children = cmds.listRelatives(toInstance[i]['node'][j], c=1, type='mesh', f=1)
-                delete_shapes(children)
-                instance_shapes([toInstance[i]['source'][j], toInstance[i]['node'][j]])
+                cmds.file(toInstance[i]['filename'], importReference=True)
             except:
-                print('error', toInstance[i]['node'][j], children)
+                pass
+            
+            delete_shapes(toInstance[i]['node'][j])
+            for k in range(len(shapeParent)):
+                instance_shapes([toInstance[i]['source'][j], shapeParent[k]])
+
+        print(toInstance[i]['refNode'] + ' Done')
