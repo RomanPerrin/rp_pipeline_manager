@@ -170,4 +170,7 @@ def toggleSwitch(value=None, *args):
                 continue
 
 def selectSamplerDiv(*args):
-    cmds.select('sampler_DIV')
+    namespaces = cmds.namespaceInfo( listOnlyNamespaces=True )
+    for i in namespaces:
+        if cmds.objExists(f'{i}:sampler_DIV'):
+            cmds.select(f'{i}:sampler_DIV')
