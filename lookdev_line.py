@@ -6,13 +6,13 @@ __author__ = 'Roman PERRIN'
 import maya.cmds as cmds
 
 
-def GetAllToonShader():
+def GetAllToonShader(*args):
     shaderList = cmds.ls(materials=1)
     finalShaderList = [shader for shader in shaderList if cmds.nodeType(shader) == 'aiToon']
     return finalShaderList
     
 
-def CreateSamplerSetup():
+def CreateSamplerSetup(*args):
     if not cmds.objExists('LineDepth_samplerInfo'):
         sampler = cmds.createNode('samplerInfo', n='LineDepth_samplerInfo')
     if not cmds.objExists('sampler_DIV'):
@@ -23,7 +23,7 @@ def CreateSamplerSetup():
     
     return
 
-def lineColorSetup(shaderList):
+def lineColorSetup(shaderList, *args):
     nodes = {}
 
     for toonShader in shaderList:
@@ -86,11 +86,11 @@ def lineColorSetup(shaderList):
     
     return nodes
 
-def CreatelineColorSetup():
+def CreatelineColorSetup(*args):
     shaderList = GetAllToonShader()
     nodes = lineColorSetup(shaderList)
   
-def lineWidthSetup(shaderList):
+def lineWidthSetup(shaderList,*args):
     nodes = {}
 
     for toonShader in shaderList:
@@ -125,11 +125,11 @@ def lineWidthSetup(shaderList):
     
     return nodes
 
-def CreatelineWidthSetup():
+def CreatelineWidthSetup(*args):
     shaderList = GetAllToonShader()
     nodes = lineWidthSetup(shaderList)
   
-def ConnectSamplerToLineColorSetup(shaderList=[]):
+def ConnectSamplerToLineColorSetup(shaderList=[], *args):
     CreateSamplerSetup()
     if not shaderList:
         shaderList = GetAllToonShader()
@@ -144,7 +144,7 @@ def ConnectSamplerToLineColorSetup(shaderList=[]):
             except:
                 continue
 
-def ConnectSamplerToLineWidthSetup(shaderList=[]):
+def ConnectSamplerToLineWidthSetup(shaderList=[], *args):
     CreateSamplerSetup()
     if not shaderList:
         shaderList = GetAllToonShader()
@@ -154,7 +154,7 @@ def ConnectSamplerToLineWidthSetup(shaderList=[]):
             cmds.connectAttr('sampler_DIV.outFloat', f'normalize{edge.title()}LineWidth_{shader}.floatB', f=1)
             print(f'{shader} {edge} line width setup connected successfully')
 
-def toggleSwitch(value=None):
+def toggleSwitch(value=None, *args):
     shaderList = GetAllToonShader()
     
     for edge in ['edge', 'silhouette']:
