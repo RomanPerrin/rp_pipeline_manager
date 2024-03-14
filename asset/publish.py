@@ -272,7 +272,9 @@ def importObjFromRef(*args):
     for ref in refs:
         try:
             rFile = cmds.referenceQuery(ref, f=True)
+            print(ref)
             cmds.file(rFile, importReference=True)
+            print(rFile)
         except RuntimeError as e:
             print(e)
             try:
