@@ -36,7 +36,7 @@ def publish(self, *args):
     try:
         print("importing object from reference")
         importObjFromRef()
-        
+        return
         print("deactivating smooth preview")
         cmds.displaySmoothness(polygonObject=0)
         
@@ -271,11 +271,8 @@ def importObjFromRef(*args):
     
     for ref in refs:
         try:
-            print('import ref')
             rFile = cmds.referenceQuery(ref, f=True)
-            print(ref)
             cmds.file(rFile, importReference=True)
-            print(rFile)
         except RuntimeError as e:
             print(e)
             try:
