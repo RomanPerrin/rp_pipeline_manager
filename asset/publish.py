@@ -271,6 +271,7 @@ def importObjFromRef(*args):
     
     for ref in refs:
         try:
+            print('import ref')
             rFile = cmds.referenceQuery(ref, f=True)
             print(ref)
             cmds.file(rFile, importReference=True)
