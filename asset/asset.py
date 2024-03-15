@@ -8,13 +8,13 @@ import maya.mel as mel
 import os
 from functools import partial
 
-import pluginUtility
 
 #files
 from . import publish
 from . import addAsset
 from .. import main_window
 from .. import sceneUtility
+from .. import pluginUtility
 
 icon_size = 35
 row_size = 35
