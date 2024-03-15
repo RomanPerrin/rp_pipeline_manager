@@ -3,7 +3,6 @@ __author__ = 'Roman PERRIN'
 #Author: Roman PERRIN
 
 #Libraries
-from fileinput import filename
 import maya.cmds as cmds
 import maya.mel as mel
 import os
@@ -11,9 +10,8 @@ import sys
 import traceback
 import arnold
 
-from .. import pluginUtility
-
 #files
+from .. import pluginUtility
 from .. import cache_manager_v1_20
 
 def publish(self, *args):
@@ -29,12 +27,16 @@ def publish(self, *args):
     asset = dir.split('/')[-1]
     assetType = os.path.dirname(dir).split('/')[-1]
     file_name = os.path.join(dir, "maya", "scenes", "publish", step, f"{asset}_publish_{step}.ma").replace(os.sep, "/")
+    ASS_file_name = os.path.join(dir, "maya", "scenes", "publish", step, f"{asset}_publish_{step}.ass").replace(os.sep, "/")
 
     #saves scene
     if cmds.file(q=True, sceneName=True):
         cmds.file(f=True, type='mayaAscii', save=True)
     
     try:
+        if step == 'lookdev':
+            cmds.arnoldExportAss(f=ASS_file_name, s=selection_export, c=False, bb=True, m=arnold.AI_NODE_ALL, ll=False, ep=True, fsh=True)
+
         print("importing object from reference")
         importObjFromRef()
         
