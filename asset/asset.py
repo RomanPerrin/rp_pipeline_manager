@@ -259,7 +259,7 @@ class AssetUi():
     def importAsReference(self, *args):
         #cmds.file( save=True, type='mayaAscii' )
         path = os.path.join(self.getProjectDirectory(), 'scenes', 'publish', self.selectedStep())
-        if self.selectedStep() == 'lookdev':
+        if self.selectedStep() == ['lookdev', 'dress']:
             loaded, failed = pluginUtility.checkIfLoaded('mtoa')
             if not 'mtoa' in loaded:
                 cmds.loadPlugin('mtoa')
