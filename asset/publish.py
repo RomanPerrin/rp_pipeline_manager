@@ -38,7 +38,7 @@ def publish(self, *args):
             print('exporting ASS file')
             print(selection_export)
             cmds.arnoldExportAss(f=ASS_file_name, s=1, c=False, bb=True, ep=True, fsh=True)
-        return
+        
         print("importing object from reference")
         importObjFromRef()
         
