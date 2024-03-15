@@ -271,6 +271,7 @@ class AssetUi():
                 cmds.setAttr(shapes[i]+'.mode', 6)
                 parent = cmds.listRelatives(shapes[i], p=1, pa=1, f=1)
                 cmds.rename(parent, f"{self.selectedAssets()}_publish_{self.selectedStep()}")
+                cmds.select(parent)
             return
         
         cmds.file(os.path.join(path, f"{self.selectedAssets()}_publish_{self.selectedStep()}.ma"), reference=True, ns=f"{self.selectedAssets()}_{self.selectedStep()}")
