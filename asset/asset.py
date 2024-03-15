@@ -8,6 +8,8 @@ import maya.mel as mel
 import os
 from functools import partial
 
+import pluginUtility
+
 #files
 from . import publish
 from . import addAsset
@@ -256,7 +258,18 @@ class AssetUi():
  
     def importAsReference(self, *args):
         #cmds.file( save=True, type='mayaAscii' )
-        cmds.file(os.path.join(self.getProjectDirectory(), 'scenes', 'publish', self.selectedStep(), f"{self.selectedAssets()}_publish_{self.selectedStep()}.ma"), reference=True, ns=f"{self.selectedAssets()}_{self.selectedStep()}")
+        path = os.path.join(self.getProjectDirectory(), 'scenes', 'publish', self.selectedStep())
+        if self.selectedStep() == 'lookdev':
+            loaded, failed = pluginUtility.checkIfLoaded('mtoa')
+            if not 'mtoa' in loaded:
+                cmds.loadPlugin('mtoa')
+            nodes = cmds.file(os.path.join(path, f"{self.selectedAssets()}_publish_{self.selectedStep()}.ass"), i=1, rnn=1)
+            shapes = [node for node in nodes if cmds.nodeType(node)=='aiStandIn']
+            for i in shapes:
+                cmds.setAttr(i+'.mode', 6)
+            return
+        
+        cmds.file(os.path.join(path, f"{self.selectedAssets()}_publish_{self.selectedStep()}.ma"), reference=True, ns=f"{self.selectedAssets()}_{self.selectedStep()}")
 
     def addAsset(self, *args):
         if not self.selectedAssetType():
