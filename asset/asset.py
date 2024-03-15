@@ -269,5 +269,5 @@ class AssetUi():
         dir = self.getProjectDirectory()
         if not dir:
             return
-        
+        print(dir)
         os.popen(fr'explorer "{dir}"')
