@@ -265,8 +265,10 @@ class AssetUi():
                 cmds.loadPlugin('mtoa')
             nodes = cmds.file(os.path.join(path, f"{self.selectedAssets()}_publish_{self.selectedStep()}.ass"), i=1, rnn=1)
             shapes = [node for node in nodes if cmds.nodeType(node)=='aiStandIn']
-            for i in shapes:
-                cmds.setAttr(i+'.mode', 6)
+            for i in range(len(shapes)):
+                cmds.setAttr(shapes[i]+'.mode', 6)
+                parent = cmds.listRelatives(shapes[i], p=1, pa=1, f=1)
+                cmds.rename(parent, f"{self.selectedAssets()}_publish_{self.selectedStep()}")
             return
         
         cmds.file(os.path.join(path, f"{self.selectedAssets()}_publish_{self.selectedStep()}.ma"), reference=True, ns=f"{self.selectedAssets()}_{self.selectedStep()}")
