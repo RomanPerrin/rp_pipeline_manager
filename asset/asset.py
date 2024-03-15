@@ -263,6 +263,8 @@ class AssetUi():
             loaded, failed = pluginUtility.checkIfLoaded('mtoa')
             if not 'mtoa' in loaded:
                 cmds.loadPlugin('mtoa')
+            
+            cmds.select(cl=1)
             nodes = cmds.file(os.path.join(path, f"{self.selectedAssets()}_publish_{self.selectedStep()}.ass"), i=1, rnn=1)
             shapes = [node for node in nodes if cmds.nodeType(node)=='aiStandIn']
             for i in range(len(shapes)):
