@@ -35,7 +35,8 @@ def publish(self, *args):
     
     try:
         if step == 'lookdev':
-            cmds.arnoldExportAss(f=ASS_file_name, s=selection_export, c=False, bb=True, m=arnold.AI_NODE_ALL, ll=False, ep=True, fsh=True)
+            print('exporting ASS file')
+            cmds.arnoldExportAss(f=ASS_file_name, s=selection_export, c=False, bb=True, m=arnold.AI_NODE_ALL, ep=True, fsh=True)
 
         print("importing object from reference")
         importObjFromRef()
