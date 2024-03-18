@@ -259,7 +259,7 @@ class AssetUi():
     def importAsReference(self, *args):
         #cmds.file( save=True, type='mayaAscii' )
         path = os.path.join(self.getProjectDirectory(), 'scenes', 'publish', self.selectedStep())
-        if self.selectedStep() in ['lookdev', 'dress']:
+        if self.selectedAssetType() not in ['prop', 'character'] and self.selectedStep() == 'lookdev':
             loaded, failed = pluginUtility.checkIfLoaded('mtoa')
             if not 'mtoa' in loaded:
                 cmds.loadPlugin('mtoa')
@@ -270,7 +270,8 @@ class AssetUi():
             for i in range(len(shapes)):
                 cmds.setAttr(shapes[i]+'.mode', 6)
                 parent = cmds.listRelatives(shapes[i], p=1, pa=1, f=1)
-                cmds.rename(parent, f"{self.selectedAssets()}_publish_{self.selectedStep()}")
+                parent = cmds.rename(parent, f"{self.selectedAssets()}_publish_{self.selectedStep()}")
+                cmds.select(parent)
             return
         
         cmds.file(os.path.join(path, f"{self.selectedAssets()}_publish_{self.selectedStep()}.ma"), reference=True, ns=f"{self.selectedAssets()}_{self.selectedStep()}")
