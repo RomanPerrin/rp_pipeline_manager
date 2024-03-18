@@ -167,8 +167,8 @@ def publish(self, *args):
         
         niceMessage = sceneUtility.readSetting("publishMessage")
         dismissed = cmds.framelessDialog( title='Publish Successful',
-                                         message=niceMessage[randint(0, len(niceMessage))],
-                                         path=f"publish {step} scene saved at {file_name}",
+                                         message=niceMessage[randint(0, len(niceMessage))+'\n'],
+                                         path=f"publish {step} scene saved at\n {file_name}",
                                          button=['OK'],
                                          primary=['OK'])
     
@@ -181,7 +181,7 @@ def publish(self, *args):
             error += i[:85] + '\n'
         cmds.warning("error during publish")
         dismissed = cmds.framelessDialog( title='Publish error',
-                                         message='error during publish',
+                                         message='EXPLOSION\nerror during publish',
                                          path=f'\nthe edit scene will reopen\n\n{error}',
                                          button=['OK'],
                                          primary=['OK'])
