@@ -102,8 +102,9 @@ def publish(self, *args):
                 except:
                     print("Problem deleting intermediate shape:", shape)
 
-        print("renaming shapes")
-        cache_manager_v1_20.rename_meshes(force=True, message=False)
+        if not assetType in ['dress']:
+            print("renaming shapes")
+            cache_manager_v1_20.rename_meshes(force=True, message=False)
         
         print('object with same name')
         if assetType in ['prop', 'character']:
