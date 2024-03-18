@@ -6,6 +6,9 @@
                     "OpenVDB",
                     "rfm",
                     "rfm_manipulators",
-                    "rfm_volume_aggregate_set"]
+                    "rfm_volume_aggregate_set"],
+    
+    "publishMessage":["Good Job!!",
+                    "Continue like that"]
 
 }

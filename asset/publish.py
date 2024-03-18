@@ -3,12 +3,14 @@ __author__ = 'Roman PERRIN'
 #Author: Roman PERRIN
 
 #Libraries
+from random import randint
 import maya.cmds as cmds
 import maya.mel as mel
 import os
 import sys
 import traceback
 import arnold
+import sceneUtility
 
 #files
 from .. import pluginUtility
@@ -152,7 +154,7 @@ def publish(self, *args):
                 exportList.extend(i)
 
         print(exportList)
-        cmds.select(geocacheList + shaders + shadingGrps + sel, noExpand=True)
+        cmds.select(exportList, noExpand=True)
         cmds.file(file_name, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
         print(f"publish {step} scene saved at {file_name}")
         
@@ -163,8 +165,10 @@ def publish(self, *args):
                 cmds.file(publish_filename_lookdev, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
                 print(f"publish lookdev scene saved at {publish_filename_lookdev}")
         
+        niceMessage = sceneUtility.readSetting("publishMessage")
         dismissed = cmds.framelessDialog( title='Publish Successful',
-                                         message=f"publish {step} scene saved at {file_name}",
+                                         message=niceMessage[randint(0, len(niceMessage))],
+                                         path=f"publish {step} scene saved at {file_name}",
                                          button=['OK'],
                                          primary=['OK'])
     
