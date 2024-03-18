@@ -6,6 +6,16 @@
                     "OpenVDB",
                     "rfm",
                     "rfm_manipulators",
-                    "rfm_volume_aggregate_set"]
+                    "rfm_volume_aggregate_set"],
+    
+    "publishMessage":["Good Job!!",
+                    "Continue like that",
+                    "howdy!!",
+                    "m'enfouuuuu",
+                    "squalafeur",
+                    "en just publishing",
+                    "je suis pilote",
+                    "félicitations vous etes le 13e clients vous gagnez...",
+                    "Ce publish est sponsorisé par RAID SHADOW LEGEND"]
 
 }

@@ -3,6 +3,7 @@ __author__ = 'Roman PERRIN'
 #Author: Roman PERRIN
 
 #Libraries
+from random import randint
 import maya.cmds as cmds
 import maya.mel as mel
 import os
@@ -13,6 +14,7 @@ import arnold
 #files
 from .. import pluginUtility
 from .. import cache_manager_v1_20
+from .. import sceneUtility
 
 def publish(self, *args):
     selection_export = cmds.ls(sl=1)
@@ -102,8 +104,9 @@ def publish(self, *args):
                 except:
                     print("Problem deleting intermediate shape:", shape)
 
-        print("renaming shapes")
-        cache_manager_v1_20.rename_meshes(force=True, message=False)
+        if not assetType in ['dress']:
+            print("renaming shapes")
+            cache_manager_v1_20.rename_meshes(force=True, message=False)
         
         print('object with same name')
         if assetType in ['prop', 'character']:
@@ -144,8 +147,14 @@ def publish(self, *args):
         shaders = []
         shaders = cmds.ls(cmds.listConnections(shadingGrps),materials=1)
         
-        print(geocacheList + shaders + shadingGrps + sel)
-        cmds.select(geocacheList + shaders + shadingGrps + sel, noExpand=True)
+        print(geocacheList, shaders, shadingGrps, sel)
+        exportList = []
+        for i in [geocacheList, shaders, shadingGrps, sel]:
+            if i:
+                exportList.extend(i)
+
+        print(exportList)
+        cmds.select(exportList, noExpand=True)
         cmds.file(file_name, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
         print(f"publish {step} scene saved at {file_name}")
         
@@ -156,8 +165,10 @@ def publish(self, *args):
                 cmds.file(publish_filename_lookdev, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
                 print(f"publish lookdev scene saved at {publish_filename_lookdev}")
         
+        niceMessage = sceneUtility.readSetting("publishMessage")
         dismissed = cmds.framelessDialog( title='Publish Successful',
-                                         message=f"publish {step} scene saved at {file_name}",
+                                         message=niceMessage[randint(0, len(niceMessage))]+'\n',
+                                         path=f"publish {step} scene saved at\n {file_name}",
                                          button=['OK'],
                                          primary=['OK'])
     
@@ -170,7 +181,7 @@ def publish(self, *args):
             error += i[:85] + '\n'
         cmds.warning("error during publish")
         dismissed = cmds.framelessDialog( title='Publish error',
-                                         message='error during publish',
+                                         message='EXPLOSION\nerror during publish',
                                          path=f'\nthe edit scene will reopen\n\n{error}',
                                          button=['OK'],
                                          primary=['OK'])
