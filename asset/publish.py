@@ -167,7 +167,7 @@ def publish(self, *args):
         
         niceMessage = sceneUtility.readSetting("publishMessage")
         dismissed = cmds.framelessDialog( title='Publish Successful',
-                                         message=niceMessage[randint(0, len(niceMessage))+'\n'],
+                                         message=niceMessage[randint(0, len(niceMessage))]+'\n',
                                          path=f"publish {step} scene saved at\n {file_name}",
                                          button=['OK'],
                                          primary=['OK'])
