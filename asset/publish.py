@@ -147,7 +147,6 @@ def publish(self, *args):
         shaders = []
         shaders = cmds.ls(cmds.listConnections(shadingGrps),materials=1)
         
-        print(geocacheList, shaders, shadingGrps, sel)
         exportList = []
         for i in [geocacheList, shaders, shadingGrps, sel]:
             if i:
@@ -166,9 +165,14 @@ def publish(self, *args):
                 cmds.file(publish_filename_lookdev, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
                 print(f"publish lookdev scene saved at {publish_filename_lookdev}")
         
-        niceMessage = sceneUtility.readSetting("publishMessage")
+        try:
+            niceMessage = sceneUtility.readSetting("publishMessage")
+            index = randint(0, len(niceMessage))
+            message = niceMessage[index]
+        except:
+            message = ''
         dismissed = cmds.framelessDialog( title='Publish Successful',
-                                         message=niceMessage[randint(0, len(niceMessage))]+'\n',
+                                         message=message+'\n',
                                          path=f"publish {step} scene saved at\n {file_name}",
                                          button=['OK'],
                                          primary=['OK'])
