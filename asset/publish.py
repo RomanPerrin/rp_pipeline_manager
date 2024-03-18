@@ -147,7 +147,6 @@ def publish(self, *args):
         shaders = []
         shaders = cmds.ls(cmds.listConnections(shadingGrps),materials=1)
         
-        print(geocacheList, shaders, shadingGrps, sel)
         exportList = []
         for i in [geocacheList, shaders, shadingGrps, sel]:
             if i:
@@ -169,7 +168,6 @@ def publish(self, *args):
         try:
             niceMessage = sceneUtility.readSetting("publishMessage")
             index = randint(0, len(niceMessage))
-            print(index, len(niceMessage))
             message = niceMessage[index]
         except:
             message = ''
