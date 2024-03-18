@@ -146,7 +146,12 @@ def publish(self, *args):
         shaders = cmds.ls(cmds.listConnections(shadingGrps),materials=1)
         
         print(geocacheList, shaders, shadingGrps, sel)
-        print(geocacheList.extend(shaders + shadingGrps + sel))
+        exportList = []
+        for i in [geocacheList, shaders, shadingGrps, sel]:
+            if i:
+                exportList.extend(i)
+
+        print(exportList)
         cmds.select(geocacheList + shaders + shadingGrps + sel, noExpand=True)
         cmds.file(file_name, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
         print(f"publish {step} scene saved at {file_name}")
