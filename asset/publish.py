@@ -29,14 +29,14 @@ def publish(self, *args):
     asset = dir.split('/')[-1]
     assetType = os.path.dirname(dir).split('/')[-1]
     file_name = os.path.join(dir, "maya", "scenes", "publish", step, f"{asset}_publish_{step}.ma").replace(os.sep, "/")
-    ASS_file_name = os.path.join(dir, "maya", "scenes", "publish", step, f"{asset}_publish_{step}.ass").replace(os.sep, "/")
+    ASS_file_name = os.path.join(dir, "maya", "scenes", "publish", "lookdev", f"{asset}_publish_lookdev.ass").replace(os.sep, "/")
 
     #saves scene
     if cmds.file(q=True, sceneName=True):
         cmds.file(f=True, type='mayaAscii', save=True)
     
     try:
-        if step == 'lookdev':
+        if step in ['lookdev', 'modeling']:
             print('exporting ASS file')
             print(selection_export)
             cmds.arnoldExportAss(f=ASS_file_name, s=1, c=False, bb=True, ep=True, fsh=True)
@@ -161,6 +161,7 @@ def publish(self, *args):
         if step == 'modeling':
             edit_filename_lookdev = os.path.join(dir, "maya", "scenes", "edit", 'lookdev', f"{asset}_edit_lookdev.ma").replace(os.sep, "/")
             publish_filename_lookdev = os.path.join(dir, "maya", "scenes", "publish", 'lookdev', f"{asset}_publish_lookdev.ma").replace(os.sep, "/")
+            ASS_file_name = os.path.join(dir, "maya", "scenes", "publish", "lookdev", f"{asset}_publish_lookdev.ass").replace(os.sep, "/")
             if not os.path.exists(edit_filename_lookdev):
                 cmds.file(publish_filename_lookdev, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
                 print(f"publish lookdev scene saved at {publish_filename_lookdev}")
