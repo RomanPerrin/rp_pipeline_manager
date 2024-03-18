@@ -10,11 +10,11 @@ import os
 import sys
 import traceback
 import arnold
-import sceneUtility
 
 #files
 from .. import pluginUtility
 from .. import cache_manager_v1_20
+from .. import sceneUtility
 
 def publish(self, *args):
     selection_export = cmds.ls(sl=1)
