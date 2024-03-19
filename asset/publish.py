@@ -108,11 +108,11 @@ def publish(self, *args):
             print("renaming shapes")
             cache_manager_v1_20.rename_meshes(force=True, message=False)
         
-        print('object with same name')
         if assetType in ['prop', 'character']:
+            print('object with same name')
             baseName = []
             copyName = []
-            obj = set(cmds.listRelatives(cmds.ls(geometry=True), p=1))
+            obj = cmds.listRelatives(cmds.ls(geometry=True), p=1)
             for i in obj:
                 if not i in baseName:
                     baseName.append(i)
@@ -125,7 +125,7 @@ def publish(self, *args):
         if assetType in ['prop', 'character']:
             if not cmds.objExists(f'set_geocache_{asset}'):
                 print('creating set geo cache')
-                geocache = cmds.sets(cmds.listRelatives(cmds.ls(geometry=True), p=1), n=f'set_geocache_{asset}')
+                geocache = cmds.sets(cmds.listRelatives(cmds.ls(geometry=True), p=1, f=1), n=f'set_geocache_{asset}')
             
             sets = cmds.ls(sets=1)
             for i in sets:
