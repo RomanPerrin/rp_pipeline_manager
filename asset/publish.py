@@ -112,7 +112,8 @@ def publish(self, *args):
             print('object with same name')
             baseName = []
             copyName = []
-            obj = cmds.listRelatives(cmds.ls(geometry=True), p=1)
+            obj = set(cmds.listRelatives(cmds.ls(geometry=True), p=1, f=1))
+            obj = [sceneUtility.get_sn(i) for i in obj]
             for i in obj:
                 if not i in baseName:
                     baseName.append(i)

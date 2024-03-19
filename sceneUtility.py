@@ -43,3 +43,6 @@ def readSetting(setting):
         raise NameError(f'{setting} setting not found')
     
     return content    
+
+def get_sn(node):
+    return node.split("|")[-1].split(":")[-1].split(".")[0]
