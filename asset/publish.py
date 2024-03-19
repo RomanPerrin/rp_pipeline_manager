@@ -36,7 +36,7 @@ def publish(self, *args):
         cmds.file(f=True, type='mayaAscii', save=True)
     
     try:
-        if step in ['lookdev', 'modeling']:
+        if step in ['lookdev']:
             print('exporting ASS file')
             print(selection_export)
             cmds.arnoldExportAss(f=ASS_file_name, s=1, c=False, bb=True, ep=True, fsh=True)
@@ -162,10 +162,13 @@ def publish(self, *args):
         if step == 'modeling':
             edit_filename_lookdev = os.path.join(dir, "maya", "scenes", "edit", 'lookdev', f"{asset}_edit_lookdev.ma").replace(os.sep, "/")
             publish_filename_lookdev = os.path.join(dir, "maya", "scenes", "publish", 'lookdev', f"{asset}_publish_lookdev.ma").replace(os.sep, "/")
-            ASS_file_name = os.path.join(dir, "maya", "scenes", "publish", "lookdev", f"{asset}_publish_lookdev.ass").replace(os.sep, "/")
             if not os.path.exists(edit_filename_lookdev):
                 cmds.file(publish_filename_lookdev, force = True, options = "v=0", type = "mayaAscii", shader = True, constructionHistory = True, exportSelected = True) 
                 print(f"publish lookdev scene saved at {publish_filename_lookdev}")
+                print('exporting ASS file')
+                print(selection_export)
+                cmds.select(selection_export)
+                cmds.arnoldExportAss(f=ASS_file_name, s=1, c=False, bb=True, ep=True, fsh=True)
         
         try:
             niceMessage = sceneUtility.readSetting("publishMessage")
