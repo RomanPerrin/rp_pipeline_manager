@@ -19,7 +19,7 @@ def CreateSamplerSetup(*args):
         sampler_div = cmds.createNode('floatMath', n='sampler_DIV')
         cmds.connectAttr(sampler+'.pointCameraZ', sampler_div+'.floatA')
         cmds.setAttr(sampler_div+'.operation', 3)
-        cmds.setAttr(sampler_div+'.floatB', -100)
+        cmds.setAttr(sampler_div+'.floatB', -15000)
     
     return
 
