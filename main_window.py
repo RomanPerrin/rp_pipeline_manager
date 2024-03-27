@@ -115,7 +115,24 @@ class UI():
         setName = cmds.sets(cmds.listRelatives(shapes, p=1, pa=1), n='enviro')
         print(f'created {setName}')
         return
+    
+    def createOverrideSamplerDiv(self, *args):
+        aiSetParameter = 'overrideSamplerDiv'
+        if not cmds.objExists(aiSetParameter):
+            aiSetParameter = cmds.createNode('aiSetParameter', n=aiSetParameter)
+            cmds.setAttr(aiSetParameter+'.enable', True)
+            cmds.setAttr(aiSetParameter+'.selection', '*sampler_DIV', type='string')
+            cmds.setAttr(aiSetParameter+'.assignment[0]', 'input2*=[120.0 120.0 120.0]', type='string')
+            cmds.setAttr(aiSetParameter+'.enableAssignment[0]', 1.0)
 
+        standIns = cmds.ls(type='aiStandIn')
+
+        for standIn in standIns:
+            try:
+                cmds.connectAttr(aiSetParameter+'.out', standIn+'.operators[0]', f=1)
+            except:
+                pass
+            
     def update(self, *args):
         install.updater()
         cmds.deleteUI(self.window)
