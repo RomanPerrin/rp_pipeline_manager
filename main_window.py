@@ -58,6 +58,7 @@ class UI():
         cmds.menuItem(l='Create Line Width Setup', p=menu, c=lookdev_line.CreatelineWidthSetup)
         cmds.menuItem(l='Connect Sampler To Line Width Setup', p=menu, c=lookdev_line.ConnectSamplerToLineWidthSetup)
         cmds.menuItem(l='Select SamplerDiv Node', p=menu, c=lookdev_line.selectSamplerDiv)
+        cmds.menuItem(l='Override SamplerDiv Node', p=menu, c=self.createOverrideSamplerDiv)
         menu = cmds.menu(l='About', p=menuBarLayout)
         cmds.menuItem(l='Update', p=menu, c=self.update)
 
@@ -115,7 +116,24 @@ class UI():
         setName = cmds.sets(cmds.listRelatives(shapes, p=1, pa=1), n='enviro')
         print(f'created {setName}')
         return
+    
+    def createOverrideSamplerDiv(self, *args):
+        aiSetParameter = 'overrideSamplerDiv'
+        if not cmds.objExists(aiSetParameter):
+            aiSetParameter = cmds.createNode('aiSetParameter', n=aiSetParameter)
+            cmds.setAttr(aiSetParameter+'.enable', True)
+            cmds.setAttr(aiSetParameter+'.selection', '*sampler_DIV', type='string')
+            cmds.setAttr(aiSetParameter+'.assignment[0]', 'input2*=[120.0 120.0 120.0]', type='string')
+            cmds.setAttr(aiSetParameter+'.enableAssignment[0]', 1.0)
 
+        standIns = cmds.ls(type='aiStandIn')
+
+        for standIn in standIns:
+            try:
+                cmds.connectAttr(aiSetParameter+'.out', standIn+'.operators[0]', f=1)
+            except:
+                pass
+            
     def update(self, *args):
         install.updater()
         cmds.deleteUI(self.window)

@@ -174,3 +174,15 @@ def selectSamplerDiv(*args):
     for i in namespaces:
         if cmds.objExists(f'{i}:sampler_DIV'):
             cmds.select(f'{i}:sampler_DIV')
+
+def overrideStandInsLineWidth(*args):
+    aiSetParameter = cmds.createNode('aiSetParameter')
+    cmds.setAttr(aiSetParameter+'.enable', True)
+    cmds.setAttr(aiSetParameter+'.selection', '*sampler_DIV', type='string')
+    cmds.setAttr(aiSetParameter+'.assignment[0]', 'input2*=[120.0 120.0 120.0]', type='string')
+    cmds.setAttr(aiSetParameter+'.enableAssignment[0]', 1.0)
+
+    standIns = cmds.ls(type='aiStandIn')
+
+    for standIn in standIns:
+        cmds.connectAttr(aiSetParameter+'.out', standIn+'.operators[0]')
