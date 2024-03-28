@@ -287,7 +287,7 @@ def edit_form( name, config, grid_nb=10, offset=0 ):
 # UI
 class UI():
     
-    def __init__( self ):
+    def __init__( self, *args ):
         """
         """
         self.window = _window_['name']

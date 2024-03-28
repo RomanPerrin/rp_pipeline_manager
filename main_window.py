@@ -20,6 +20,7 @@ from . import instancer
 from . import install
 from . import pluginUtility
 from . import lookdev_line
+from . import cache_manager_v1_20
 
 icon_size = 35
 row_size = 35
@@ -59,6 +60,7 @@ class UI():
         cmds.menuItem(l='Connect Sampler To Line Width Setup', p=menu, c=lookdev_line.ConnectSamplerToLineWidthSetup)
         cmds.menuItem(l='Select SamplerDiv Node', p=menu, c=lookdev_line.selectSamplerDiv)
         cmds.menuItem(l='Override SamplerDiv Node', p=menu, c=self.createOverrideSamplerDiv)
+        cmds.menuItem(l='Open Cache Manager', p=menu, c=cache_manager_v1_20.UI)
         menu = cmds.menu(l='About', p=menuBarLayout)
         cmds.menuItem(l='Update', p=menu, c=self.update)
 
