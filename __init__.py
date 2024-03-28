@@ -31,3 +31,6 @@ reload(pluginUtility)
 
 from . import lookdev_line
 reload(lookdev_line)
+
+from . import cache_manager_v1_20
+reload(cache_manager_v1_20)
