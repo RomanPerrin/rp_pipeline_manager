@@ -5,7 +5,6 @@ __author__ = 'Roman PERRIN'
 #Libraries
 import sys
 from typing import Callable
-import cache_manager_v1_20
 import maya.cmds as cmds
 import maya.mel as mel
 import os
