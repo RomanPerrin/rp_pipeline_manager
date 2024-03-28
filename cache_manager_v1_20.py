@@ -285,7 +285,7 @@ def edit_form( name, config, grid_nb=10, offset=0 ):
 		cmds.formLayout(name, e=True, af=[children[0], 'bottom', 0])
 
 # UI
-class UI():
+class UI(*args):
     
     def __init__( self ):
         """
