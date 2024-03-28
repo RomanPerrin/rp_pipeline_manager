@@ -21,6 +21,7 @@ from . import instancer
 from . import install
 from . import pluginUtility
 from . import lookdev_line
+from . import cache_manager_v1_20
 
 icon_size = 35
 row_size = 35
