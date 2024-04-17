@@ -99,6 +99,7 @@ def filter_sel( sel=[], filter_types=[], filter_prefix=[], filter_suffix=[], fil
     return sel
 
 def filter_instances( sel=[] ):
+    print(sel)
     sel = get_sel( sel )
     new_sel = sel[:]
     print(sel, new_sel)
@@ -129,7 +130,6 @@ def rename_meshes( force=False, message=True, *args ):
     surfaces_scene = cmds.ls( type="nurbsSurface", ap=True )
     geometries_scene = meshes_scene + curves_scene + surfaces_scene
     geometries_scene = filter_instances( geometries_scene ) # Remove instances
-    print(geometries_scene)
     geometries_scene_intermediate = []
     geometries_scene_no_intermediate = []
     for geometry in geometries_scene:
