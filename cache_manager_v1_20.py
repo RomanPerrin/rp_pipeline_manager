@@ -130,6 +130,7 @@ def rename_meshes( force=False, message=True, *args ):
     geometries_scene = filter_instances( geometries_scene ) # Remove instances
     geometries_scene_intermediate = []
     geometries_scene_no_intermediate = []
+    print(geometries_scene)
     for geometry in geometries_scene:
         if cmds.getAttr( geometry+".intermediateObject" ):
             geometries_scene_intermediate.append( geometry )
