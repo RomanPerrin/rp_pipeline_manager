@@ -99,6 +99,8 @@ def filter_sel( sel=[], filter_types=[], filter_prefix=[], filter_suffix=[], fil
     return sel
 
 def filter_instances( sel=[] ):
+    if not sel:
+         return []
     sel = get_sel( sel )
     new_sel = sel[:]
     for obj in sel:
