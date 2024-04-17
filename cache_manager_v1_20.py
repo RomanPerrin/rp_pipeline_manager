@@ -129,6 +129,7 @@ def rename_meshes( force=False, message=True, *args ):
     geometries_scene = meshes_scene + curves_scene + surfaces_scene
     print(geometries_scene)
     geometries_scene = filter_instances( geometries_scene ) # Remove instances
+    print(geometries_scene)
     geometries_scene_intermediate = []
     geometries_scene_no_intermediate = []
     for geometry in geometries_scene:
