@@ -284,19 +284,21 @@ class ShotUi():
         if not shot_name:
             return
         
-        filename = os.path.join(self.shot_dir, shot_name, "maya", "scenes", "render", f"{shot_name}_render.ma")
+        project_dir = os.path.join(self.shot_dir, shot_name, "maya").replace(os.sep, '/')
+        filename = os.path.join(project_dir, "scenes", "render", f"{shot_name}_render.ma")
         render_setup = os.path.join(self.pipe_dir, "02_ressource/Templates/Render_settings/render_setup.ma").replace(os.sep, "/")
         
         if not os.path.exists(filename):
             cmds.file(render_setup, open=True , f=True)
             conformity_layout = os.path.join(self.shot_dir, shot_name, "maya", "scenes", "layout", f"{shot_name}_conformity_layout.ma")
             cmds.file(conformity_layout, i=True , f=True, preserveReferences=True)
+            mel.eval(f'setProject "{project_dir}"')
             print(f"creating shot render for {shot_name}")
             cmds.file(rename=filename)
             cmds.file(f=True, type='mayaAscii', save=True )
             return
         
-        mel.eval(f'setProject "{os.path.join(self.shot_dir, shot_name, "maya").replace(os.sep, "/")}"')
+        mel.eval(f'setProject "{project_dir}"')
         cmds.file(filename, open=True , force=True)
 
 class replaceLayout():
