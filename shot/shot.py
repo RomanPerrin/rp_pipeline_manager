@@ -284,7 +284,7 @@ class ShotUi():
         if not shot_name:
             return
         
-        project_dir = os.path.join(self.shot_dir, shot_name, "maya")
+        project_dir = os.path.join(self.shot_dir, shot_name, "maya").replace(os.sep, '/')
         print(project_dir)
         filename = os.path.join(project_dir, "scenes", "render", f"{shot_name}_render.ma")
         render_setup = os.path.join(self.pipe_dir, "02_ressource/Templates/Render_settings/render_setup.ma").replace(os.sep, "/")
