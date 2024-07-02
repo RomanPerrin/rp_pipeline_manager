@@ -207,15 +207,16 @@ class ShotUi():
         if not shot_name:
             return
         
-        filename = os.path.join(self.shot_dir, shot_name, "maya", "scenes", "layout", f"{shot_name}_shot_layout.ma")
-        projectDir = os.path.join(self.shot_dir, shot_name, "maya").replace(os.sep, "/")
+        
+        project_dir = os.path.join(self.shot_dir, shot_name, "maya").replace(os.sep, '/')
+        filename = os.path.join(project_dir, "scenes", "layout", f"{shot_name}_shot_layout.ma")
         
         if not os.path.exists(filename):
             cmds.warning(f"no shot layout found for {shot_name}")
             return
         
         try:
-            sceneUtility.openScene(filename, projectDir)
+            sceneUtility.openScene(filename, project_dir)
             return
         except IOError as e:
             print(e)
@@ -268,14 +269,15 @@ class ShotUi():
         if not shot_name:
             return
         
-        filename = os.path.join(self.shot_dir, shot_name, "maya", "scenes", "anim", f"{shot_name}_anim.ma")
+        project_dir = os.path.join(self.shot_dir, shot_name, "maya").replace(os.sep, '/')
+        filename = os.path.join(project_dir, "scenes", "anim", f"{shot_name}_anim.ma")
         
         if not os.path.exists(filename):
             source = os.path.join(self.shot_dir, shot_name, "maya", "scenes", "layout", f"{shot_name}_conformity_layout.ma")
             shutil.copy(source, filename)
             print(f"creating shot anim for {shot_name}")
         
-        mel.eval(f'setProject "{os.path.join(self.shot_dir, shot_name, "maya").replace(os.sep, "/")}"')
+        mel.eval(f'setProject "{project_dir}"')
         cmds.file(filename, open=True , f=True)
 
     def openShotRender(self, *args):
